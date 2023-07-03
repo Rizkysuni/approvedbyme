@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('/sempro', App\Http\Controllers\Api\SemproController::class);
+Route::put('/sempro/{id}/nilai', [App\Http\Controllers\Api\SemproController::class, 'updateNilai']);

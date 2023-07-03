@@ -1,0 +1,20 @@
+/* styles.css */
+
+@media (max-width: 768px) {
+  .container {
+    font-size: 18px;
+    text-align: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .container {
+    font-size: 24px;
+    text-align: left;
+  }
+}
+
+
+
+
+
