@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'aspose' => [
+        'words' => [
+            'client_id' => env('ASPOSE_WORDS_CLIENT_ID'),
+            'client_secret' => env('ASPOSE_WORDS_CLIENT_SECRET'),
+        ],
+    ],
+    
+
 ];

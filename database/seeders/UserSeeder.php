@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
     {
         // Menambahkan user
         User::create([
-            'name' => 'John Doe',
-            'nim'   => '1908107010001',
+            'name' => 'Muhammad Al Farisi Rizki Suni',
+            'nim'   => '1908107010047',
             'email' => 'johndoe@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
@@ -27,9 +27,9 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'suni',
-            'nim'   => '1234567890',
-            'email' => 'suni@example.com',
+            'name' => 'Alim Misbullah, S.Si., M.S',
+            'nim'   => '198806032019031011',
+            'email' => 'alimmisubullah@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
             'jurusan'   => 'informatika',
@@ -37,9 +37,49 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'rizky',
-            'nim'   => '0987654321',
-            'email' => 'rizky@example.com',
+            'name' => 'Razief Perucha Fauzie Afidh, M.Sc',
+            'nim'   => ' 198408062012121002',
+            'email' => 'raziefh@example.com',
+            'password' => Hash::make('password'),
+            'gambar' => 'profile1.jpg',
+            'jurusan'   => 'informatika',
+            'role'  => 1
+        ]);
+
+        User::create([
+            'name' => 'Viska Mutiawarni, B.IT, M.IT',
+            'nim'   => '198008312009122003',
+            'email' => 'viska@example.com',
+            'password' => Hash::make('password'),
+            'gambar' => 'profile1.jpg',
+            'jurusan'   => 'informatika',
+            'role'  => 1
+        ]);
+
+        User::create([
+            'name' => 'Laina Farsiah, S.Si., M.S.',
+            'nim'   => '198902032022032004',
+            'email' => 'laina@example.com',
+            'password' => Hash::make('password'),
+            'gambar' => 'profile1.jpg',
+            'jurusan'   => 'informatika',
+            'role'  => 1
+        ]);
+
+        User::create([
+            'name' => 'Husaini M.Sc',
+            'nim'   => '198806242022031006',
+            'email' => 'husaini@example.com',
+            'password' => Hash::make('password'),
+            'gambar' => 'profile1.jpg',
+            'jurusan'   => 'informatika',
+            'role'  => 1
+        ]);
+
+        User::create([
+            'name' => 'koor',
+            'nim'   => '1',
+            'email' => 'koor@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
             'jurusan'   => 'informatika',

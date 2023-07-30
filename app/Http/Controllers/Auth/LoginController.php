@@ -8,6 +8,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 
+use App\Http\Controllers\Auth\lController;
+
 class LoginController extends Controller
 {
     /*
