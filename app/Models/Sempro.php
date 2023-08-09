@@ -29,4 +29,11 @@ class Sempro extends Model
         'penguji3', 
         'seminar',
     ];
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(User::class, 'id_mahasiswa');
+    }
+
+    
 }

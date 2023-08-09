@@ -11,7 +11,26 @@
         <p class="text-2xl">{{ $sempro->jurusan}}</p>
         <p class="text-2xl">{{ $sempro->ruangan }}</p>
         <p class="text-2xl">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
-        <br>
+        <div class=" p-4 rounded-lg mb-6">
+            @if ($totalRerataNilaiKeseluruhan > 69)
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg">Lulus</button>
+            @else
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">Tidak Lulus</button>
+            @endif
+
+            <p class="text-lg font-semibold text-white dark:text-white mt-2">
+                Dengan kategori nilai huruf : 
+                @if ($totalRerataNilaiKeseluruhan > 88)
+                    A
+                @elseif ($totalRerataNilaiKeseluruhan > 77)
+                    AB
+                @elseif ($totalRerataNilaiKeseluruhan > 68)
+                    B
+                @else
+                    BC
+                @endif
+            </p>
+        </div>
 
         <div class="flex items-left  mx-auto relative   rounded-lg overflow-hidden">
       <table class=" text-sm text-left text-gray-500 ">

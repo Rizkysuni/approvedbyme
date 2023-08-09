@@ -33,12 +33,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
             'jurusan'   => 'informatika',
-            'role'  => 1
+            'role'  => 2
         ]);
 
         User::create([
             'name' => 'Razief Perucha Fauzie Afidh, M.Sc',
-            'nim'   => ' 198408062012121002',
+            'nim'   => '198408062012121002',
             'email' => 'raziefh@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
@@ -74,16 +74,6 @@ class UserSeeder extends Seeder
             'gambar' => 'profile1.jpg',
             'jurusan'   => 'informatika',
             'role'  => 1
-        ]);
-
-        User::create([
-            'name' => 'koor',
-            'nim'   => '1',
-            'email' => 'koor@example.com',
-            'password' => Hash::make('password'),
-            'gambar' => 'profile1.jpg',
-            'jurusan'   => 'informatika',
-            'role'  => 2
         ]);
     }
 }

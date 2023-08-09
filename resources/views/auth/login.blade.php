@@ -34,7 +34,11 @@
 
 <section class="bg-gradient-to-r from-gray-600 to-blue-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 md:h-[calc(100vh-60px-60px)] lg:py-0">
-      
+  @if (session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        {{ session('error') }}
+    </div>
+@endif
       <div class="w-full  rounded-lg  md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           
               

@@ -71,7 +71,7 @@ class User extends Authenticatable
     protected function role(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  ["mahasiswa", "dosen", "koordinator"][$value],
+            get: fn ($value) =>  ["mahasiswa", "dosen", "koordinator","admin"][$value],
         );
     }
 
@@ -84,5 +84,10 @@ class User extends Authenticatable
     public function signature(): HasOne
     {
         return $this->hasOne(Signature::class);
+    }
+
+    public function sempros()
+    {
+        return $this->hasMany(Sempro::class, 'id');
     }
 }

@@ -64,7 +64,7 @@ class SemproController extends Controller
    public function create()
     {
         // Mendapatkan daftar dosen
-        $dosens = User::where('role', 1 )->get(['id', 'name']);
+        $dosens = User::whereIn('role', [1, 2])->get(['id', 'name']);
 
         return view('mahasiswa.create', compact('dosens'));
     }
@@ -168,7 +168,11 @@ class SemproController extends Controller
         ]);
 
         // Redirect atau tampilkan notifikasi sesuai kebutuhan
-        return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        if (auth()->user()->role == 'dosen') {
+            return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        } elseif (auth()->user()->role == 'koordinator') {
+            return redirect()->route('koor.home')->with('success', 'Nilai berhasil disimpan');
+        }
     }
 
     public function rekapNilai($id)
@@ -345,6 +349,40 @@ class SemproController extends Controller
             ]);
         }
         
+        // Add the condition for "LULUS" or "TIDAK LULUS" based on the totalRerataNilaiKeseluruhan
+    $statusLulus = $totalRerataNilaiKeseluruhan > 68 ? 'LULUS /' : '/ TIDAK LULUS';
+
+    // Modify the template based on status
+    if ($statusLulus === 'LULUS /') {
+        $templateProcessor->setValue('kelulusan1', $statusLulus);
+        $templateProcessor->setValue('kelulusan2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'TIDAK LULUS' . '</w:t></w:r>');
+    } else {
+        $templateProcessor->setValue('kelulusan1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'LULUS' . '</w:t></w:r>');
+        $templateProcessor->setValue('kelulusan2', $statusLulus);
+    }
+
+
+    if ($totalRerataNilaiKeseluruhan >= 87) {
+        $templateProcessor->setValue('cat1', 'A');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 78 && $totalRerataNilaiKeseluruhan < 87) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', 'AB');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 69 && $totalRerataNilaiKeseluruhan < 78) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', 'B');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 60 && $totalRerataNilaiKeseluruhan < 69) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', 'BC');
+    }
 
         // Simpan file .docx yang sudah diisi data
         $outputFileName = "{$sempro->nama}_pen05.docx"; // Nama file sesuai dengan nama mahasiswa
@@ -361,8 +399,8 @@ class SemproController extends Controller
         // Load the DOCX file
 
         // Inisialisasi variabel WordsApi dengan clientId dan clientSecret Anda
-        $clientId = "23851de1-2193-4970-87a1-e5c4bd6f8aa9";
-        $clientSecret = "622a54584d6716c6e529fbbee20c107f";
+        $clientId = "5ef52974-9959-4471-9567-2a6c3620112a";
+        $clientSecret = "dac5a02fd4a0fdb280959b3fa92d5fae";
         $wordsApi = new WordsApi($clientId, $clientSecret);
           
        // Convert the Word document to PDF using Aspose.Words Cloud SDK
@@ -466,12 +504,14 @@ class SemproController extends Controller
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $sempros = Sempro::where('dospem2', $dosenId)->get();
+        $semproList = Sempro::where('dospem2', $dosenId)
+                            ->where('seminar', 'seminar proposal')
+                            ->get();
 
         // Ubah nilai status_nilai menjadi "selesai dinilai" untuk setiap sempro
-        foreach ($sempros as $sempro) {
-            $sempro->status_nilai = 'selesai dinilai';
-            $sempro->save();
+        foreach ($semproList as $sempros) {
+            $sempros->status_nilai = 'selesai dinilai';
+            $sempros->save();
         }
 
         // Redirect kembali ke halaman pen05Home setelah nilai berhasil diubah
@@ -545,16 +585,64 @@ class SemproController extends Controller
      */
     public function destroy($id)
     {
-
-        //find sempro by ID
-        $sempro = Sempro::find($id);
-
-        //delete post
+        // Temukan dan hapus data seminar berdasarkan ID
+        $sempro = Sempro::findOrFail($id);
         $sempro->delete();
 
-        //return response
-        return new Resource(true, 'Data Sempro Berhasil Dihapus!', null);
+        // Redirect ke halaman index atau halaman lainnya
+        return redirect()->route('admin.home')->with('success', 'Seminar deleted successfully');
     }
 
+    /**
+     * edit
+     *
+     * @param  mixed $sempro
+     * @return void
+     */
+    public function edit($id)
+    {
+        $sempro = Sempro::findOrFail($id); // Mengambil data sempro berdasarkan ID
+
+        // Mendapatkan daftar dosen
+        $dosens = User::whereIn('role', [1, 2])->get(['id', 'name']);
+
+        return view('admin.edit', compact('sempro','dosens'));
+    }
+
+    /**
+     * update
+     *
+     * @param  mixed $sempro
+     * @return void
+     */
+    public function update(Request $request, $id)
+    {
+        $sempro = Sempro::findOrFail($id); // Mengambil data sempro berdasarkan ID
+
+        // Validasi input
+        $request->validate([
+            // Aturan validasi sesuai atribut pada tabel sempro
+            'nama'          => 'required',
+            'nim'           => 'required',
+            'judul'         => 'required',
+            'jurusan'       => 'required',
+            'ruangan'       => 'required',
+            'tglSempro'     => 'required',
+            'dospem1'       => 'required',
+            'dospem2'       => 'required',
+            'penguji1'      => 'required',
+            'penguji2'      => 'required',
+            'penguji3'      => 'required',
+            'seminar'       => 'required',
+            'status_nilai'  => 'required',
+        ]);
+
+        // Update data sempro dengan data baru dari input
+        $sempro->update($request->all());
+
+        // Anda dapat menambahkan logika lain di sini, seperti pengecekan peran admin
+
+        return redirect()->route('admin.home')->with('success', 'Data sempro berhasil diperbarui.');
+    }
     
 }

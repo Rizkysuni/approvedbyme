@@ -125,10 +125,10 @@ class SidangController extends Controller
         $validator = Validator::make($request->all(), [
             'id_sempro' => 'required',
             'id_dosen'  => 'required',
-            'nilai_1'   => 'required',
-            'nilai_2'   => 'required',
-            'nilai_3'   => 'required',
-            'nilai_4'   => 'required',
+            'nilai_1'   => '',
+            'nilai_2'   => '',
+            'nilai_3'   => '',
+            'nilai_4'   => '',
             'nilai_5'   => 'required',
             'nilai_6'   => 'required',
             'nilai_7'   => 'required',
@@ -159,14 +159,18 @@ class SidangController extends Controller
         ]);
 
         // Redirect atau tampilkan notifikasi sesuai kebutuhan
-        return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        if (auth()->user()->role == 'dosen') {
+            return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        } elseif (auth()->user()->role == 'koordinator') {
+            return redirect()->route('koor.home')->with('success', 'Nilai berhasil disimpan');
+        }
     }
 
     public function pen14Home()
     {
         $dosenId = auth()->user()->id;
         $sidang = Sempro::where('dospem2', $dosenId)
-                        ->Where('status_nilai', 'belum dinilai')
+                        // ->Where('status_nilai', 'belum dinilai')
                         ->Where('seminar', 'Sidang Akhir')
                     ->get();
 
@@ -175,19 +179,24 @@ class SidangController extends Controller
 
     public function pen14($id)
     {
-        // Ambil data sempro berdasarkan ID
-        $sidang = Sempro::find($id);
-
-        // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
-        $nilaiDosen = NilaiSidang::where('id_sempro', $id)->get();
-
-        $totalNilaiKeseluruhan = 0;
-        $totalRerataNilaiKeseluruhan = 0;
-        $jumlahKomponen1 = 0;
-        $jumlahKomponen2 = 0;
-        $jumlahKomponen3 = 0;
-
-        // Hitung total nilai dari nilai_1 sampai nilai_5 untuk setiap dosen
+        {
+            // Ambil data sempro berdasarkan ID
+            $sempro = Sempro::find($id);
+    
+            // Ambil ID dosen dari kolom dospem1 pada tabel sempros
+            $dospem1Id = $sempro->dospem1;
+            $dospem2Id = $sempro->dospem2;
+    
+            // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
+            $nilaiDosen = NilaiSidang::where('id_sempro', $id)->get();
+    
+            $totalNilaiKeseluruhan = 0;
+            $totalRerataNilaiKeseluruhan = 0;
+            $jumlahKomponen1 = 0;
+            $jumlahKomponen2 = 0;
+            $jumlahKomponen3 = 0;
+    
+            // Hitung total nilai dari nilai_1 sampai nilai_5 untuk setiap dosen
         foreach ($nilaiDosen as $nilai) {
             // Apply the weights to each nilai_x
             $nilai_1_weighted = $nilai->nilai_1 * 0.1;
@@ -203,12 +212,14 @@ class SidangController extends Controller
             $komponen1 = $nilai_1_weighted + $nilai_2_weighted + $nilai_3_weighted + $nilai_4_weighted;
             $komponen2 = $nilai_5_weighted + $nilai_6_weighted + $nilai_7_weighted;
             $komponen3 =  $nilai_8_weighted + $nilai_9_weighted;
-            $komp32 = $komponen2 + $komponen3;
+
             // Calculate the total weighted nilai
             $totalNilai = $nilai_1_weighted + $nilai_2_weighted + $nilai_3_weighted + $nilai_4_weighted + $nilai_5_weighted + $nilai_6_weighted;
 
             // Update the total_nilai property of the $nilai object
-            $nilai->total_nilai = $totalNilai;
+            $nilai->komponen1 = $komponen1;
+            $nilai->komponen2 = $komponen2;
+            $nilai->komponen3 = $komponen3;
 
             // Tambahkan nilai pada total nilai keseluruhan
             $jumlahKomponen1 += $komponen1;
@@ -217,31 +228,36 @@ class SidangController extends Controller
             $totalNilaiKeseluruhan += $nilai->total_nilai;
             $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
         }     
-
-        // Cek apakah sempro ditemukan
-        if (!$sidang) {
-            abort(404); // Tampilkan halaman 404 jika sempro tidak ditemukan
+    
+            // Cek apakah sempro ditemukan
+            if (!$sempro) {
+                abort(404); // Tampilkan halaman 404 jika sempro tidak ditemukan
+            }
+            // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
+            return view('/dosen/pen14', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan', 'dospem1Id','dospem2Id','jumlahKomponen1','jumlahKomponen2','jumlahKomponen3','komponen1','komponen2','komponen3'));
+                
         }
 
-
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro
-        return view('/dosen/pen14', compact('totalNilaiKeseluruhan','totalRerataNilaiKeseluruhan','sidang','nilaiDosen','jumlahKomponen1','jumlahKomponen2','jumlahKomponen3','komponen1','komponen2','komponen3','komp32'));
+        //return view('/dosen/pen14', compact('totalNilaiKeseluruhan','totalRerataNilaiKeseluruhan','sidang','nilaiDosen','jumlahKomponen1','jumlahKomponen2','jumlahKomponen3','komponen1','komponen2','komponen3','komp32'));
     }
 
     public function sendDataToCoordinator()
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $semhas = Sempro::where('dospem2', $dosenId)->get();
+        $sidangList = Sempro::where('dospem2', $dosenId)
+                            ->where('seminar', 'Sidang Akhir')
+                            ->get();
 
         // Ubah nilai status_nilai menjadi "selesai dinilai" untuk setiap sempro
-        foreach ($semhas as $semhas) {
-            $semhas->status_nilai = 'selesai dinilai';
-            $semhas->save();
+        foreach ($sidangList as $sidang) {
+            $sidang->status_nilai = 'selesai dinilai';
+            $sidang->save();
         }
 
         // Redirect kembali ke halaman pen05Home setelah nilai berhasil diubah
-        return redirect()->route('dosen.pen09Home')
+        return redirect()->route('dosen.pen14Home')
             ->with('success', 'Data berhasil dikirim ke koordinator!');
     }
 
@@ -409,8 +425,8 @@ class SidangController extends Controller
             $totalNilaiKeseluruhan += $nilai->total_nilai;
             $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
 
-            $rerataKom32 = $jumlahKomponen1 / 5;
-            $rerataKom1 = $totalKomponen32 / 5;
+            $rerataKom1 = $jumlahKomponen1 / 2;
+            $rerataKom32 = $totalKomponen32 / 5;
 
             $C=$rerataKom32+ $rerataKom1;
             $seventyFivePercent = $C * 0.75;
@@ -506,6 +522,78 @@ class SidangController extends Controller
                 'ratio' => false, // Set to true to maintain the aspect ratio of the image
             ]);
         }
+
+        // Add the condition for "LULUS" or "TIDAK LULUS" based on the totalRerataNilaiKeseluruhan
+    $statusLulus = $TotalCD > 50 ? 'LULUS' : 'TIDAK LULUS';
+
+    // Modify the template based on status
+    if ($statusLulus === 'LULUS') {
+        $templateProcessor->setValue('kelulusan1', $statusLulus);
+        $templateProcessor->setValue('kelulusan2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'TIDAK LULUS' . '</w:t></w:r>');
+    } else {
+        $templateProcessor->setValue('kelulusan1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'LULUS' . '</w:t></w:r>');
+        $templateProcessor->setValue('kelulusan2', $statusLulus);
+    }
+
+
+    if ($TotalCD >= 87) {
+        $templateProcessor->setValue('cat1', 'A');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD >= 78 && $TotalCD < 87) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', 'AB');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD >= 69 && $TotalCD < 78) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', 'B');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD >= 60 && $TotalCD < 69) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', 'BC');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD >= 51 && $TotalCD < 60) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', 'C');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD >= 41 && $TotalCD < 51) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', 'D');
+        $templateProcessor->setValue('cat7', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'E' . '</w:t></w:r>');
+    } elseif ($TotalCD < 41) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat5', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'C' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat6', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'D' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat7', 'E');
+    }
+
         
 
         // Simpan file .docx yang sudah diisi data
@@ -522,8 +610,8 @@ class SidangController extends Controller
         // Convert the Word document to HTML using PhpWord
         // Load the DOCX file
 
-        $clientId = "23851de1-2193-4970-87a1-e5c4bd6f8aa9";
-        $clientSecret = "622a54584d6716c6e529fbbee20c107f";
+        $clientId = "5ef52974-9959-4471-9567-2a6c3620112a";
+        $clientSecret = "dac5a02fd4a0fdb280959b3fa92d5fae";
         $wordsApi = new WordsApi($clientId, $clientSecret);
           
        // Convert the Word document to PDF using Aspose.Words Cloud SDK

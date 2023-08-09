@@ -38,12 +38,12 @@
                     </td>
                     <td class="px-6 py-4">
                     @if ($nilai->dosen->id == $dospem1Id)
-                    Sekretaris
-                @elseif ($nilai->dosen->id == $dospem2Id)
-                    Ketua
-                @elseif ($nilai->dosen->id == $sempro->penguji1 || $nilai->dosen->id == $sempro->penguji2 || $nilai->dosen->id == $sempro->penguji3)
-                    Anggota
-                @endif  
+                        Sekretaris
+                    @elseif ($nilai->dosen->id == $dospem2Id)
+                        Ketua
+                    @elseif ($nilai->dosen->id == $sempro->penguji1 || $nilai->dosen->id == $sempro->penguji2 || $nilai->dosen->id == $sempro->penguji3)
+                        Anggota
+                    @endif  
                     </td>
                     <td class="px-6 py-4">{{ $nilai->komponen1 }}</td>
                     <td class="px-6 py-4">

@@ -6,7 +6,7 @@
     <h1>Selamat Datang</h1>
     <h1>{{ auth()->user()->name }}!</h1>
   </div>
-  <img class="object-cover w-full md:h-44 md:w-36 md:rounded-none border-black border-8 border-solid md:border-solid" src="{{ asset('images/' . auth()->user()->gambar) }}" alt="">
+  
 </div>
     <br>
     <div class="relative overflow-x-auto">
@@ -31,6 +31,9 @@
                   <th scope="col" class="px-6 py-3">
                       Seminar
                   </th>
+                  <th scope="col" class="px-6 py-3">
+                      aksi
+                  </th>
               </tr>
           </thead>
           <tbody>
@@ -53,6 +56,23 @@
                   </td>
                   <td class="px-6 py-4">
                   {{ $sempro->seminar}}
+                  </td>
+                  <td class="px-6 py-4">
+                    <!-- Tombol Edit -->
+<a href="{{ route('sempro.edit', ['id' => $sempro->id]) }}" class="mr-2">
+    <ion-icon style="font-size: 24px;" name="pencil-sharp"></ion-icon>
+</a>
+
+<!-- Tombol Hapus -->
+<form action="{{ route('sempro.destroy', ['id' => $sempro->id]) }}" method="POST" class="inline">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="ml-2">
+        <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+    </button>
+</form>
+
+
                   </td>
               </tr>
             @endforeach

@@ -59,6 +59,25 @@ class HomeController extends Controller
      */
     public function koorHome(): View
     {
+        $dosenId = auth()->user()->id;
+        $sempros = Sempro::where('dospem1', $dosenId)
+                    ->orWhere('dospem2', $dosenId)
+                    ->orWhere('penguji1', $dosenId)
+                    ->orWhere('penguji2', $dosenId)
+                    ->orWhere('penguji3', $dosenId)
+                    ->get();
+
+        return view('koorHome', compact('sempros'));
+    }
+
+    public function adminHome(): View
+    {
+        $sempros = Sempro::all();
+        return view('adminHome', compact('sempros'));
+    }
+
+    public function rekapHome(): View
+    {
         // Ambil data mahasiswa yang sudah sempro beserta status penilaian dari tabel nilai_sempro
         $mahasiswaSempro = Sempro::leftJoin('nilai_sempro', 'sempros.id', '=', 'nilai_sempro.id_sempro')
         ->select('sempros.id', 'sempros.nama', 'sempros.jurusan','sempros.seminar','sempros.dospem2','sempros.status_nilai')
@@ -66,7 +85,7 @@ class HomeController extends Controller
         ->groupBy('sempros.id', 'sempros.nama', 'sempros.jurusan', 'sempros.seminar', 'sempros.dospem2', 'sempros.status_nilai')
         ->get();
 
-        return view('koorHome', compact('mahasiswaSempro'));
+        return view('koor.rekapitulasi', compact('mahasiswaSempro'));
     }
 
     public function profile()

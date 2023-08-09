@@ -21,6 +21,6 @@ class Semhas extends Model
     // Relasi dengan model User (mahasiswa)
     public function mahasiswa()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'mahasiswa_id');
     }
 }

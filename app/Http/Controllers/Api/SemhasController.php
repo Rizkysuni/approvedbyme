@@ -153,14 +153,18 @@ class SemhasController extends Controller
         ]);
 
         // Redirect atau tampilkan notifikasi sesuai kebutuhan
-        return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        if (auth()->user()->role == 'dosen') {
+            return redirect()->route('dosen.home')->with('success', 'Nilai berhasil disimpan');
+        } elseif (auth()->user()->role == 'koordinator') {
+            return redirect()->route('koor.home')->with('success', 'Nilai berhasil disimpan');
+        }
     }
 
     public function pen09Home()
     {
         $dosenId = auth()->user()->id;
         $semhas = Sempro::where('dospem2', $dosenId)
-                        ->Where('status_nilai', 'belum dinilai')
+                        // ->Where('status_nilai', 'belum dinilai')
                         ->Where('seminar', 'Seminar Hasil')
                     ->get();
 
@@ -213,10 +217,12 @@ class SemhasController extends Controller
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $semhas = Sempro::where('dospem2', $dosenId)->get();
+        $semhasList = Sempro::where('dospem2', $dosenId)
+                            ->where('seminar', 'Seminar Hasil')
+                            ->get();
 
         // Ubah nilai status_nilai menjadi "selesai dinilai" untuk setiap sempro
-        foreach ($semhas as $semhas) {
+        foreach ($semhasList as $semhas) {
             $semhas->status_nilai = 'selesai dinilai';
             $semhas->save();
         }
@@ -225,6 +231,7 @@ class SemhasController extends Controller
         return redirect()->route('dosen.pen09Home')
             ->with('success', 'Data berhasil dikirim ke koordinator!');
     }
+
 
     public function rekapNilai($id)
     {
@@ -420,6 +427,41 @@ class SemhasController extends Controller
                 'ratio' => false, // Set to true to maintain the aspect ratio of the image
             ]);
         }
+
+         // Add the condition for "LULUS" or "TIDAK LULUS" based on the totalRerataNilaiKeseluruhan
+    $statusLulus = $totalRerataNilaiKeseluruhan > 68 ? 'LULUS' : 'TIDAK LULUS';
+
+    // Modify the template based on status
+    if ($statusLulus === 'LULUS') {
+        $templateProcessor->setValue('kelulusan1', $statusLulus);
+        $templateProcessor->setValue('kelulusan2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'TIDAK LULUS' . '</w:t></w:r>');
+    } else {
+        $templateProcessor->setValue('kelulusan1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'LULUS' . '</w:t></w:r>');
+        $templateProcessor->setValue('kelulusan2', $statusLulus);
+    }
+
+
+    if ($totalRerataNilaiKeseluruhan >= 87) {
+        $templateProcessor->setValue('cat1', 'A');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 78 && $totalRerataNilaiKeseluruhan < 87) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', 'AB');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 69 && $totalRerataNilaiKeseluruhan < 78) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', 'B');
+        $templateProcessor->setValue('cat4', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'BC' . '</w:t></w:r>');
+    } elseif ($totalRerataNilaiKeseluruhan >= 60 && $totalRerataNilaiKeseluruhan < 69) {
+        $templateProcessor->setValue('cat1', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'A' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat2', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'AB' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat3', '<w:r><w:rPr><w:strike/></w:rPr><w:t>' . 'B' . '</w:t></w:r>');
+        $templateProcessor->setValue('cat4', 'BC');
+    }
         
 
         // Simpan file .docx yang sudah diisi data
@@ -437,8 +479,8 @@ class SemhasController extends Controller
         // Load the DOCX file
 
         // Inisialisasi variabel WordsApi dengan clientId dan clientSecret Anda
-        $clientId = "23851de1-2193-4970-87a1-e5c4bd6f8aa9";
-        $clientSecret = "622a54584d6716c6e529fbbee20c107f";
+        $clientId = "5ef52974-9959-4471-9567-2a6c3620112a";
+        $clientSecret = "dac5a02fd4a0fdb280959b3fa92d5fae";
         $wordsApi = new WordsApi($clientId, $clientSecret);
           
        // Convert the Word document to PDF using Aspose.Words Cloud SDK

@@ -14,21 +14,23 @@
                     <p>Nim: {{ $user->nim }}</p>
                     <p>Email: {{ $user->email }}</p>
                     <p>jurusan: {{ $user->jurusan}}</p>
-                    @if ($signature)
-                        <img  class="object-cover w-full  mt-5 md:h-32 md:w-48 md:rounded-none border-black border-4 border-solid md:border-solid" src="{{ asset('images/' . $signature->signature_path) }}" alt="Tanda Tangan">
-                    @else
-                        <p>Tanda tangan belum ditambahkan.</p>
-                        <div class="container">
-                            <h1>Tambahkan Tanda Tangan</h1>
-                            <form action="{{ route('saveSignature') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="signature">Tanda Tangan (Image)</label>
-                                    <input type="file" class="form-control" id="signature" name="signature" accept="image/*" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
-                        </div>
+                    @if(auth()->user()->role === 'dosen' || auth()->user()->role === 'koordinator')
+                        @if ($signature)
+                            <img  class="object-cover w-full  mt-5 md:h-32 md:w-48 md:rounded-none border-black border-4 border-solid md:border-solid" src="{{ asset('images/' . $signature->signature_path) }}" alt="Tanda Tangan">
+                        @else
+                            <p>Tanda tangan belum ditambahkan.</p>
+                            <div class="container">
+                                <h1>Tambahkan Tanda Tangan</h1>
+                                <form action="{{ route('saveSignature') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="signature">Tanda Tangan (Image)</label>
+                                        <input type="file" class="form-control" id="signature" name="signature" accept="image/*" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </form>
+                            </div>
+                        @endif
                     @endif
                 </div>
             

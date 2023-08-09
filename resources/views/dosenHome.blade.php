@@ -1,14 +1,14 @@
 @extends('layout.navbar')
 
 @section('content')
-    <div class="font-lato text-7xl">
+    <div class="font-lato text-5xl">
       <h1>Selamat Datang</h1>
       <h1>
         {{ auth()->user()->name }}!
       </h1>
     </div>
 
-
+    <br>
     <div class="font-lato relative overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
@@ -59,11 +59,23 @@
                 </td>
                 <td>
                     @if ($sempro->seminar === 'seminar proposal')
-                        <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}">Beri Nilai</a>
+                        @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
+                        <p class="text-green-500">Sudah Dinilai</P>
+                        @else
+                            <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @endif
                     @elseif ($sempro->seminar === 'Seminar Hasil')
-                        <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}">Beri Nilai</a>
+                        @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
+                            <p class="text-green-500">Sudah Dinilai</P>
+                        @else
+                            <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @endif
                     @elseif ($sempro->seminar === 'Sidang Akhir')
-                        <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}">Beri Nilai</a>
+                        @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
+                        <p class="text-green-500">Sudah Dinilai</P>
+                        @else
+                            <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @endif
                     @endif
                 </td>
             </tr>

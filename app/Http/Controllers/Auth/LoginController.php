@@ -60,14 +60,18 @@ class LoginController extends Controller
         {
             if (auth()->user()->role == 'dosen') {
                 return redirect()->route('dosen.home');
-            }else if (auth()->user()->role == 'koordinator') {
+            }
+            else if (auth()->user()->role == 'admin') {
+                return redirect()->route('admin.home');
+            }
+            else if (auth()->user()->role == 'koordinator') {
                 return redirect()->route('koor.home');
             }else{
                 return redirect()->route('home');
             }
         }else{
             return redirect()->route('login')
-                ->with('error','Nim And Password Are Wrong.');
+                ->with('error','Nim Atau Password Anda Salah.');
         }
           
     }

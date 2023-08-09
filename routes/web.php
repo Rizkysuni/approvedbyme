@@ -19,11 +19,8 @@ use App\Http\Controllers\Api\SidangController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/', [LoginController::class, 'login']);
-Route::get('/login', [LoginController::class, 'login']);
+Route::redirect('/', '/login');
+Route::get('/login', [LoginController::class, 'login'])->name('login');;
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::post('/create-signature', [HomeController::class, 'saveSignature'])->name('saveSignature');
@@ -59,7 +56,46 @@ Dosen Routes List
 Route::middleware(['auth', 'user-access:dosen'])->group(function () {
   
     Route::get('/dosen/home', [HomeController::class, 'dosenHome'])->name('dosen.home');
+});
 
+/*------------------------------------------
+--------------------------------------------
+Admin Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:admin'])->group(function () {
+  
+    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
+    Route::get('/sempro/{id}/edit', [SemproController::class, 'edit'])->name('sempro.edit');
+    Route::put('/seminar/{id}', [SemproController::class, 'update'])->name('sempro.update');
+    Route::delete('/seminar/{id}', [SemproController::class, 'destroy'])->name('sempro.destroy');
+});
+  
+/*------------------------------------------
+--------------------------------------------
+Koor Routes List
+--------------------------------------------
+--------------------------------------------*/
+Route::middleware(['auth', 'user-access:koordinator'])->group(function () {
+  
+    Route::get('/koor/home', [HomeController::class, 'koorHome'])->name('koor.home');
+    Route::get('/koor/rekapHome', [HomeController::class, 'rekapHome'])->name('koor.rekap');
+
+    Route::get('/rekapNilai/{id}', [SemproController::class, 'rekapNilai'])->name('rekapNilai');
+    Route::get('/sempro/export-pdf/{id}', [SemproController::class, 'exportPDF'])->name('export.pdf');
+    Route::get('/koor/preview-pdf', [SemproController::class, 'previewPdf'])->name('koor.preview_pdf');
+
+    Route::get('/rekapNilaiSemhas/{id}', [SemhasController::class, 'rekapNilai'])->name('rekapNilaiSemhas');
+    Route::get('/semhas/export-pdf/{id}', [SemhasController::class, 'exportPDF'])->name('export.pdfSemhas');
+
+    Route::get('/rekapNilaiSidang/{id}', [SidangController::class, 'rekapNilai'])->name('rekapNilaiSidang');
+    Route::get('/sidang/export-pdf/{id}', [SidangController::class, 'exportPDF'])->name('export.pdfSidang');
+
+    
+});
+
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/beriNilai/{id}', [SemproController::class, 'beriNilai'])->name('beriNilai');
     Route::post('/simpan-nilai', [SemproController::class, 'simpanNilai'])->name('simpanNilai');
     Route::get('/dosen/pen05', [SemproController::class, 'pen05Home'])->name('dosen.pen05Home');
@@ -77,25 +113,4 @@ Route::middleware(['auth', 'user-access:dosen'])->group(function () {
     Route::get('/dosen/pen14', [SidangController::class, 'pen14Home'])->name('dosen.pen14Home');
     Route::get('/dosen/pen14/{id}', [SidangController::class, 'pen14'])->name('dosen.pen14');
     Route::post('/send-data-sidang', [SidangController::class, 'sendDataToCoordinator'])->name('sendDataSidang');
-});
-  
-/*------------------------------------------
---------------------------------------------
-Koor Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:koordinator'])->group(function () {
-  
-    Route::get('/koor/home', [HomeController::class, 'koorHome'])->name('koor.home');
-    Route::get('/rekapNilai/{id}', [SemproController::class, 'rekapNilai'])->name('rekapNilai');
-    Route::get('/sempro/export-pdf/{id}', [SemproController::class, 'exportPDF'])->name('export.pdf');
-    Route::get('/koor/preview-pdf', [SemproController::class, 'previewPdf'])->name('koor.preview_pdf');
-
-
-
-    Route::get('/rekapNilaiSemhas/{id}', [SemhasController::class, 'rekapNilai'])->name('rekapNilaiSemhas');
-    Route::get('/semhas/export-pdf/{id}', [SemhasController::class, 'exportPDF'])->name('export.pdfSemhas');
-
-    Route::get('/rekapNilaiSidang/{id}', [SidangController::class, 'rekapNilai'])->name('rekapNilaiSidang');
-    Route::get('/sidang/export-pdf/{id}', [SidangController::class, 'exportPDF'])->name('export.pdfSidang');
 });
