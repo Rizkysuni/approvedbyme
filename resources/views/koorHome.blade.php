@@ -1,11 +1,8 @@
 @extends('layout.navbar')
 
 @section('content')
-    <div class="font-lato text-5xl">
-      <h1>Selamat Datang</h1>
-      <h1>
-        {{ auth()->user()->name }}!
-      </h1>
+    <div class="font-lato text-3xl">
+      <p>Selamat Datang, {{ auth()->user()->name }}</p>
     </div>
 
     <br>

@@ -2,24 +2,21 @@
 
 @section('content')
 
-<div class=" font-lato w-full p-6 center bg-gray-700 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+<div class=" font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
-        <p class="text-5xl ">Detail Rekapitulasi Penilaian Seminar Hasil</p>
-        <p class="text-4xl">{{ $sempro->nama }}</p>
-        <p class="text-3xl">{{ $sempro->nim }}</p>
-        <p class="text-2xl">{{ $sempro->judul }}</p>
-        <p class="text-2xl">{{ $sempro->jurusan}}</p>
-        <p class="text-2xl">{{ $sempro->ruangan }}</p>
-        <p class="text-2xl">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
-        <div class=" p-4 rounded-lg mb-6">
-            @if ($totalRerataNilaiKeseluruhan > 69)
-                <button class="bg-green-600 text-white px-4 py-2 rounded-lg">Lulus</button>
-            @else
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">Tidak Lulus</button>
-            @endif
+    <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Seminar Hasil</p>
+        <div class="text-base md:text-xl mb-10">
+            <p class="">Nama : {{ $sempro->nama }}</p>
+            <p class="">NIM : {{ $sempro->nim }}</p>
+            <p class="">Judul : {{ $sempro->judul }}</p>
+            <p class="">Jurusan : {{ $sempro->jurusan}}</p>
+            <p class="">Ruangan : {{ $sempro->ruangan }}</p>
+        </div>
 
-            <p class="text-lg font-semibold text-white dark:text-white mt-2">
-                Dengan kategori nilai huruf : 
+        <p class="text-2xl text-center">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
+        <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
+            @if ($totalRerataNilaiKeseluruhan > 69)
+                <button class="bg-green-600 text-white px-10 py-2 rounded-lg">Lulus Dengan kategori nilai huruf : 
                 @if ($totalRerataNilaiKeseluruhan > 88)
                     A
                 @elseif ($totalRerataNilaiKeseluruhan > 77)
@@ -29,7 +26,11 @@
                 @else
                     BC
                 @endif
-            </p>
+                </button>
+            @else
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">Tidak Lulus</button>
+            @endif
+
         </div>
 
         <div class="flex items-left  mx-auto relative   rounded-lg overflow-hidden">

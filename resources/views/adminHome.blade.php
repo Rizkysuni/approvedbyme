@@ -1,10 +1,9 @@
 @extends('layout.navbar')
 
 @section('content')
-<div class="font-lato text-5xl flex items-center justify-between">
+<div class="font-lato text-3xl flex items-center justify-between">
   <div>
-    <h1>Selamat Datang</h1>
-    <h1>{{ auth()->user()->name }}!</h1>
+  <p>Selamat Datang, {{ auth()->user()->name }}</p>
   </div>
   
 </div>

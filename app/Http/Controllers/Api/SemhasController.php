@@ -63,7 +63,6 @@ class SemhasController extends Controller
    public function store(Request $request)
    {
        
-
        //define validation rules
        $validator = Validator::make($request->all(), [
            'id_mahasiswa'  => 'required',
@@ -479,8 +478,8 @@ class SemhasController extends Controller
         // Load the DOCX file
 
         // Inisialisasi variabel WordsApi dengan clientId dan clientSecret Anda
-        $clientId = "5ef52974-9959-4471-9567-2a6c3620112a";
-        $clientSecret = "dac5a02fd4a0fdb280959b3fa92d5fae";
+        $clientId = env('CLIENT_ID');
+        $clientSecret = env('CLIENT_SECRET');
         $wordsApi = new WordsApi($clientId, $clientSecret);
           
        // Convert the Word document to PDF using Aspose.Words Cloud SDK

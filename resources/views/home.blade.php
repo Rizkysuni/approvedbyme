@@ -1,12 +1,10 @@
 @extends('layout.navbar')
 
 @section('content')
-<div class="font-lato text-5xl flex items-center justify-between">
+<div class="font-lato text-3xl flex items-center justify-between">
   <div>
-    <h1>Selamat Datang</h1>
-    <h1>{{ auth()->user()->name }}!</h1>
+  <p>Selamat Datang, {{ auth()->user()->name }}</p>
   </div>
-  <img class="object-cover w-full md:h-44 md:w-36 md:rounded-none border-black border-8 border-solid md:border-solid" src="{{ asset('images/' . auth()->user()->gambar) }}" alt="">
 </div>
     <br>
     <div class="relative overflow-x-auto">

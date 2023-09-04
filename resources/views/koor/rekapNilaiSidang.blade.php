@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="font-lato w-full p-6 center bg-gray-700 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+<div class="font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
         <p class="text-5xl">Detail Rekapitulasi Penilaian Sidang AKhir</p>
         <p class="text-4xl">{{ $sempro->nama }}</p>

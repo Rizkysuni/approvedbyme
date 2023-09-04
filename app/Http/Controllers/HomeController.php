@@ -30,6 +30,7 @@ class HomeController extends Controller
      */
     public function index(): View
     {
+
         $sempros = Sempro::all();
         return view('home', compact('sempros'));
     } 
@@ -116,6 +117,27 @@ class HomeController extends Controller
         }
 
         return redirect()->route('profile')->with('success', 'Tanda tangan berhasil ditambahkan.');
+    }
+
+    public function editFoto(Request $request)
+    {
+        $request->validate([
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $image = $request->file('gambar');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+
+            Auth::user()->update([
+                'gambar' => $imageName,
+            ]);
+
+            return redirect()->route('profile')->with('success', 'Foto Profile berhasil diubah!');
+        }
+
+        return redirect()->route('profile')->with('error', 'Gagal mengubah foto profil!');
     }
     
 }

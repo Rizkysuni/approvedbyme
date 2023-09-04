@@ -1,8 +1,8 @@
 @extends('layout.navbar')
 
 @section('content')
-<div class="font-lato max-w-md mx-auto">
-  <div class="bg-slate-800 shadow-lg rounded-lg p-6 ">
+<div class="font-lato max-w-3xl mx-auto bg-gray-200">
+  <div class=" shadow-lg rounded-lg p-6 ">
     <h2 class="text-xl font-semibold mb-4">Silahkan Isi Data Seminar Proposal Anda</h2>   
 <form action="{{ route('seminar.store') }}" method="POST">
     @csrf
@@ -68,7 +68,7 @@
         </select>
     </div>
     
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
 </div>
 </div>

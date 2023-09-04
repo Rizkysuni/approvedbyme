@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="font-lato max-w-md mx-auto">
+<div class="font-lato max-w-2xl mx-auto">
   <div class="bg-slate-800 shadow-lg rounded-lg p-6 ">
-    <h2 class="text-xl font-semibold mb-4">Edit Data Sempro</h2>   
+    <h2 class="text-xl font-semibold mb-4 text-white">Edit Data Sempro</h2>   
 <form action="{{ route('sempro.update',$sempro->id) }}" method="POST">
     @csrf
     @method('PUT')

@@ -32,7 +32,7 @@ Auth::routes();
 All Normal Users Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:mahasiswa'])->group(function () {
+// Route::middleware(['auth', 'user-access:mahasiswa'])->group(function () {
   
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/seminar/create', [SemproController::class, 'create'])->name('seminar.create');
@@ -45,7 +45,9 @@ Route::middleware(['auth', 'user-access:mahasiswa'])->group(function () {
 
     Route::get('/sidang/create', [SidangController::class, 'create'])->name('sidang.create');
     Route::post('/sidang', [SidangController::class, 'store'])->name('sidang.store');
-});
+
+    Route::post('/edit-photo', [HomeController::class, 'editFoto'])->name('editFoto');
+// });
   
 /*------------------------------------------
 
@@ -53,30 +55,30 @@ Route::middleware(['auth', 'user-access:mahasiswa'])->group(function () {
 Dosen Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:dosen'])->group(function () {
+// Route::middleware(['auth', 'user-access:dosen'])->group(function () {
   
     Route::get('/dosen/home', [HomeController::class, 'dosenHome'])->name('dosen.home');
-});
+// });
 
 /*------------------------------------------
 --------------------------------------------
 Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:admin'])->group(function () {
+// Route::middleware(['auth', 'user-access:admin'])->group(function () {
   
     Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
     Route::get('/sempro/{id}/edit', [SemproController::class, 'edit'])->name('sempro.edit');
     Route::put('/seminar/{id}', [SemproController::class, 'update'])->name('sempro.update');
     Route::delete('/seminar/{id}', [SemproController::class, 'destroy'])->name('sempro.destroy');
-});
+// });
   
 /*------------------------------------------
 --------------------------------------------
 Koor Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:koordinator'])->group(function () {
+// Route::middleware(['auth', 'user-access:koordinator'])->group(function () {
   
     Route::get('/koor/home', [HomeController::class, 'koorHome'])->name('koor.home');
     Route::get('/koor/rekapHome', [HomeController::class, 'rekapHome'])->name('koor.rekap');
@@ -92,10 +94,10 @@ Route::middleware(['auth', 'user-access:koordinator'])->group(function () {
     Route::get('/sidang/export-pdf/{id}', [SidangController::class, 'exportPDF'])->name('export.pdfSidang');
 
     
-});
+// });
 
 
-Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth'])->group(function () {
     Route::get('/beriNilai/{id}', [SemproController::class, 'beriNilai'])->name('beriNilai');
     Route::post('/simpan-nilai', [SemproController::class, 'simpanNilai'])->name('simpanNilai');
     Route::get('/dosen/pen05', [SemproController::class, 'pen05Home'])->name('dosen.pen05Home');
@@ -113,4 +115,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dosen/pen14', [SidangController::class, 'pen14Home'])->name('dosen.pen14Home');
     Route::get('/dosen/pen14/{id}', [SidangController::class, 'pen14'])->name('dosen.pen14');
     Route::post('/send-data-sidang', [SidangController::class, 'sendDataToCoordinator'])->name('sendDataSidang');
-});
+// });

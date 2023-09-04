@@ -1,8 +1,8 @@
 @extends('layout.navbar')
 
 @section('content')
-<div class="font-lato max-w-md mx-auto">
-  <div class="bg-slate-800 shadow-lg rounded-lg p-6 ">
+<div class="font-lato max-w-3xl mx-auto bg-gray-200">
+  <div class="bg-gray-200 shadow-lg rounded-lg p-6 ">
     <h2 class="text-xl font-semibold mb-4">Silahkan Isi Data Sidang Akhir Anda</h2>   
     <form action="{{ route('sidang.store') }}" method="POST">
         @csrf
