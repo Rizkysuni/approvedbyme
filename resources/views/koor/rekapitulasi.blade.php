@@ -26,10 +26,28 @@
                     <td class="px-6 py-4">{{ $mahasiswa->nama }}</td>
                     <td class="px-6 py-4">{{ $mahasiswa->jurusan }}</td>
                     <td class="px-6 py-4">{{ $mahasiswa->seminar }}</td>
-                    <td class="px-6 py-4">{{ $mahasiswa->status_nilai }}
-                    
-                    </td>
                     <td class="px-6 py-4">
+                        @if ($mahasiswa->seminar === 'seminar proposal')
+                            @if ($mahasiswa->jumlah_nilai_sempro == 5)
+                                <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($mahasiswa->jumlah_nilai_sempro < 5)
+                                <p class="text-red-500">Belum Dinilai</p>
+                            @endif
+                        @elseif ($mahasiswa->seminar === 'Seminar Hasil')
+                            @if ($mahasiswa->jumlah_nilai_semhas == 5)
+                                <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($mahasiswa->jumlah_nilai_semhas < 5)
+                                <p class="text-red-500">Belum Dinilai</p>
+                            @endif
+                        @elseif ($mahasiswa->seminar === 'Sidang Akhir')
+                            @if ($mahasiswa->jumlah_nilai_sidang == 5)
+                                <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($mahasiswa->jumlah_nilai_sidang < 5)
+                                <p class="text-red-500">Belum Dinilai</p>
+                            @endif
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-blue-500">
                         @if ($mahasiswa->seminar === 'seminar proposal')
                         <a href="{{ route('rekapNilai', ['id' => $mahasiswa->id]) }}">detail</a>
                         @elseif ($mahasiswa->seminar === 'Seminar Hasil')

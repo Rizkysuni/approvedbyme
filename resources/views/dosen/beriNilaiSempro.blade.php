@@ -4,7 +4,7 @@
 <div class="font-lato max-w-screen-lg mx-auto">
   <div class="bg-gray-200 shadow-lg rounded-lg p-6">
     <div class="ml-5">
-        <h2 class="text-xl font-bold mb-10 text-center">PENILAIAN SEMINAR PROPOSAL SEMINAR</h2>
+        <h2 class="text-xl font-bold mb-10 text-center">PENILAIAN SEMINAR PROPOSAL</h2>
         <div class="md:flex">
         @if ($sempro->mahasiswa)
             <img class="object-cover w-full md:h-44 md:w-36 md:rounded-none border-black border-8 border-solid md:border-solid" src="{{ asset('images/' . $sempro->mahasiswa->gambar) }}" alt="{{ $sempro->nama }}"> 

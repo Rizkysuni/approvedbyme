@@ -24,6 +24,8 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');;
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::post('/create-signature', [HomeController::class, 'saveSignature'])->name('saveSignature');
+Route::get('/history', [HomeController::class, 'history'])->name('history');
+Route::get('/dosenHistory', [HomeController::class, 'dosenHistory'])->name('dosenHistory');
 
 Auth::routes();
   
@@ -47,6 +49,7 @@ All Normal Users Routes List
     Route::post('/sidang', [SidangController::class, 'store'])->name('sidang.store');
 
     Route::post('/edit-photo', [HomeController::class, 'editFoto'])->name('editFoto');
+    Route::get('/detail/{id}', [HomeController::class, 'detail'])->name('detailSempro');
 // });
   
 /*------------------------------------------

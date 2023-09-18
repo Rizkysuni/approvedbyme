@@ -15,7 +15,7 @@ class Sidang extends Model
         'user_id', // ID mahasiswa yang memiliki seminar hasil
         'tanggal', // Tanggal seminar hasil
         'ruangan', // Ruangan seminar hasil
-        // tambahkan atribut lain sesuai kebutuhan
+        'jam'// tambahkan atribut lain sesuai kebutuhan
     ];
 
     // Relasi dengan model User (mahasiswa)

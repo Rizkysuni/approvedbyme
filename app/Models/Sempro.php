@@ -28,6 +28,7 @@ class Sempro extends Model
         'penguji2',
         'penguji3', 
         'seminar',
+        'jam'
     ];
 
     public function mahasiswa()

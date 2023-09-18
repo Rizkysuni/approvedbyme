@@ -2,24 +2,21 @@
 
 @section('content')
 
-<div class="w-full p-6 center bg-gray-700 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+<div class=" font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
-        <p class="text-5xl">Detail Rekapitulasi Penilaian Seminar Hasil</p>
-        <p class="text-4xl">{{ $semhas->nama }}</p>
-        <p class="text-3xl">{{ $semhas->nim }}</p>
-        <p class="text-2xl">{{ $semhas->judul }}</p>
-        <p class="text-2xl">{{ $semhas->jurusan}}</p>
-        <p class="text-2xl">{{ $semhas->ruangan }}</p>
-        <p class="text-2xl">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
-        <div class=" p-4 rounded-lg mb-6">
-            @if ($totalRerataNilaiKeseluruhan > 69)
-                <button class="bg-green-600 text-white px-4 py-2 rounded-lg">Lulus</button>
-            @else
-                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">Tidak Lulus</button>
-            @endif
+    <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Seminar Hasil</p>
+        <div class="text-base md:text-xl mb-10">
+            <p class="">Nama : {{ $semhas->nama }}</p>
+            <p class="">NIM : {{ $semhas->nim }}</p>
+            <p class="">Judul : {{ $semhas->judul }}</p>
+            <p class="">Jurusan : {{ $semhas->jurusan}}</p>
+            <p class="">Ruangan : {{ $semhas->ruangan }}</p>
+        </div>
 
-            <p class="text-lg font-semibold text-white dark:text-white mt-2">
-                Dengan kategori nilai huruf : 
+        <p class="text-2xl text-center">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
+        <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
+            @if ($totalRerataNilaiKeseluruhan > 69)
+                <button class="bg-green-600 text-white px-10 py-2 rounded-lg">Lulus Dengan kategori nilai huruf : 
                 @if ($totalRerataNilaiKeseluruhan > 88)
                     A
                 @elseif ($totalRerataNilaiKeseluruhan > 77)
@@ -29,7 +26,11 @@
                 @else
                     BC
                 @endif
-            </p>
+                </button>
+            @else
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg">Tidak Lulus</button>
+            @endif
+
         </div>
 
         <div class="flex items-left  mx-auto relative   rounded-lg overflow-hidden">
@@ -43,30 +44,74 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($nilaiDosen as $index => $nilai)
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
-                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">{{ $index + 1 }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">1</td>
                     <td class="px-6 py-4 w-1/3">
-                        @if ($nilai->dosen)
-                            {{ $nilai->dosen->name }}
-                        @else
-                            N/A
-                        @endif
+                    {{ $namaDospem1 }}
                     </td>
                     <td class="px-6 py-4">
-                        @if ($nilai->dosen->id === $nilai->dospem1 || $nilai->dosen->id === $nilai->dospem2)
-                            @if ($nilai->dosen->id === $nilai->dospem1)
-                                Sekretaris
-                            @else
-                                Ketua
-                            @endif
-                        @else
-                            Anggota
-                        @endif
+                        Sekretaris 
                     </td>
-                    <td class="px-6 py-4">{{ $nilai->total_nilai }}</td>
+                    <td class="px-6 py-4">
+                    {{ $tot1 ?? 'Nilai belum diinput' }}
+                    </td>
                 </tr>
-            @endforeach
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">2</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaDospem2 }} 
+                    </td>
+                    <td class="px-6 py-4">
+                        Ketua 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot2 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">3</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaPenguji1 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot3 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">4</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaPenguji2 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot4 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">5</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaPenguji3 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot5 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
         </tbody>
         <tfoot>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -85,7 +130,8 @@
     </table>
     </div>
 
-    <div class="flex justify-end mt-6">
+    @if (auth()->user()->id === $sempro->dospem2)
+    <div class="flex justify-end mt-6 mx-auto">
         <!-- Tombol Kirim -->
         <form action="{{ route('sendDataSemhas') }}" method="POST">
             @csrf
@@ -94,6 +140,7 @@
             </button>
         </form>
     </div>
+    @endif
 
     @if(session('success'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -101,9 +148,6 @@
     </div>
     @endif
 </div>
-
-  <!-- Tombol Unduh PDF -->
-  <a href="{{ route('export.pdf', ['id' => $semhas->id]) }}" class="btn btn-primary">Unduh PDF</a>
 
   
  

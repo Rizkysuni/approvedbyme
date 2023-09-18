@@ -44,29 +44,74 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($nilaiDosen as $index => $nilai)
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
-                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">{{ $index + 1 }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">1</td>
                     <td class="px-6 py-4 w-1/3">
-                        @if ($nilai->dosen)
-                            {{ $nilai->dosen->name }}
-                        @else
-                            N/A
-                        @endif
+                    {{ $namaDospem1 }}
                     </td>
                     <td class="px-6 py-4">
-                    @if ($nilai->dosen->id == $dospem1Id)
-                    Sekretaris
-                @elseif ($nilai->dosen->id == $dospem2Id)
-                    Ketua
-                @elseif ($nilai->dosen->id == $sempro->penguji1 || $nilai->dosen->id == $sempro->penguji2 || $nilai->dosen->id == $sempro->penguji3)
-                    Anggota
-                @endif  
+                        Sekretaris 
                     </td>
-                    <td class="px-6 py-4">{{ $nilai->total_nilai }}</td>
-                    
+                    <td class="px-6 py-4">
+                    {{ $tot1 ?? 'Nilai belum diinput' }}
+                    </td>
                 </tr>
-            @endforeach
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">2</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaDospem2 }} 
+                    </td>
+                    <td class="px-6 py-4">
+                        Ketua 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot2 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">3</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaPenguji1 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot3 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">4</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaPenguji2 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot4 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+        </tbody>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">5</td>
+                    <td class="px-6 py-4 w-1/3">
+                    {{ $namaPenguji3 }}
+                    </td>
+                    <td class="px-6 py-4">
+                        Anggota 
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $tot5 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
         </tbody>
         <tfoot>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">

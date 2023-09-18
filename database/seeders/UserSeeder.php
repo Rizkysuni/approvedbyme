@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'email' => 'sunii@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
-            'jurusan'   => 'informatika',
+            'jurusan'   => 'Informatika',
             'role'  => 0,
             'Kelamin' => 'L'
         ]);
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'email' => 'rejaa@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
-            'jurusan'   => 'informatika',
+            'jurusan'   => 'Informatika',
             'role'  => 0,
             'Kelamin' => 'L'
         ]);
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             'email' => 'apann@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
-            'jurusan'   => 'informatika',
+            'jurusan'   => 'Informatika',
             'role'  => 0,
             'Kelamin' => 'L'
         ]);
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'email' => 'paii@example.com',
             'password' => Hash::make('password'),
             'gambar' => 'profile1.jpg',
-            'jurusan'   => 'informatika',
+            'jurusan'   => 'Informatika',
             'role'  => 0,
             'Kelamin' => 'L'
         ]);

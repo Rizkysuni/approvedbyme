@@ -10,6 +10,8 @@ use App\Models\Signature;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\View\View;
+use Carbon\Carbon;
+
 
 class HomeController extends Controller
 {
@@ -43,14 +45,20 @@ class HomeController extends Controller
     public function dosenHome(): View
     {
         $dosenId = auth()->user()->id;
+        $currentTime = now()->setTimezone('Asia/Jakarta');
+        // dd($currentTime);
         $sempros = Sempro::where('dospem1', $dosenId)
                     ->orWhere('dospem2', $dosenId)
                     ->orWhere('penguji1', $dosenId)
                     ->orWhere('penguji2', $dosenId)
                     ->orWhere('penguji3', $dosenId)
                     ->get();
-
-        return view('dosenHome', compact('sempros'));
+        // Loop melalui $sempros dan tambahkan properti DateTime
+        foreach ($sempros as $sempro) {
+            $semproDateTimeStr = $sempro->tglSempro . ' ' . $sempro->jam;
+            $sempro->semproDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $semproDateTimeStr); // Mengatur zona waktu yang sama dengan currentTime
+        }
+        return view('dosenHome', compact('sempros','currentTime'));
     }
   
     /**
@@ -81,10 +89,17 @@ class HomeController extends Controller
     {
         // Ambil data mahasiswa yang sudah sempro beserta status penilaian dari tabel nilai_sempro
         $mahasiswaSempro = Sempro::leftJoin('nilai_sempro', 'sempros.id', '=', 'nilai_sempro.id_sempro')
-        ->select('sempros.id', 'sempros.nama', 'sempros.jurusan','sempros.seminar','sempros.dospem2','sempros.status_nilai')
-        ->selectRaw('COUNT(nilai_sempro.id) as jumlah_nilai')
+        ->leftJoin('nilai_semhas', 'sempros.id', '=', 'nilai_semhas.id_sempro')
+        ->leftJoin('nilai_sidang', 'sempros.id', '=', 'nilai_sidang.id_sempro')
+        ->select('sempros.id', 'sempros.nama', 'sempros.jurusan', 'sempros.seminar', 'sempros.dospem2', 'sempros.status_nilai')
+        ->selectRaw('
+            COUNT(nilai_sempro.id) as jumlah_nilai_sempro,
+            COUNT(nilai_semhas.id) as jumlah_nilai_semhas,
+            COUNT(nilai_sidang.id) as jumlah_nilai_sidang
+        ')
         ->groupBy('sempros.id', 'sempros.nama', 'sempros.jurusan', 'sempros.seminar', 'sempros.dospem2', 'sempros.status_nilai')
         ->get();
+
 
         return view('koor.rekapitulasi', compact('mahasiswaSempro'));
     }
@@ -138,6 +153,55 @@ class HomeController extends Controller
         }
 
         return redirect()->route('profile')->with('error', 'Gagal mengubah foto profil!');
+    }
+
+    public function history() {
+        // Mengambil data Sempro yang telah selesai dinilai
+        $sempros = Sempro::where('status_nilai', 'selesai dinilai')->get();
+
+        return view('history', compact('sempros'));
+    }
+
+    public function dosenHistory() {
+        // Mengambil data Sempro yang telah selesai dinilai
+        $dosenId = auth()->user()->id;
+        $sempros = Sempro::where('dospem1', $dosenId)
+            ->orWhere('dospem2', $dosenId)
+            ->orWhere('penguji1', $dosenId)
+            ->orWhere('penguji2', $dosenId)
+            ->orWhere('penguji3', $dosenId)
+            ->get();
+
+        return view('dosenHistory', compact('sempros'));
+    }
+
+    public function detail($id) {
+        $dospem1 = Sempro::where('sempros.id', $id)
+            ->join('users', 'sempros.dospem1', '=', 'users.id')
+            ->select('sempros.*', 'users.name as namaDosen', 'users.nim as nip','users.jabatan as jabatan')
+            ->first();
+
+        $dospem2 = Sempro::where('sempros.id', $id)
+            ->join('users', 'sempros.dospem2', '=', 'users.id')
+            ->select('sempros.*', 'users.name as namaDosen', 'users.nim as nip','users.jabatan as jabatan')
+            ->first();
+
+        $penguji1 = Sempro::where('sempros.id', $id)
+            ->join('users', 'sempros.penguji1', '=', 'users.id')
+            ->select('sempros.*', 'users.name as namaDosen', 'users.nim as nip','users.jabatan as jabatan')
+            ->first();
+
+        $penguji2 = Sempro::where('sempros.id', $id)
+            ->join('users', 'sempros.penguji2', '=', 'users.id')
+            ->select('sempros.*', 'users.name as namaDosen', 'users.nim as nip','users.jabatan as jabatan')
+            ->first();
+
+        $penguji3 = Sempro::where('sempros.id', $id)
+            ->join('users', 'sempros.penguji3', '=', 'users.id')
+            ->select('sempros.*', 'users.name as namaDosen', 'users.nim as nip','users.jabatan as jabatan')
+            ->first();
+
+        return view('mahasiswa.detail', compact('dospem1','dospem2','penguji1','penguji2','penguji3'));
     }
     
 }

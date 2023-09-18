@@ -4,14 +4,15 @@
 
 <div class="font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
-        <p class="text-5xl">Detail Rekapitulasi Penilaian Sidang AKhir</p>
-        <p class="text-4xl">{{ $sempro->nama }}</p>
-        <p class="text-3xl">{{ $sempro->nim }}</p>
-        <p class="text-2xl">{{ $sempro->judul }}</p>
-        <p class="text-2xl">{{ $sempro->jurusan}}</p>
-        <p class="text-2xl">{{ $sempro->ruangan }}</p>
-        <p class="text-2xl">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
-        <br>
+    <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Sidang Akhir</p>
+    <div class="text-base md:text-xl mb-10">
+            <p class="">Nama : {{ $sempro->nama }}</p>
+            <p class="">NIM : {{ $sempro->nim }}</p>
+            <p class="">Judul : {{ $sempro->judul }}</p>
+            <p class="">Jurusan : {{ $sempro->jurusan}}</p>
+            <p class="">Ruangan : {{ $sempro->ruangan }}</p>
+    </div>
+    
 
         <div class="flex items-left  mx-auto relative   rounded-lg overflow-hidden">
       <table class=" text-sm text-left text-gray-500 ">
@@ -20,41 +21,93 @@
                 <th scope="col" class="px-6 py-3">No</th>
                 <th scope="col" class="px-6 py-3 w-1/3">Nama Dosen</th>
                 <th scope="col" class="px-6 py-3">Status Penguji</th>
-                <th scope="col" class="px-6 py-3">Komponen 1</th>
-                <th scope="col" class="px-6 py-3">Komponen 2</th>
-                <th scope="col" class="px-6 py-3">Komponen 3</th>
+                <th scope="col" class="px-6 py-3 w-1/6">Komponen 1</th>
+                <th scope="col" class="px-6 py-3 w-1/6">Komponen 2</th>
+                <th scope="col" class="px-6 py-3 w-1/6">Komponen 3</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($nilaiDosen as $index => $nilai)
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
-                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">{{ $index + 1 }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">1</td>
                     <td class="px-6 py-4 w-1/3">
-                        @if ($nilai->dosen)
-                            {{ $nilai->dosen->name }}
-                        @else
-                            N/A
-                        @endif
+                        {{ $namaDospem1 }}
                     </td>
                     <td class="px-6 py-4">
-                    @if ($nilai->dosen->id == $dospem1Id)
-                        Sekretaris
-                    @elseif ($nilai->dosen->id == $dospem2Id)
-                        Ketua
-                    @elseif ($nilai->dosen->id == $sempro->penguji1 || $nilai->dosen->id == $sempro->penguji2 || $nilai->dosen->id == $sempro->penguji3)
-                        Anggota
-                    @endif  
+                    Sekretaris 
                     </td>
-                    <td class="px-6 py-4">{{ $nilai->komponen1 }}</td>
+                    <td class="px-6 py-4">{{ $komp1dp1 ?? 'Nilai belum diinput' }}</td>
                     <td class="px-6 py-4">
-                    {{ $nilai->komponen2 }}
+                    {{ $komp2dp1 ?? 'Nilai belum diinput' }}
                     </td>
                     <td class="px-6 py-4">
-                    {{ $nilai->komponen3 }}
+                    {{ $komp3dp1 ?? 'Nilai belum diinput' }}
                     </td>
                     
                 </tr>
-            @endforeach
+                <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">2</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaDospem2 }}
+                    </td>
+                    <td class="px-6 py-4">
+                    Ketua
+                    </td>
+                    <td class="px-6 py-4">{{ $komp1dp2 ?? 'Nilai belum diinput' }}</td>
+                    <td class="px-6 py-4">
+                    {{ $komp2dp2 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $komp3dp2 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">3</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaPenguji1 }}
+                    </td>
+                    <td class="px-6 py-4">
+                    Anggota
+                    </td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4">
+                    {{ $komp2pg1 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $komp3pg1 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">4</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaPenguji2 }}
+                    </td>
+                    <td class="px-6 py-4">
+                    Anggota
+                    </td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4">
+                    {{ $komp2pg2 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $komp3pg2 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">5</td>
+                    <td class="px-6 py-4 w-1/3">
+                        {{ $namaPenguji3 }}
+                    </td>
+                    <td class="px-6 py-4">
+                    Anggota
+                    </td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4">
+                    {{ $komp2pg3 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                    {{ $komp3pg3 ?? 'Nilai belum diinput' }}
+                    </td>
+                </tr>
         </tbody>
         <tfoot>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -70,8 +123,8 @@
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
-                <td class="px-6 py-4">Komponen 2 + 3</td>
-                <td class="px-6 py-4">{{ $jumlahKomponen3 + $jumlahKomponen2 }}</td>
+                <td class="px-6 py-4 text-xs">Komponen 2 + 3</td>
+                <td class="px-6 py-4 ">{{ $jumlahKomponen3 + $jumlahKomponen2 }}</td>
             </tr>
         </tfoot>
     </table>

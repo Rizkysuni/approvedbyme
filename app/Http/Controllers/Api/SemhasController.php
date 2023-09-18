@@ -77,6 +77,7 @@ class SemhasController extends Controller
            'penguji1'      => 'required',
            'penguji2'      => 'required',
            'penguji3'      => 'required',
+           'jam'           => 'required'
        ]);
 
        //check if validation fails
@@ -100,6 +101,7 @@ class SemhasController extends Controller
            'penguji2'  => $request->penguji2,
            'penguji3'  => $request->penguji3,
            'seminar'   => 'Seminar Hasil', // Set default value for 'seminar'
+           'jam'       => $request->jam
        ]);
 
        // Redirect user back to home
@@ -173,34 +175,159 @@ class SemhasController extends Controller
     public function pen09($id)
     {
         // Ambil data sempro berdasarkan ID
-        $semhas = Sempro::find($id);
+        $semhas= Sempro::find($id);
+    
+        // Ambil ID dosen dari kolom dospem1 pada tabel sempros
+        $dospem1Id = $semhas->dospem1;
+        $dospem2Id = $semhas->dospem2;
+        $penguji1Id = $semhas->penguji1;
+        $penguji2Id = $semhas->penguji2;
+        $penguji3Id = $semhas->penguji3;
+
+        // Ambil nama dosen berdasarkan ID dari tabel users
+        $dospem1 = User::find($dospem1Id);
+        $dospem2 = User::find($dospem2Id);
+        $penguji1 = User::find($penguji1Id);
+        $penguji2 = User::find($penguji2Id);
+        $penguji3 = User::find($penguji3Id);
+
+        // Sekarang Anda memiliki nama-nama dosen
+        $namaDospem1 = $dospem1 ? $dospem1->name : 'Dosen 1 Tidak Ditemukan';
+        $namaDospem2 = $dospem2 ? $dospem2->name : 'Dosen 2 Tidak Ditemukan';
+        $namaPenguji1 = $penguji1 ? $penguji1->name : 'Penguji 1 Tidak Ditemukan';
+        $namaPenguji2 = $penguji2 ? $penguji2->name : 'Penguji 2 Tidak Ditemukan';
+        $namaPenguji3 = $penguji3 ? $penguji3->name : 'Penguji 3 Tidak Ditemukan';
 
         // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
         $nilaiDosen = NilaiSemhas::where('id_sempro', $id)->get();
 
-        $totalNilaiKeseluruhan = 0;
-        $totalRerataNilaiKeseluruhan = 0;
+        // nilai dospem 1
+        $nilaiDospem1 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $dospem1Id)
+        ->first();
+        if ($nilaiDospem1) {
 
-        // Hitung total nilai dari nilai_1 sampai nilai_5 untuk setiap dosen
-        foreach ($nilaiDosen as $nilai) {
-            // Apply the weights to each nilai_x
-            $nilai_1_weighted = $nilai->nilai_1 * 0.25;
-            $nilai_2_weighted = $nilai->nilai_2 * 0.1;
-            $nilai_3_weighted = $nilai->nilai_3 * 0.2;
-            $nilai_4_weighted = $nilai->nilai_4 * 0.1;
-            $nilai_5_weighted = $nilai->nilai_5 * 0.1;
-            $nilai_6_weighted = $nilai->nilai_6 * 0.25;
+        $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.25;
+        $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.1;
+        $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.2;
+        $nilai4dospem1 = $nilaiDospem1->nilai_4 * 0.1;
+        $nilai5dospem1 = $nilaiDospem1->nilai_5 * 0.1;
+        $nilai6dospem1 = $nilaiDospem1->nilai_6 * 0.25;
+        $tot1 = $nilai1dospem1 + $nilai2dospem1 + $nilai3dospem1 + $nilai4dospem1 + $nilai5dospem1 + $nilai6dospem1;
+        } else {
+            // Data tidak ditemukan
+            $nilai1dospem1 = null;
+            $nilai2dospem1 = null;
+            $nilai3dospem1 = null;
+            $nilai4dospem1 = null;
+            $nilai5dospem1 = null;
+            $nilai6dospem1 = null;
 
-            // Calculate the total weighted nilai
-            $totalNilai = $nilai_1_weighted + $nilai_2_weighted + $nilai_3_weighted + $nilai_4_weighted + $nilai_5_weighted + $nilai_6_weighted;
+            $tot1 = null;
+        }
 
-            // Update the total_nilai property of the $nilai object
-            $nilai->total_nilai = $totalNilai;
+        // nilai dospem 2
+        $nilaiDospem2 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $dospem2Id)
+        ->first();
+        if ($nilaiDospem2) {
 
-            // Tambahkan nilai pada total nilai keseluruhan
-            $totalNilaiKeseluruhan += $nilai->total_nilai;
-            $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
-        }     
+        $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.25;
+        $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.1;
+        $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.2;
+        $nilai4dospem2 = $nilaiDospem2->nilai_4 * 0.1;
+        $nilai5dospem2 = $nilaiDospem2->nilai_5 * 0.1;
+        $nilai6dospem2 = $nilaiDospem2->nilai_6 * 0.25;
+        $tot2 = $nilai1dospem2 + $nilai2dospem2 + $nilai3dospem2 + $nilai4dospem2 + $nilai5dospem2 + $nilai6dospem2;
+        } else {
+            // Data tidak ditemukan
+            $nilai1dospem2 = null;
+            $nilai2dospem2 = null;
+            $nilai3dospem2 = null;
+            $nilai4dospem2 = null;
+            $nilai5dospem2 = null;
+            $nilai6dospem2 = null;
+
+            $tot2 = null;
+        }
+
+        // nilai penguji 1
+        $nilaiPenguji1 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji1Id)
+        ->first();
+        if ($nilaiPenguji1) {
+
+        $nilai1Penguji1 = $nilaiPenguji1->nilai_1 * 0.25;
+        $nilai2Penguji1 = $nilaiPenguji1->nilai_2 * 0.1;
+        $nilai3Penguji1 = $nilaiPenguji1->nilai_3 * 0.2;
+        $nilai4Penguji1 = $nilaiPenguji1->nilai_4 * 0.1;
+        $nilai5Penguji1 = $nilaiPenguji1->nilai_5 * 0.1;
+        $nilai6Penguji1 = $nilaiPenguji1->nilai_6 * 0.25;
+        $tot3 = $nilai1Penguji1 + $nilai2Penguji1 + $nilai3Penguji1 + $nilai4Penguji1 + $nilai5Penguji1 + $nilai6Penguji1;
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji1 = null;
+            $nilai2Penguji1 = null;
+            $nilai3Penguji1 = null;
+            $nilai4Penguji1 = null;
+            $nilai5Penguji1 = null;
+            $nilai6Penguji1 = null;
+
+            $tot3 = null;
+        }
+
+        // nilai penguji 2
+        $nilaiPenguji2 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji2Id)
+        ->first();
+        if ($nilaiPenguji2) {
+
+        $nilai1Penguji2 = $nilaiPenguji2->nilai_1 * 0.25;
+        $nilai2Penguji2 = $nilaiPenguji2->nilai_2 * 0.1;
+        $nilai3Penguji2 = $nilaiPenguji2->nilai_3 * 0.2;
+        $nilai4Penguji2 = $nilaiPenguji2->nilai_4 * 0.1;
+        $nilai5Penguji2 = $nilaiPenguji2->nilai_5 * 0.1;
+        $nilai6Penguji2 = $nilaiPenguji2->nilai_6 * 0.25;
+        $tot4 = $nilai1Penguji2 + $nilai2Penguji2 + $nilai3Penguji2+ $nilai4Penguji2 + $nilai5Penguji2 + $nilai6Penguji2;
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji2 = null;
+            $nilai2Penguji2 = null;
+            $nilai3Penguji2 = null;
+            $nilai4Penguji2 = null;
+            $nilai5Penguji2 = null;
+            $nilai6Penguji2 = null;
+
+            $tot4 = null;
+        }
+
+        // nilai penguji 3
+        $nilaiPenguji3 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji3Id)
+        ->first();
+        if ($nilaiPenguji3) {
+
+        $nilai1Penguji3 = $nilaiPenguji3->nilai_1 * 0.25;
+        $nilai2Penguji3 = $nilaiPenguji3->nilai_2 * 0.1;
+        $nilai3Penguji3 = $nilaiPenguji3->nilai_3 * 0.2;
+        $nilai4Penguji3 = $nilaiPenguji3->nilai_4 * 0.1;
+        $nilai5Penguji3 = $nilaiPenguji3->nilai_5 * 0.1;
+        $nilai6Penguji3 = $nilaiPenguji3->nilai_6 * 0.25;
+        $tot5 = $nilai1Penguji3 + $nilai2Penguji3 + $nilai3Penguji3+ $nilai4Penguji3 + $nilai5Penguji3 + $nilai6Penguji3;
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji3 = null;
+            $nilai2Penguji3 = null;
+            $nilai3Penguji3 = null;
+            $nilai4Penguji3 = null;
+            $nilai5Penguji3 = null;
+            $nilai6Penguji3 = null;
+
+            $tot5 = null;
+        }
+
+        $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
+        $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5; 
 
         // Cek apakah sempro ditemukan
         if (!$semhas) {
@@ -209,7 +336,8 @@ class SemhasController extends Controller
 
 
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro
-        return view('/dosen/pen09', compact('semhas','nilaiDosen','totalNilaiKeseluruhan','totalRerataNilaiKeseluruhan'));
+        return view('/dosen/pen09', compact('semhas','nilaiDosen','totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
+        'tot1','tot2','tot3','tot4','tot5','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3'));
     }
 
     public function sendDataToCoordinator()
@@ -241,40 +369,162 @@ class SemhasController extends Controller
             // Ambil ID dosen dari kolom dospem1 pada tabel sempros
             $dospem1Id = $sempro->dospem1;
             $dospem2Id = $sempro->dospem2;
+            $penguji1Id = $sempro->penguji1;
+            $penguji2Id = $sempro->penguji2;
+            $penguji3Id = $sempro->penguji3;
+
+            // Ambil nama dosen berdasarkan ID dari tabel users
+            $dospem1 = User::find($dospem1Id);
+            $dospem2 = User::find($dospem2Id);
+            $penguji1 = User::find($penguji1Id);
+            $penguji2 = User::find($penguji2Id);
+            $penguji3 = User::find($penguji3Id);
+
+            // Sekarang Anda memiliki nama-nama dosen
+            $namaDospem1 = $dospem1 ? $dospem1->name : 'Dosen 1 Tidak Ditemukan';
+            $namaDospem2 = $dospem2 ? $dospem2->name : 'Dosen 2 Tidak Ditemukan';
+            $namaPenguji1 = $penguji1 ? $penguji1->name : 'Penguji 1 Tidak Ditemukan';
+            $namaPenguji2 = $penguji2 ? $penguji2->name : 'Penguji 2 Tidak Ditemukan';
+            $namaPenguji3 = $penguji3 ? $penguji3->name : 'Penguji 3 Tidak Ditemukan';
     
             // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
             $nilaiDosen = NilaiSemhas::where('id_sempro', $id)->get();
+
+            // nilai dospem 1
+            $nilaiDospem1 = NilaiSemhas::where('id_sempro', $id)
+            ->where('id_dosen', $dospem1Id)
+            ->first();
+            if ($nilaiDospem1) {
+
+            $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.25;
+            $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.1;
+            $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.2;
+            $nilai4dospem1 = $nilaiDospem1->nilai_4 * 0.1;
+            $nilai5dospem1 = $nilaiDospem1->nilai_5 * 0.1;
+            $nilai6dospem1 = $nilaiDospem1->nilai_6 * 0.25;
+            $tot1 = $nilai1dospem1 + $nilai2dospem1 + $nilai3dospem1 + $nilai4dospem1 + $nilai5dospem1 + $nilai6dospem1;
+            } else {
+                // Data tidak ditemukan
+                $nilai1dospem1 = null;
+                $nilai2dospem1 = null;
+                $nilai3dospem1 = null;
+                $nilai4dospem1 = null;
+                $nilai5dospem1 = null;
+                $nilai6dospem1 = null;
+
+                $tot1 = null;
+            }
+
+            // nilai dospem 2
+            $nilaiDospem2 = NilaiSemhas::where('id_sempro', $id)
+            ->where('id_dosen', $dospem2Id)
+            ->first();
+            if ($nilaiDospem2) {
+
+            $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.25;
+            $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.1;
+            $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.2;
+            $nilai4dospem2 = $nilaiDospem2->nilai_4 * 0.1;
+            $nilai5dospem2 = $nilaiDospem2->nilai_5 * 0.1;
+            $nilai6dospem2 = $nilaiDospem2->nilai_6 * 0.25;
+            $tot2 = $nilai1dospem2 + $nilai2dospem2 + $nilai3dospem2 + $nilai4dospem2 + $nilai5dospem2 + $nilai6dospem2;
+            } else {
+                // Data tidak ditemukan
+                $nilai1dospem2 = null;
+                $nilai2dospem2 = null;
+                $nilai3dospem2 = null;
+                $nilai4dospem2 = null;
+                $nilai5dospem2 = null;
+                $nilai6dospem2 = null;
+
+                $tot2 = null;
+            }
+
+            // nilai penguji 1
+            $nilaiPenguji1 = NilaiSemhas::where('id_sempro', $id)
+            ->where('id_dosen', $penguji1Id)
+            ->first();
+            if ($nilaiPenguji1) {
+
+            $nilai1Penguji1 = $nilaiPenguji1->nilai_1 * 0.25;
+            $nilai2Penguji1 = $nilaiPenguji1->nilai_2 * 0.1;
+            $nilai3Penguji1 = $nilaiPenguji1->nilai_3 * 0.2;
+            $nilai4Penguji1 = $nilaiPenguji1->nilai_4 * 0.1;
+            $nilai5Penguji1 = $nilaiPenguji1->nilai_5 * 0.1;
+            $nilai6Penguji1 = $nilaiPenguji1->nilai_6 * 0.25;
+            $tot3 = $nilai1Penguji1 + $nilai2Penguji1 + $nilai3Penguji1 + $nilai4Penguji1 + $nilai5Penguji1 + $nilai6Penguji1;
+            } else {
+                // Data tidak ditemukan
+                $nilai1Penguji1 = null;
+                $nilai2Penguji1 = null;
+                $nilai3Penguji1 = null;
+                $nilai4Penguji1 = null;
+                $nilai5Penguji1 = null;
+                $nilai6Penguji1 = null;
+
+                $tot3 = null;
+            }
+
+            // nilai penguji 2
+            $nilaiPenguji2 = NilaiSemhas::where('id_sempro', $id)
+            ->where('id_dosen', $penguji2Id)
+            ->first();
+            if ($nilaiPenguji2) {
+
+            $nilai1Penguji2 = $nilaiPenguji2->nilai_1 * 0.25;
+            $nilai2Penguji2 = $nilaiPenguji2->nilai_2 * 0.1;
+            $nilai3Penguji2 = $nilaiPenguji2->nilai_3 * 0.2;
+            $nilai4Penguji2 = $nilaiPenguji2->nilai_4 * 0.1;
+            $nilai5Penguji2 = $nilaiPenguji2->nilai_5 * 0.1;
+            $nilai6Penguji2 = $nilaiPenguji2->nilai_6 * 0.25;
+            $tot4 = $nilai1Penguji2 + $nilai2Penguji2 + $nilai3Penguji2+ $nilai4Penguji2 + $nilai5Penguji2 + $nilai6Penguji2;
+            } else {
+                // Data tidak ditemukan
+                $nilai1Penguji2 = null;
+                $nilai2Penguji2 = null;
+                $nilai3Penguji2 = null;
+                $nilai4Penguji2 = null;
+                $nilai5Penguji2 = null;
+                $nilai6Penguji2 = null;
+
+                $tot4 = null;
+            }
+
+            // nilai penguji 3
+            $nilaiPenguji3 = NilaiSemhas::where('id_sempro', $id)
+            ->where('id_dosen', $penguji3Id)
+            ->first();
+            if ($nilaiPenguji3) {
+
+            $nilai1Penguji3 = $nilaiPenguji3->nilai_1 * 0.25;
+            $nilai2Penguji3 = $nilaiPenguji3->nilai_2 * 0.1;
+            $nilai3Penguji3 = $nilaiPenguji3->nilai_3 * 0.2;
+            $nilai4Penguji3 = $nilaiPenguji3->nilai_4 * 0.1;
+            $nilai5Penguji3 = $nilaiPenguji3->nilai_5 * 0.1;
+            $nilai6Penguji3 = $nilaiPenguji3->nilai_6 * 0.25;
+            $tot5 = $nilai1Penguji3 + $nilai2Penguji3 + $nilai3Penguji3+ $nilai4Penguji3 + $nilai5Penguji3 + $nilai6Penguji3;
+            } else {
+                // Data tidak ditemukan
+                $nilai1Penguji3 = null;
+                $nilai2Penguji3 = null;
+                $nilai3Penguji3 = null;
+                $nilai4Penguji3 = null;
+                $nilai5Penguji3 = null;
+                $nilai6Penguji3 = null;
+
+                $tot5 = null;
+            }
     
-            $totalNilaiKeseluruhan = 0;
-            $totalRerataNilaiKeseluruhan = 0;
-    
-            // Hitung total nilai dari nilai_1 sampai nilai_5 untuk setiap dosen
-        foreach ($nilaiDosen as $nilai) {
-            // Apply the weights to each nilai_x
-            $nilai_1_weighted = $nilai->nilai_1 * 0.25;
-            $nilai_2_weighted = $nilai->nilai_2 * 0.1;
-            $nilai_3_weighted = $nilai->nilai_3 * 0.2;
-            $nilai_4_weighted = $nilai->nilai_4 * 0.1;
-            $nilai_5_weighted = $nilai->nilai_5 * 0.1;
-            $nilai_6_weighted = $nilai->nilai_6 * 0.25;
-
-            // Calculate the total weighted nilai
-            $totalNilai = $nilai_1_weighted + $nilai_2_weighted + $nilai_3_weighted + $nilai_4_weighted + $nilai_5_weighted + $nilai_6_weighted;
-
-            // Update the total_nilai property of the $nilai object
-            $nilai->total_nilai = $totalNilai;
-
-            // Tambahkan nilai pada total nilai keseluruhan
-            $totalNilaiKeseluruhan += $nilai->total_nilai;
-            $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
-        }    
+            $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
+            $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5; 
     
             // Cek apakah sempro ditemukan
             if (!$sempro) {
                 abort(404); // Tampilkan halaman 404 jika sempro tidak ditemukan
             }
             // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
-            return view('/koor/rekapNilaiSemhas', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan', 'dospem1Id','dospem2Id'));
+            return view('/koor/rekapNilaiSemhas', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
+            'tot1','tot2','tot3','tot4','tot5','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3'));
                 
         
     }
@@ -287,6 +537,98 @@ class SemhasController extends Controller
 
         // Ambil data sempro berdasarkan ID
         $sempro = Sempro::find($id);
+        // Ambil ID dosen dari kolom dospem1 pada tabel sempros
+        $dospem1Id = $sempro->dospem1;
+        $dospem2Id = $sempro->dospem2;
+        $penguji1Id = $sempro->penguji1;
+        $penguji2Id = $sempro->penguji2;
+        $penguji3Id = $sempro->penguji3;
+
+        // Ambil tanda tangan dosen pembimbing 1
+        $ttd1 = Signature::where('user_id', $dospem1Id)->first();
+
+        // Jika tanda tangan ditemukan, dapatkan path tanda tangan
+        $ttd1Path = $ttd1 ? public_path('images/' . $ttd1->signature_path) : null;
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttd1", [
+            'path' => $ttd1Path,
+            'width' => 80, // Set the width of the image in the document
+            'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        // Ambil tanda tangan dosen pembimbing 2
+        $ttd2 = Signature::where('user_id', $dospem2Id)->first();
+
+        // Jika tanda tangan ditemukan, dapatkan path tanda tangan
+        $ttd2Path = $ttd2 ? public_path('images/' . $ttd2->signature_path) : null;
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttd2", [
+            'path' => $ttd2Path,
+            'width' => 80, // Set the width of the image in the document
+            'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        // Ambil tanda tangan dosen penguji 1
+        $ttd3 = Signature::where('user_id', $penguji1Id)->first();
+
+        // Jika tanda tangan ditemukan, dapatkan path tanda tangan
+        $ttd3Path = $ttd3 ? public_path('images/' . $ttd3->signature_path) : null;
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttd3", [
+            'path' => $ttd3Path,
+            'width' => 80, // Set the width of the image in the document
+            'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        // Ambil tanda tangan dosen penguji 2
+        $ttd4 = Signature::where('user_id', $penguji2Id)->first();
+
+        // Jika tanda tangan ditemukan, dapatkan path tanda tangan
+        $ttd4Path = $ttd4 ? public_path('images/' . $ttd4->signature_path) : null;
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttd4", [
+            'path' => $ttd4Path,
+            'width' => 80, // Set the width of the image in the document
+            'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        // Ambil tanda tangan dosen penguji 3
+        $ttd5 = Signature::where('user_id', $penguji2Id)->first();
+
+        // Jika tanda tangan ditemukan, dapatkan path tanda tangan
+        $ttd5Path = $ttd5 ? public_path('images/' . $ttd5->signature_path) : null;
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttd5", [
+            'path' => $ttd5Path,
+            'width' => 80, // Set the width of the image in the document
+            'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        // Ambil nama dosen berdasarkan ID dari tabel users
+        $dp1 = User::find($dospem1Id);
+        $dp2 = User::find($dospem2Id);
+        $pen1 = User::find($penguji1Id);
+        $pen2 = User::find($penguji2Id);
+        $pen3 = User::find($penguji3Id);
+
+        // Sekarang Anda memiliki nama-nama dosen
+        $namaDp1 = $dp1 ? $dp1->name : 'Dosen 1 Tidak Ditemukan';
+        $namaDp2 = $dp2 ? $dp2->name : 'Dosen 2 Tidak Ditemukan';
+        $namaPen1 = $pen1 ? $pen1->name : 'Penguji 1 Tidak Ditemukan';
+        $namaPen2 = $pen2 ? $pen2->name : 'Penguji 2 Tidak Ditemukan';
+        $namaPen3 = $pen3 ? $pen3->name : 'Penguji 3 Tidak Ditemukan';
+
+        // Sekarang Anda memiliki nim dosen
+        $nimDp1 = $dp1 ? $dp1->nim : 'Dosen 1 Tidak Ditemukan';
+        $nimDp2 = $dp2 ? $dp2->nim : 'Dosen 2 Tidak Ditemukan';
+        $nimPen1 = $pen1 ? $pen1->nim : 'Penguji 1 Tidak Ditemukan';
+        $nimPen2 = $pen2 ? $pen2->nim : 'Penguji 2 Tidak Ditemukan';
+        $nimPen3 = $pen3 ? $pen3->nim : 'Penguji 3 Tidak Ditemukan';
 
         // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
         //$nilaiDosen = NilaiSempro::where('id_sempro', $id)->get();
@@ -294,65 +636,153 @@ class SemhasController extends Controller
             ->with('dosen.signature') // Mengambil data tanda tangan dari tabel signatures yang berhubungan dengan tabel users
             ->get();
 
-        $totalNilaiKeseluruhan = 0;
-        $totalRerataNilaiKeseluruhan = 0;
 
-        // Ambil data tanda tangan dosen untuk ditampilkan di halaman pen05
-        $tandaTanganDosens = [];
+        // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
+        $nilaiDosen = NilaiSemhas::where('id_sempro', $id)->get();
 
-        foreach ($nilaiDosen as $nilai) {
-            // Retrieve the signature for each dosen using the relationship
-            $signature = $nilai->dosen->signature;
+        // nilai dospem 1
+        $nilaiDospem1 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $dospem1Id)
+        ->first();
+        if ($nilaiDospem1) {
 
-            // Check if the signature exists and get the path
-            $tandaTanganPath = $signature ? public_path('images/' . $signature->signature_path) : null;
+        $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.25;
+        $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.1;
+        $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.2;
+        $nilai4dospem1 = $nilaiDospem1->nilai_4 * 0.1;
+        $nilai5dospem1 = $nilaiDospem1->nilai_5 * 0.1;
+        $nilai6dospem1 = $nilaiDospem1->nilai_6 * 0.25;
+        $tot1 = $nilai1dospem1 + $nilai2dospem1 + $nilai3dospem1 + $nilai4dospem1 + $nilai5dospem1 + $nilai6dospem1;
+        // nilai dospem 1
+        $templateProcessor->setValue("tot1", $tot1);
+        } else {
+            // Data tidak ditemukan
+            $nilai1dospem1 = null;
+            $nilai2dospem1 = null;
+            $nilai3dospem1 = null;
+            $nilai4dospem1 = null;
+            $nilai5dospem1 = null;
+            $nilai6dospem1 = null;
 
-            $tandaTanganDosens[] = $tandaTanganPath;
+            $tot1 = null;
         }
 
-        // Simpan dospem1 dan dospem2 ke dalam variabel terpisah
-        $dospem1Name = '';
-        $dospem2Name = '';
+        // nilai dospem 2
+        $nilaiDospem2 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $dospem2Id)
+        ->first();
+        if ($nilaiDospem2) {
 
-        // Hitung total nilai dari nilai_1 sampai nilai_5 untuk setiap dosen
-        foreach ($nilaiDosen as $index => $nilai) {
-            $tableRowIndex = $index + 1;
-            $templateProcessor->setValue("dosen{$tableRowIndex}", $nilai->dosen->name);
+        $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.25;
+        $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.1;
+        $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.2;
+        $nilai4dospem2 = $nilaiDospem2->nilai_4 * 0.1;
+        $nilai5dospem2 = $nilaiDospem2->nilai_5 * 0.1;
+        $nilai6dospem2 = $nilaiDospem2->nilai_6 * 0.25;
+        $tot2 = $nilai1dospem2 + $nilai2dospem2 + $nilai3dospem2 + $nilai4dospem2 + $nilai5dospem2 + $nilai6dospem2;
+        // nilai dospem 1
+        $templateProcessor->setValue("tot2", $tot2);
+        } else {
+            // Data tidak ditemukan
+            $nilai1dospem2 = null;
+            $nilai2dospem2 = null;
+            $nilai3dospem2 = null;
+            $nilai4dospem2 = null;
+            $nilai5dospem2 = null;
+            $nilai6dospem2 = null;
 
-            // Tentukan status (Sekretaris, Ketua, atau Anggota) untuk masing-masing dosen
-            if ($nilai->dosen->id === $nilai->dospem1) {
-                $templateProcessor->setValue("status{$tableRowIndex}", 'Sekretaris');
-                $dospem1Name = $nilai->dosen->name; // Simpan nama dospem1 untuk digunakan nanti
-            } elseif ($nilai->dosen->id === $nilai->dospem2) {
-                $templateProcessor->setValue("status{$tableRowIndex}", 'Ketua');
-                $dospem2Name = $nilai->dosen->name; // Simpan nama dospem2 untuk digunakan nanti
-            } else {
-                $templateProcessor->setValue("status{$tableRowIndex}", 'Anggota');
-            }
-
-            $nilai_1_weighted = $nilai->nilai_1 * 0.25;
-            $nilai_2_weighted = $nilai->nilai_2 * 0.1;
-            $nilai_3_weighted = $nilai->nilai_3 * 0.2;
-            $nilai_4_weighted = $nilai->nilai_4 * 0.1;
-            $nilai_5_weighted = $nilai->nilai_5 * 0.1;
-            $nilai_6_weighted = $nilai->nilai_6 * 0.25;
-
-            // Calculate the total weighted nilai
-            $totalNilai = $nilai_1_weighted + $nilai_2_weighted + $nilai_3_weighted + $nilai_4_weighted + $nilai_5_weighted + $nilai_6_weighted;
-
-            // Update the total_nilai property of the $nilai object
-            $nilai->total_nilai = $totalNilai;
-
-            // Tambahkan nilai pada total nilai keseluruhan
-            $totalNilaiKeseluruhan += $nilai->total_nilai;
-            $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
-
-
-            
-        $templateProcessor->setValue("dospem1_name", $dospem1Name);
-        $templateProcessor->setValue("dospem2_name", $dospem2Name);
+            $tot2 = null;
         }
 
+        // nilai penguji 1
+        $nilaiPenguji1 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji1Id)
+        ->first();
+        if ($nilaiPenguji1) {
+
+        $nilai1Penguji1 = $nilaiPenguji1->nilai_1 * 0.25;
+        $nilai2Penguji1 = $nilaiPenguji1->nilai_2 * 0.1;
+        $nilai3Penguji1 = $nilaiPenguji1->nilai_3 * 0.2;
+        $nilai4Penguji1 = $nilaiPenguji1->nilai_4 * 0.1;
+        $nilai5Penguji1 = $nilaiPenguji1->nilai_5 * 0.1;
+        $nilai6Penguji1 = $nilaiPenguji1->nilai_6 * 0.25;
+        $tot3 = $nilai1Penguji1 + $nilai2Penguji1 + $nilai3Penguji1 + $nilai4Penguji1 + $nilai5Penguji1 + $nilai6Penguji1;
+        // nilai dospem 1
+        $templateProcessor->setValue("tot3", $tot3);
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji1 = null;
+            $nilai2Penguji1 = null;
+            $nilai3Penguji1 = null;
+            $nilai4Penguji1 = null;
+            $nilai5Penguji1 = null;
+            $nilai6Penguji1 = null;
+
+            $tot3 = null;
+        }
+
+        // nilai penguji 2
+        $nilaiPenguji2 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji2Id)
+        ->first();
+        if ($nilaiPenguji2) {
+
+        $nilai1Penguji2 = $nilaiPenguji2->nilai_1 * 0.25;
+        $nilai2Penguji2 = $nilaiPenguji2->nilai_2 * 0.1;
+        $nilai3Penguji2 = $nilaiPenguji2->nilai_3 * 0.2;
+        $nilai4Penguji2 = $nilaiPenguji2->nilai_4 * 0.1;
+        $nilai5Penguji2 = $nilaiPenguji2->nilai_5 * 0.1;
+        $nilai6Penguji2 = $nilaiPenguji2->nilai_6 * 0.25;
+        $tot4 = $nilai1Penguji2 + $nilai2Penguji2 + $nilai3Penguji2+ $nilai4Penguji2 + $nilai5Penguji2 + $nilai6Penguji2;
+        // nilai dospem 1
+        $templateProcessor->setValue("tot4", $tot4);
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji2 = null;
+            $nilai2Penguji2 = null;
+            $nilai3Penguji2 = null;
+            $nilai4Penguji2 = null;
+            $nilai5Penguji2 = null;
+            $nilai6Penguji2 = null;
+
+            $tot4 = null;
+        }
+
+        // nilai penguji 3
+        $nilaiPenguji3 = NilaiSemhas::where('id_sempro', $id)
+        ->where('id_dosen', $penguji3Id)
+        ->first();
+        if ($nilaiPenguji3) {
+
+        $nilai1Penguji3 = $nilaiPenguji3->nilai_1 * 0.25;
+        $nilai2Penguji3 = $nilaiPenguji3->nilai_2 * 0.1;
+        $nilai3Penguji3 = $nilaiPenguji3->nilai_3 * 0.2;
+        $nilai4Penguji3 = $nilaiPenguji3->nilai_4 * 0.1;
+        $nilai5Penguji3 = $nilaiPenguji3->nilai_5 * 0.1;
+        $nilai6Penguji3 = $nilaiPenguji3->nilai_6 * 0.25;
+        $tot5 = $nilai1Penguji3 + $nilai2Penguji3 + $nilai3Penguji3+ $nilai4Penguji3 + $nilai5Penguji3 + $nilai6Penguji3;
+        // nilai dospem 1
+        $templateProcessor->setValue("tot5", $tot5);
+        } else {
+            // Data tidak ditemukan
+            $nilai1Penguji3 = null;
+            $nilai2Penguji3 = null;
+            $nilai3Penguji3 = null;
+            $nilai4Penguji3 = null;
+            $nilai5Penguji3 = null;
+            $nilai6Penguji3 = null;
+
+            $tot5 = null;
+        }
+
+        $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
+        $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
+
+        // nilai dospem 1
+        $templateProcessor->setValue("total", $totalNilaiKeseluruhan);
+        $templateProcessor->setValue("rerata", $totalRerataNilaiKeseluruhan);
+
+        
         // Hitung total rerata nilai keseluruhan
         $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / count($nilaiDosen);
 
@@ -380,52 +810,18 @@ class SemhasController extends Controller
         $templateProcessor->setValue('tanggal_seminar', $tanggalSeminar);
         $templateProcessor->setValue('tanggal_seminar1', $tanggalSeminar1);
 
-        // Isi data nilai dosen ke dalam tabel di template .docx
-        foreach ($nilaiDosen as $index => $nilai) {
-            $tableRowIndex = $index + 1;
-            $templateProcessor->setValue("nilai{$tableRowIndex}", $nilai->total_nilai);
-            $templateProcessor->setValue("nip{$tableRowIndex}", $nilai->dosen->nim);
-            // Check if the signature exists
-            if ($tandaTanganDosens[$index]) {
-                $signaturePath = $tandaTanganDosens[$index];
-
-                // Add the image to the template
-                $templateProcessor->setImageValue("signature{$tableRowIndex}", [
-                    'path' => $signaturePath,
-                    'width' => 100, // Set the width of the image in the document
-                    'height' => 50, // Set the height of the image in the document
-                    'ratio' => false, // Set to true to maintain the aspect ratio of the image
-                ]);
-            }
-        }
-
+        //panggil nama dan nim dosen
+        $templateProcessor->setValue('namaDp1', $namaDp1);
+        $templateProcessor->setValue('nimDp1', $nimDp1);
+        $templateProcessor->setValue('namaDp2', $namaDp2);
+        $templateProcessor->setValue('nimDp2', $nimDp2);
+        $templateProcessor->setValue('namaPen1', $namaPen1);
+        $templateProcessor->setValue('nimPen1', $nimPen1);
+        $templateProcessor->setValue('namaPen2', $namaPen2);
+        $templateProcessor->setValue('nimPen2', $nimPen2);
+        $templateProcessor->setValue('namaPen3', $namaPen3);
+        $templateProcessor->setValue('nimPen3', $nimPen3);
         
-
-        $templateProcessor->setValue("dospem1_name", $dospem1Name);
-        $templateProcessor->setValue("dospem2_name", $dospem2Name);
-
-        // Tambahkan variabel total nilai keseluruhan dan rerata nilai keseluruhan ke dalam template Word
-        $templateProcessor->setValue('total', $totalNilaiKeseluruhan);
-        $templateProcessor->setValue('rerata', $totalRerataNilaiKeseluruhan);
-
-        // Set the status of penguji1, penguji2, and penguji3 based on dospem1 and dospem2 roles
-        $templateProcessor->setValue("penguji1_status", "Anggota");
-        $templateProcessor->setValue("penguji2_status", "Anggota");
-        $templateProcessor->setValue("penguji3_status", "Anggota");
-
-        
-        // Add the signature for dospem2 at the bottom of the document
-        if ($tandaTanganDosens[1]) {
-            $signaturePathDospem2 = $tandaTanganDosens[1];
-
-            // Add the image to the template for dospem2
-            $templateProcessor->setImageValue('dospem2_signature', [
-                'path' => $signaturePathDospem2,
-                'width' => 100, // Set the width of the image in the document
-                'height' => 50, // Set the height of the image in the document
-                'ratio' => false, // Set to true to maintain the aspect ratio of the image
-            ]);
-        }
 
          // Add the condition for "LULUS" or "TIDAK LULUS" based on the totalRerataNilaiKeseluruhan
     $statusLulus = $totalRerataNilaiKeseluruhan > 68 ? 'LULUS' : 'TIDAK LULUS';
