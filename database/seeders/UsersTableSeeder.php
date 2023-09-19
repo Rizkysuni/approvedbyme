@@ -14,6 +14,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Excel::import(new UsersImport, storage_path('app/excel/data_dosen.xlsx'));
+        Excel::import(new UsersImport, storage_path('app/excel/daftar-dosen-usk.xlsx'));
     }
 }

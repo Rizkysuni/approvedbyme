@@ -46,12 +46,28 @@ class SemhasController extends Controller
    {
         // Get the currently logged-in user (mahasiswa)
         $user = Auth::user();
+        $userId = auth()->user()->id;
+
+        // Cek apakah pengguna sudah memiliki rekaman Sempro
+        $seminarHasilRegistered = Sempro::where('id_mahasiswa', $userId)
+            ->where('seminar', 'Seminar Hasil')
+            ->exists();
+
+        $SemproRegistered = Sempro::where('id_mahasiswa', $userId)
+            ->where('seminar', 'Seminar Proposal')
+            ->exists();
+
+        if ($seminarHasilRegistered) {
+                return redirect()->route('home')->with('error', 'Anda Sudah Seminar Hasil.');
+        } elseif (!$SemproRegistered){
+                return redirect()->route('home')->with('error', 'Anda Belum Seminar Proposal.');
+        } else {
 
         $sempros = Sempro::where('id_mahasiswa', $user->id)
             ->where('seminar', 'seminar proposal')
             ->first();
 
-       return view('mahasiswa.createSemhas', compact('sempros'));
+       return view('mahasiswa.createSemhas', compact('sempros'));}
    }
 
   /**

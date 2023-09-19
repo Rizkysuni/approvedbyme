@@ -175,6 +175,12 @@ class HomeController extends Controller
         return view('dosenHistory', compact('sempros'));
     }
 
+    public function adminHistory() {
+        $sempros = Sempro::get();
+
+        return view('adminHistory', compact('sempros'));
+    }
+
     public function detail($id) {
         $dospem1 = Sempro::where('sempros.id', $id)
             ->join('users', 'sempros.dospem1', '=', 'users.id')

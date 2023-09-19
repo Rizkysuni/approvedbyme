@@ -142,6 +142,11 @@
     </div>
     @endif
 
+    @if (in_array(auth()->user()->role, ['admin']))
+    <!-- Tombol Unduh PDF -->
+    <a href="{{ route('export.pdfSemhas', ['id' => $sempro->id]) }}" class="btn btn-primary">Unduh PDF</a>
+    @endif
+
     @if(session('success'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
         <span class="block sm:inline">{{ session('success') }}</span>

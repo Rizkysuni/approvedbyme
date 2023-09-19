@@ -26,6 +26,7 @@ Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::post('/create-signature', [HomeController::class, 'saveSignature'])->name('saveSignature');
 Route::get('/history', [HomeController::class, 'history'])->name('history');
 Route::get('/dosenHistory', [HomeController::class, 'dosenHistory'])->name('dosenHistory');
+Route::get('/adminHistory', [HomeController::class, 'adminHistory'])->name('adminHistory');
 
 Auth::routes();
   

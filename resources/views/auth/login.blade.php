@@ -33,16 +33,24 @@
         @endif
 
         <div>
-        <label class="font-semibold text-sm text-gray-600 pb-1 block">NIM</label>
-        <input id="nim" type="nim" name="nim" value="{{ old('nim') }}" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
+            <select id="role" name="role" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full">
+                <option value="">Pilih Login Sebagai</option>
+                <option value="mahasiswa">Mahasiswa</option>
+                <option value="dosen">Dosen</option>
+                <option value="koordinator">Koordinator</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <div>
+        <input id="nim" type="nim" name="nim" placeholder="NIP/NIM" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
           @error('nim')
               <span role="alert">{{ $message }}</span>
           @enderror
         </div>
 
         <div>
-        <label class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
-        <input id="password" type="password" name="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
+        <input id="password" type="password" name="password" placeholder="PASSWORD" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
           @error('password')
               <span role="alert">{{ $message }}</span>
           @enderror

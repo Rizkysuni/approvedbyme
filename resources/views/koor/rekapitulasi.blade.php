@@ -27,7 +27,7 @@
                     <td class="px-6 py-4">{{ $mahasiswa->jurusan }}</td>
                     <td class="px-6 py-4">{{ $mahasiswa->seminar }}</td>
                     <td class="px-6 py-4">
-                        @if ($mahasiswa->seminar === 'seminar proposal')
+                        @if ($mahasiswa->seminar === 'Seminar Proposal')
                             @if ($mahasiswa->jumlah_nilai_sempro == 5)
                                 <p class="text-green-500">Sudah Dinilai</p>
                             @elseif ($mahasiswa->jumlah_nilai_sempro < 5)
@@ -48,7 +48,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 text-blue-500">
-                        @if ($mahasiswa->seminar === 'seminar proposal')
+                        @if ($mahasiswa->seminar === 'Seminar Proposal')
                         <a href="{{ route('rekapNilai', ['id' => $mahasiswa->id]) }}">detail</a>
                         @elseif ($mahasiswa->seminar === 'Seminar Hasil')
                             <a href="{{ route('rekapNilaiSemhas', ['id' => $mahasiswa->id]) }}">detail</a>

@@ -44,12 +44,28 @@ class SidangController extends Controller
    {
         // Get the currently logged-in user (mahasiswa)
         $user = Auth::user();
+        $userId = auth()->user()->id;
+
+        // Cek apakah pengguna sudah memiliki rekaman Sempro
+        $seminarHasilRegistered = Sempro::where('id_mahasiswa', $userId)
+            ->where('seminar', 'Seminar Hasil')
+            ->exists();
+
+        $SidangRegistered = Sempro::where('id_mahasiswa', $userId)
+            ->where('seminar', 'Sidang Akhir')
+            ->exists();
+
+        if (!$seminarHasilRegistered) {
+                return redirect()->route('home')->with('error', 'Anda Belum Seminar Hasil.');
+        } elseif ($SidangRegistered){
+                return redirect()->route('home')->with('error', 'Anda Sudah Sidang Akhir.');
+        } else {
 
         $sempros = Sempro::where('id_mahasiswa', $user->id)
             ->where('seminar', 'Seminar Hasil')
             ->first();
 
-       return view('mahasiswa.createSidang', compact('sempros'));
+       return view('mahasiswa.createSidang', compact('sempros'));}
    }
 
   /**

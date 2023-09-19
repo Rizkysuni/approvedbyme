@@ -8,7 +8,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 
-use App\Http\Controllers\Auth\lController;
+use App\Http\Controllers\Auth\loginController;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -48,31 +49,51 @@ class LoginController extends Controller
      * @return RedirectResponse
      */
     public function login(Request $request): RedirectResponse
-    {   
-        $input = $request->all();
-     
-        $this->validate($request, [
-            'nim' => 'required',
-            'password' => 'required',
-        ]);
-     
-        if(auth()->attempt(array('nim' => $input['nim'], 'password' => $input['password'])))
-        {
-            if (auth()->user()->role == 'dosen') {
-                return redirect()->route('dosen.home');
+{
+    $input = $request->all();
+
+    $this->validate($request, [
+        'nim' => 'required',
+        'password' => 'required',
+        'role' => 'required'
+    ]);
+
+    // Temukan pengguna berdasarkan NIM
+    $user = User::where('nim', $input['nim'])->first();
+
+    if ($user) {
+        // Pengguna dengan NIM ditemukan
+
+        if ($user->role == $input['role']) {
+            // Peran pengguna sesuai dengan yang diminta
+
+            if (auth()->attempt(array('nim' => $input['nim'], 'password' => $input['password']))) {
+                // Pengguna berhasil login berdasarkan nim dan password
+                if ($input['role'] == 'mahasiswa') {
+                    return redirect()->route('home');
+                } elseif ($input['role'] == 'dosen') {
+                    return redirect()->route('dosen.home');
+                } elseif ($input['role'] == 'koordinator') {
+                    return redirect()->route('koor.home');
+                } elseif ($input['role'] == 'admin') {
+                    return redirect()->route('admin.home');
+                }
+            } else {
+                // Gagal login
+                return redirect()->route('login')
+                    ->with('error', 'NIM Atau Password Anda Salah.');
             }
-            else if (auth()->user()->role == 'admin') {
-                return redirect()->route('admin.home');
-            }
-            else if (auth()->user()->role == 'koordinator') {
-                return redirect()->route('koor.home');
-            }else{
-                return redirect()->route('home');
-            }
-        }else{
+        } else {
+            // Peran pengguna tidak sesuai dengan yang diminta
             return redirect()->route('login')
-                ->with('error','Nim Atau Password Anda Salah.');
+                ->with('error', 'Anda Tidak Bisa Login Sebagai ' . $input['role']);
         }
-          
+    } else {
+        // Pengguna dengan NIM tidak ditemukan
+        return redirect()->route('login')
+            ->with('error', 'NIM tidak ditemukan.');
     }
+}
+
+
 }

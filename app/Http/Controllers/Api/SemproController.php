@@ -61,13 +61,27 @@ class SemproController extends Controller
      * @param  mixed $request
      * @return void
      */
-   public function create()
+    public function create()
     {
-        // Mendapatkan daftar dosen
+        $userId = auth()->user()->id;
+    
+        // Cek apakah pengguna sudah memiliki rekaman Sempro
+        $seminarProposalRegistered = Sempro::where('id_mahasiswa', $userId)
+            ->where('seminar', 'Seminar Proposal')
+            ->exists();
+    
+        // Jika sudah memiliki rekaman Sempro, kembalikan dengan pesan error
+        if ($seminarProposalRegistered) {
+            return redirect()->route('home')->with('error', 'Anda sudah Seminar Proposal.');
+        } else
+        {
+    
+        // Jika tidak memiliki rekaman Sempro, lanjutkan dengan logika lainnya
         $dosens = User::whereIn('role', [1, 2])->get(['id', 'name']);
-
-        return view('mahasiswa.create', compact('dosens'));
+    
+        return view('mahasiswa.create', compact('dosens'));}
     }
+    
 
    /**
      * store
