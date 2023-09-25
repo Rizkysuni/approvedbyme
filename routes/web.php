@@ -119,4 +119,5 @@ Koor Routes List
     Route::get('/dosen/pen14', [SidangController::class, 'pen14Home'])->name('dosen.pen14Home');
     Route::get('/dosen/pen14/{id}', [SidangController::class, 'pen14'])->name('dosen.pen14');
     Route::post('/send-data-sidang', [SidangController::class, 'sendDataToCoordinator'])->name('sendDataSidang');
+    Route::post('/edit-ttd', [HomeController::class, 'editTtd'])->name('editTtd');
 // });

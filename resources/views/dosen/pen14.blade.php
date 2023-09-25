@@ -128,6 +128,16 @@
             </tr>
         </tfoot>
     </table>
+
+    @if (in_array(auth()->user()->role, ['admin']))
+    <div class="py-3 px-3">
+        <button class="bg-green-600 text-white px-10 py-2 rounded-lg">
+        <!-- Tombol Unduh PDF -->
+        <a href="{{ route('export.pdfSidang', ['id' => $sempro->id]) }}" class="btn btn-primary">Unduh PDF</a>
+        </button>
+    </div>    
+    @endif
+
     </div>
 
     @if (auth()->user()->id === $sempro->dospem2)
@@ -140,11 +150,6 @@
             </button>
         </form>
     </div>
-    @endif
-
-    @if (in_array(auth()->user()->role, ['admin']))
-    <!-- Tombol Unduh PDF -->
-    <a href="{{ route('export.pdfSidang', ['id' => $sempro->id]) }}" class="btn btn-primary">Unduh PDF</a>
     @endif
 
     @if(session('success'))

@@ -81,7 +81,7 @@
     <label for="seminar" class="block text-base text-white">Seminar</label>
         <select name="seminar" id="seminar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
             
-            <option value="seminar proposal" {{ $sempro->seminar == 'seminar proposal' ? 'selected' : '' }}>Seminar Proposal</option>
+            <option value="Seminar Proposal" {{ $sempro->seminar == 'seminar proposal' ? 'selected' : '' }}>Seminar Proposal</option>
             <option value="Seminar Hasil" {{ $sempro->seminar == 'Seminar Hasil' ? 'selected' : '' }}>Seminar Hasil</option>
             <option value="Sidang Akhir" {{ $sempro->seminar == 'Sidang Akhir' ? 'selected' : '' }}>Sidang Akhir</option>
         </select>

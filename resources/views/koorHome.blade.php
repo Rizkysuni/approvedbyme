@@ -26,6 +26,9 @@
                     Tanggal
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Jam
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Seminar
                 </th>
                 <th scope="col" class="px-6 py-3">
@@ -52,26 +55,38 @@
                 {{ $sempro->tglSempro}}
                 </td>
                 <td class="px-6 py-4">
+                    {{ $sempro->jam}}
+                </td>
+                <td class="px-6 py-4">
                 {{ $sempro->seminar}}
                 </td>
                 <td>
-                    @if ($sempro->seminar === 'seminar proposal')
+                    @if ($sempro->seminar === 'Seminar Proposal')
                         @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
-                        <p class="text-green-500">Sudah Dinilai</P>
-                        @else
+                            <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                            @else
+                            <p class="text-red-500">Belum Waktunya</p>
                         @endif
+
+
                     @elseif ($sempro->seminar === 'Seminar Hasil')
                         @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
-                        <p class="text-green-500">Sudah Dinilai</P>
-                        @else
+                            <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @else
+                            <p class="text-red-500">Belum Waktunya</p>
                         @endif
+                        
                     @elseif ($sempro->seminar === 'Sidang Akhir')
                         @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
-                        <p class="text-green-500">Sudah Dinilai</P>
-                        @else
+                            <p class="text-green-500">Sudah Dinilai</p>
+                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @else
+                            <p class="text-red-500">Belum Waktunya</p>
                         @endif
                     @endif
                 </td>

@@ -64,17 +64,15 @@
                     @if ($sempro->seminar === 'Seminar Proposal')
                         @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime->startOfDay()) && $currentTime->format('H:i') >= \Carbon\Carbon::parse($sempro->jam)->format('H:i'))
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
                         @else
                             <p class="text-red-500">Belum Waktunya</p>
                         @endif
-
-
                     @elseif ($sempro->seminar === 'Seminar Hasil')
                         @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime->startOfDay()) && $currentTime->format('H:i') >= \Carbon\Carbon::parse($sempro->jam)->format('H:i'))
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
                         @else
                             <p class="text-red-500">Belum Waktunya</p>
@@ -82,14 +80,13 @@
                     @elseif ($sempro->seminar === 'Sidang Akhir')
                         @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime->startOfDay()) && $currentTime->format('H:i') >= \Carbon\Carbon::parse($sempro->jam)->format('H:i'))
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
                             <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
                         @else
                             <p class="text-red-500">Belum Waktunya</p>
                         @endif
                     @endif
                 </td>
-
             </tr>
             @endforeach 
         </tbody>

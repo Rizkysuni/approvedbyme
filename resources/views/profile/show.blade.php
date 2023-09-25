@@ -44,7 +44,18 @@
                         @endif
                         
                             <img  class="object-cover w-full  mt-5 md:h-32 md:w-48 md:rounded-none border-black border-4 border-solid md:border-solid" src="{{ asset('images/' . $signature->signature_path) }}" alt="Tanda Tangan">
-                        @else
+                            <p class="py-3"> Ubah Tanda Tangan <p>
+                            <form action="{{ route('editTtd',$user->id) }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group flex">
+                                    <input type="file" class="form-control" id="ttd" name="ttd" accept="image/*" required>
+                                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ubah</button>
+                                </div>
+                                @error('ttd')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
+                            </form>
+                            @else
                             <p>Tanda tangan belum ditambahkan.</p>
                             <div class="container mt-36">
                                 <form action="{{ route('saveSignature') }}" method="post" enctype="multipart/form-data">

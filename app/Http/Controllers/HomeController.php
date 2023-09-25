@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function dosenHome(): View
     {
         $dosenId = auth()->user()->id;
-        $currentTime = now()->setTimezone('Asia/Jakarta');
+        $currentTime = now();
         // dd($currentTime);
         $sempros = Sempro::where('dospem1', $dosenId)
                     ->orWhere('dospem2', $dosenId)
@@ -69,14 +69,18 @@ class HomeController extends Controller
     public function koorHome(): View
     {
         $dosenId = auth()->user()->id;
+        $currentTime = now();
         $sempros = Sempro::where('dospem1', $dosenId)
                     ->orWhere('dospem2', $dosenId)
                     ->orWhere('penguji1', $dosenId)
                     ->orWhere('penguji2', $dosenId)
                     ->orWhere('penguji3', $dosenId)
                     ->get();
-
-        return view('koorHome', compact('sempros'));
+        foreach ($sempros as $sempro) {
+            $semproDateTimeStr = $sempro->tglSempro . ' ' . $sempro->jam;
+            $sempro->semproDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $semproDateTimeStr); // Mengatur zona waktu yang sama dengan currentTime
+        }
+        return view('koorHome', compact('sempros','currentTime'));
     }
 
     public function adminHome(): View
@@ -154,6 +158,34 @@ class HomeController extends Controller
 
         return redirect()->route('profile')->with('error', 'Gagal mengubah foto profil!');
     }
+
+    public function editTtd(Request $request)
+    {
+        $request->validate([
+            'ttd' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('ttd')) {
+            $ttd = $request->file('ttd');
+            $ttdName = time() . '.' . $ttd->getClientOriginalExtension();
+            $ttd->move(public_path('images'), $ttdName);
+
+            // Ambil objek Signature yang sesuai dengan pengguna yang sedang masuk
+            $signature = Signature::where('user_id', auth()->user()->id)->first();
+
+            if ($signature) {
+                $signature->signature_path = $ttdName; // Sesuaikan dengan direktori penyimpanan Anda
+                $signature->save();
+
+                return redirect()->route('profile')->with('success', 'Tanda tangan berhasil diubah!');
+            } else {
+                return redirect()->route('profile')->with('error', 'Tanda tangan tidak ditemukan!');
+            }
+        }
+
+        return redirect()->route('profile')->with('error', 'Gagal mengubah tanda tangan!');
+    }
+
 
     public function history() {
         // Mengambil data Sempro yang telah selesai dinilai
