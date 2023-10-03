@@ -14,7 +14,7 @@
     </div>
     
 
-        <div class="flex items-left  mx-auto relative   rounded-lg overflow-hidden">
+        <div class="items-left  mx-auto relative   rounded-lg overflow-hidden">
       <table class=" text-sm text-left text-gray-500 ">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

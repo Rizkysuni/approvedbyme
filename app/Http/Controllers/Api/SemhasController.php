@@ -191,14 +191,14 @@ class SemhasController extends Controller
     public function pen09($id)
     {
         // Ambil data sempro berdasarkan ID
-        $semhas= Sempro::find($id);
+        $sempro= Sempro::find($id);
     
         // Ambil ID dosen dari kolom dospem1 pada tabel sempros
-        $dospem1Id = $semhas->dospem1;
-        $dospem2Id = $semhas->dospem2;
-        $penguji1Id = $semhas->penguji1;
-        $penguji2Id = $semhas->penguji2;
-        $penguji3Id = $semhas->penguji3;
+        $dospem1Id = $sempro->dospem1;
+        $dospem2Id = $sempro->dospem2;
+        $penguji1Id = $sempro->penguji1;
+        $penguji2Id = $sempro->penguji2;
+        $penguji3Id = $sempro->penguji3;
 
         // Ambil nama dosen berdasarkan ID dari tabel users
         $dospem1 = User::find($dospem1Id);
@@ -346,13 +346,13 @@ class SemhasController extends Controller
         $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5; 
 
         // Cek apakah sempro ditemukan
-        if (!$semhas) {
+        if (!$sempro) {
             abort(404); // Tampilkan halaman 404 jika sempro tidak ditemukan
         }
 
 
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro
-        return view('/dosen/pen09', compact('semhas','nilaiDosen','totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
+        return view('/dosen/pen09', compact('sempro','nilaiDosen','totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
         'tot1','tot2','tot3','tot4','tot5','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3'));
     }
 

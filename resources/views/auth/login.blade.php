@@ -11,6 +11,7 @@
 <!-- component -->
 <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12">
   <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+    <p class="text-center text-5xl py-5 text-sky-800 shadow-black-500">ApprovedByMe</p>
     <div class="">
       <img src="{{ asset('images/unsyiah.png') }}" alt="Logo USK" class ="w-1/3 mx-auto mb-5">
       

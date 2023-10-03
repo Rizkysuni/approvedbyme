@@ -1,13 +1,11 @@
 @extends('layout.navbar')
 
 @section('content')
-    
-  
 
-  <h1 class="font-lato ">Rekapitulasi Penilaian Seminar</h1>
+  <h1  class="font-lato text-3xl">Rekapitulasi Penilaian Seminar</h1>
   <br>
   <div class="font-lato relative overflow-x-auto">
-      <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <table id="tabel-data" class="display w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">No.</th>
@@ -61,5 +59,13 @@
         </tbody>
     </table>
 
-
+    <script>
+        $(document).ready(function(){
+            $('#tabel-data').DataTable({
+            responsive: true
+        });
+            
+        });
+    </script>
+</div>
 @endsection

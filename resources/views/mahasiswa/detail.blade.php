@@ -5,7 +5,8 @@
 <div class=" font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
     <p class=" text-2xl md:text-4xl text-center mb-10">Informasi {{$dospem1->seminar}}</p>
-        <div class="text-base md:text-xl mb-10">
+    <div class="grid grid-cols-6 gap-4">
+        <div class="text-base md:text-xl mb-10 col-start-1 col-end-5">
             <p class="">Nama : {{ $dospem1->nama }}</p>
             <p class="">NIM : {{ $dospem1->nim }}</p>
             <p class="">Judul : {{ $dospem1->judul }}</p>
@@ -14,6 +15,15 @@
             <p class="">Tanggal : {{ $dospem1->tglSempro }} </p>
             <p class="">Jam : {{ $dospem1->jam }} </p>
         </div>
+        
+        <div class="col-end-7">
+            @if ($dospem1->mahasiswa)
+                <img class="object-cover w-full md:h-44 md:w-36 md:rounded-none border-black border-8 border-solid md:border-solid" src="{{ asset('images/' . $dospem1->mahasiswa->gambar) }}" alt="{{ $dospem1->nama }}"> 
+            @else
+            <p>Tidak ada gambar mahasiswa yang tersedia.</p>
+            @endif
+        </div>
+    </div>
 
     
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

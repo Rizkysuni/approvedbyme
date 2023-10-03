@@ -586,6 +586,9 @@ class SidangController extends Controller
 
     public function exportPDF($id)
     {
+        function formatAngka($angka) {
+            return number_format((float)$angka, 2, '.', '');
+        }
         // Load file template .docx
         $templateFilePath = storage_path('app/pen14/pen14.docx');
         $templateProcessor = new TemplateProcessor($templateFilePath);
@@ -692,6 +695,7 @@ class SidangController extends Controller
         // Get the totalRerataNilaiKeseluruhan using the static method from SemhasController
         $rerataSemhas = SemhasController::calculateAverageRerataNilaiKeseluruhan($idMahasiswa); 
         $twentyFivePercent = $rerataSemhas * 0.25;
+        $twentyFivePercent = formatAngka($twentyFivePercent);
 
 
         // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
@@ -880,13 +884,22 @@ class SidangController extends Controller
         $totalRerataNilaiKeseluruhan = 0;
 
         $totalKomponen32 = $jumlahKomponen3 + $jumlahKomponen2;
+        $totalKomponen32 = formatAngka($totalKomponen32);
 
         $rerataKom1 = $jumlahKomponen1 / 2;
+        $rerataKom1 = formatAngka($rerataKom1);
+
         $rerataKom32 = $totalKomponen32 / 5;
+        $rerataKom32 = formatAngka($rerataKom32);
 
         $C=$rerataKom32 + $rerataKom1;
+        $C = formatAngka($C);
+
         $seventyFivePercent=$C * 0.75;
+        $seventyFivePercent = formatAngka($seventyFivePercent);
+
         $TotalCD=$seventyFivePercent + $twentyFivePercent;
+        $TotalCD = formatAngka($TotalCD);
 
         // Ambil data tanda tangan dosen untuk ditampilkan di halaman pen05
         $tandaTanganDosens = [];

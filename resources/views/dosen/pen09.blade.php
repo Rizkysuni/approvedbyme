@@ -6,11 +6,11 @@
     <div class="flex flex-col ml-3 pb-10">
     <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Seminar Hasil</p>
         <div class="text-base md:text-xl mb-10">
-            <p class="">Nama : {{ $semhas->nama }}</p>
-            <p class="">NIM : {{ $semhas->nim }}</p>
-            <p class="">Judul : {{ $semhas->judul }}</p>
-            <p class="">Jurusan : {{ $semhas->jurusan}}</p>
-            <p class="">Ruangan : {{ $semhas->ruangan }}</p>
+            <p class="">Nama : {{ $sempro->nama }}</p>
+            <p class="">NIM : {{ $sempro->nim }}</p>
+            <p class="">Judul : {{ $sempro->judul }}</p>
+            <p class="">Jurusan : {{ $sempro->jurusan}}</p>
+            <p class="">Ruangan : {{ $sempro->ruangan }}</p>
         </div>
 
         <p class="text-2xl text-center">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>

@@ -208,7 +208,7 @@ class HomeController extends Controller
     }
 
     public function adminHistory() {
-        $sempros = Sempro::get();
+        $sempros = Sempro::where('status_nilai', 'selesai dinilai')->get();
 
         return view('adminHistory', compact('sempros'));
     }
