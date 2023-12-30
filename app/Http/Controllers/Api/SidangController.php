@@ -187,8 +187,11 @@ class SidangController extends Controller
     public function pen14Home()
     {
         $dosenId = auth()->user()->id;
-        $sidang = Sempro::where('dospem2', $dosenId)
-                        // ->Where('status_nilai', 'belum dinilai')
+        $sidang = Sempro::where(function($query) use ($dosenId) {
+            $query->where('dospem2', $dosenId)
+                  ->orWhere('dospem1', $dosenId);
+        })
+                        ->Where('status_nilai', 'belum dinilai')
                         ->Where('seminar', 'Sidang Akhir')
                     ->get();
 
@@ -383,7 +386,10 @@ class SidangController extends Controller
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $sidangList = Sempro::where('dospem2', $dosenId)
+        $sidangList = Sempro::where(function($query) use ($dosenId) {
+            $query->where('dospem2', $dosenId)
+                ->orWhere('dospem1', $dosenId);
+        })
                             ->where('seminar', 'Sidang Akhir')
                             ->get();
 
@@ -424,6 +430,13 @@ class SidangController extends Controller
             $namaPenguji1 = $penguji1 ? $penguji1->name : 'Penguji 1 Tidak Ditemukan';
             $namaPenguji2 = $penguji2 ? $penguji2->name : 'Penguji 2 Tidak Ditemukan';
             $namaPenguji3 = $penguji3 ? $penguji3->name : 'Penguji 3 Tidak Ditemukan';
+
+            // Get the id_mahasiswa from the found Sidang record
+            $idMahasiswa = $sempro->id_mahasiswa;
+
+            // Get the totalRerataNilaiKeseluruhan using the static method from SemhasController
+            $rerataSemhas = SemhasController::calculateAverageRerataNilaiKeseluruhan($idMahasiswa); 
+            $twentyFivePercent = $rerataSemhas * 0.25;
     
             // Ambil data nilai dari dosen-dosen yang terlibat dalam sempro
             $nilaiDosen = NilaiSidang::where('id_sempro', $id)->get();
@@ -565,11 +578,14 @@ class SidangController extends Controller
                     $komp3pg3 =  null;
                 }
     
+
             $totalNilaiKeseluruhan = 0;
             $totalRerataNilaiKeseluruhan = 0;
             $jumlahKomponen1 = $komp1dp2 + $komp1dp1;
             $jumlahKomponen2 = $komp2pg3+ $komp2pg2 + $komp2pg1 + $komp2dp1 + $komp2dp2;
             $jumlahKomponen3 = $komp3pg3+ $komp3pg2 + $komp3pg1 + $komp3dp1 + $komp3dp2;
+            $tot = $jumlahKomponen1 + $jumlahKomponen2 + $jumlahKomponen3;
+            $TotalCD=$tot + $twentyFivePercent;
     
     
             // Cek apakah sempro ditemukan
@@ -579,7 +595,7 @@ class SidangController extends Controller
             // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
             return view('/koor/rekapNilaiSidang', compact('sempro', 'nilaiDosen', 'namaDospem2','namaDospem1','namaPenguji1','namaPenguji2',
             'namaPenguji3','jumlahKomponen1','jumlahKomponen2','jumlahKomponen3','komp1dp2','komp2dp2','komp3dp2','komp1dp1','komp2dp1','komp3dp1',
-            'komp2pg1','komp3pg1','komp2pg2','komp3pg2','komp2pg3','komp3pg3',));
+            'komp2pg1','komp3pg1','komp2pg2','komp3pg2','komp2pg3','komp3pg3','TotalCD'));
                 
         
     }
@@ -625,6 +641,13 @@ class SidangController extends Controller
             'path' => $ttd2Path,
             'width' => 80, // Set the width of the image in the document
             'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
+        $templateProcessor->setImageValue("ttdketua", [
+            'path' => $ttd2Path,
+            'width' => 120, // Set the width of the image in the document
+            'height' => 60, // Set the height of the image in the document
             'ratio' => false, // Set to true to maintain the aspect ratio of the image
         ]);
 

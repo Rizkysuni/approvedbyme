@@ -180,10 +180,14 @@ class SemhasController extends Controller
     public function pen09Home()
     {
         $dosenId = auth()->user()->id;
-        $semhas = Sempro::where('dospem2', $dosenId)
-                        // ->Where('status_nilai', 'belum dinilai')
-                        ->Where('seminar', 'Seminar Hasil')
-                    ->get();
+        $semhas = Sempro::where(function($query) use ($dosenId) {
+            $query->where('dospem2', $dosenId)
+                  ->orWhere('dospem1', $dosenId);
+        })
+        ->where('status_nilai', 'belum dinilai')
+        ->where('seminar', 'Seminar Hasil')
+        ->get();
+        
 
         return view('dosen.pen09Home', compact('semhas'));
     }
@@ -360,7 +364,10 @@ class SemhasController extends Controller
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $semhasList = Sempro::where('dospem2', $dosenId)
+        $semhasList = Sempro::where(function($query) use ($dosenId) {
+            $query->where('dospem2', $dosenId)
+                ->orWhere('dospem1', $dosenId);
+        })
                             ->where('seminar', 'Seminar Hasil')
                             ->get();
 
@@ -583,6 +590,13 @@ class SemhasController extends Controller
             'path' => $ttd2Path,
             'width' => 80, // Set the width of the image in the document
             'height' => 40, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+        // Add the image to the template
+        $templateProcessor->setImageValue("ttdketua", [
+            'path' => $ttd2Path,
+            'width' => 160, // Set the width of the image in the document
+            'height' => 80, // Set the height of the image in the document
             'ratio' => false, // Set to true to maintain the aspect ratio of the image
         ]);
 

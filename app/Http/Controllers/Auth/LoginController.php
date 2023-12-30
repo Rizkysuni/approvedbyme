@@ -86,7 +86,7 @@ class LoginController extends Controller
         } else {
             // Peran pengguna tidak sesuai dengan yang diminta
             return redirect()->route('login')
-                ->with('error', 'Anda Tidak Bisa Login Sebagai ' . $input['role']);
+                ->with('error', 'Anda tidak bisa login sebagai ' . $input['role']);
         }
     } else {
         // Pengguna dengan NIM tidak ditemukan

@@ -8,6 +8,7 @@ use App\Models\Sempro;
 use App\Models\User;
 use App\Models\Signature;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 use Illuminate\View\View;
 use Carbon\Carbon;
@@ -241,5 +242,106 @@ class HomeController extends Controller
 
         return view('mahasiswa.detail', compact('dospem1','dospem2','penguji1','penguji2','penguji3'));
     }
+
+    public function addDosen(){
+        return view('admin.tambahDosen');
+    }
+
+    // Menyimpan data pengguna baru
+    public function storeDosen(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required|unique:users,nim',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'kelamin' => 'required',
+            'jabatan' => 'required',
+            'pendidikan' => 'required',
+            'golongan' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'nim.unique' => 'NIM ini sudah digunakan.',
+            'email.unique' => 'Email ini sudah digunakan.'
+        ]);
+
+            // Mengunggah gambar ke direktori penyimpanan (storage/app/public/profiles)
+            if ($request->hasFile('gambar')) {
+                $image = $request->file('gambar');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+        
+                // Simpan path gambar dalam variabel $gambarPath
+                $gambarPath = $imageName;
+
+
+                User::create([
+                    'name' => $request->input('nama'),
+                    'nim' => $request->input('nim'),
+                    'email' => $request->input('email'),
+                    'password' => bcrypt($request->input('password')),
+                    'Kelamin' => $request->input('kelamin'),
+                    'Jabatan' => $request->input('jabatan'),
+                    'Pendidikan' => $request->input('pendidikan'),
+                    'Golongan' => $request->input('golongan'),
+                    'role' => '1',
+                    'jurusan' => 'Informatika',
+                    'gambar' => $gambarPath,
+                ]);
+
+                return redirect()->route('daftarDosen')
+                    ->with('success', 'Dosen berhasil ditambahkan!');
+            }
+            // Jika ada error, kembalikan ke halaman tambah dosen dengan pesan kesalahan
+            return redirect()->route('addDosen')
+            ->withErrors(['error' => 'Terjadi kesalahan. Harap periksa kembali input Anda.'])
+            ->withInput();
+    }
+
+    public function daftarDosen(){
+
+        $users = User::whereIn('role', [1, 2])->orderBy('role', 'desc')->get();
+        
+        $dosens = User::whereIn('role', [1,2])->get(['id', 'name']);
+
+        return view('admin.daftarDosen', compact('users','dosens'));
+    }
+
+    public function destroy($id)
+    {
+        // Temukan dan hapus data seminar berdasarkan ID
+        $users = User::findOrFail($id);
+        $users->delete();
+
+        // Redirect ke halaman index atau halaman lainnya
+        return redirect()->route('daftarDosen')->with('success', 'Data Dosen Berhasil Dihapus');
+    }
+
+    public function updateKoor(Request $request)
+    {
+        $dosenId = $request->input('dosen');
+        $dosenName = $request->input('dosen_name');
+    
+        // Temukan dosen yang akan menjadi koordinator
+        $dosen = User::find($dosenId);
+    
+        if (!$dosen) {
+            return redirect()->back()->with('error', 'Dosen tidak ditemukan.');
+        }
+    
+        // Temukan pengguna yang saat ini memiliki role 2 (koordinator)
+        $currentKoordinator = User::where('role', 2)->first();
+    
+        // Jika ditemukan, ubah perannya menjadi 1 (pengguna biasa)
+        if ($currentKoordinator) {
+            $currentKoordinator->update(['role' => 1]);
+        }
+    
+        // Ubah peran dosen yang dipilih menjadi 2 (koordinator)
+        $dosen->update(['role' => 2]);
+    
+        return redirect()->route('daftarDosen')->with('success', "$dosenName Sekarang Menjadi Koordinator");
+    }
+    
     
 }

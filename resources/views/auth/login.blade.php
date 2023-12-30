@@ -11,12 +11,12 @@
 <!-- component -->
 <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12">
   <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
-    <p class="text-center text-5xl py-5 text-sky-800 shadow-black-500">ApprovedByMe</p>
+    <p class="text-center text-5xl py-5 text-sky-800 font-semibold shadow-black-500">ApprovedByMe</p>
     <div class="">
       <img src="{{ asset('images/unsyiah.png') }}" alt="Logo USK" class ="w-1/3 mx-auto mb-5">
       
     </div>
-    <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200 mt-5">
+    <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200 mt-12">
       <form class="px-5 py-7" method="POST" action="{{ route('login') }}">
 
         @csrf

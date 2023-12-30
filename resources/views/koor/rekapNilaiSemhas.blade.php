@@ -5,15 +5,38 @@
 <div class=" font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
     <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Seminar Hasil</p>
-        <div class="text-base md:text-xl mb-10">
-            <p class="">Nama : {{ $sempro->nama }}</p>
-            <p class="">NIM : {{ $sempro->nim }}</p>
-            <p class="">Judul : {{ $sempro->judul }}</p>
-            <p class="">Jurusan : {{ $sempro->jurusan}}</p>
-            <p class="">Ruangan : {{ $sempro->ruangan }}</p>
-        </div>
+    <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm mt-5">
+            <div class="grid grid-cols-1  md:grid-cols-3 text-lg">
+                <div class="block p-4 bg-white text-gray-600">
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Nama :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->nama }} </p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">NIM :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->nim }} </p>
+                    </div>
+                      
+                </div>
+                <div class="block p-4 bg-white text-gray-600">
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Jurusan :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->jurusan}} </p>
+                    </div> 
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Ruangan :</p>
+                        <p class="font-bold  dark:text-gray-400"> {{ $sempro->ruangan }}</p>
+                    </div>   
+                </div>
+                <div class="block p-4 bg-white   text-gray-600">
+                    <p class="font-normal  dark:text-gray-400">Judul :</p>
+                    <p class="font-bold  dark:text-gray-400">{{ $sempro->judul }} </p>
+                </div>
+                
+            </div>
+        </div> 
 
-        <p class="text-2xl text-center">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
+        <p class="text-2xl text-center mt-10">Berdasarkan nilai rata-rata dari tim penguji, maka mahasiswa tersebut dinyatakan:</p>
         <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
             @if ($totalRerataNilaiKeseluruhan > 69)
                 <button class="bg-green-600 text-white px-10 py-2 rounded-lg">Lulus Dengan kategori nilai huruf : 
@@ -130,10 +153,17 @@
     </table>
 
     <div class=" py-3 px-3">
+    @if ($totalRerataNilaiKeseluruhan > 59 )
         <button class="bg-green-600 text-white px-10 py-2 rounded-lg">
         <!-- Tombol Unduh PDF -->
         <a href="{{ route('export.pdfSemhas', ['id' => $sempro->id]) }}" class="btn btn-primary">Unduh PDF</a>
         </button>
+    @else 
+        <button class="bg-gray-500 text-white px-10 py-2 rounded-lg">
+        <!-- Tombol Unduh PDF -->
+        <a href="#" class="btn btn-primary text-end " disabled>Unduh Pen05</a>
+        </button>
+    @endif
     </div>
     </div>
 

@@ -404,6 +404,13 @@ class SemproController extends Controller
             'ratio' => false, // Set to true to maintain the aspect ratio of the image
         ]);
 
+        $templateProcessor->setImageValue("ttdketua", [
+            'path' => $ttd2Path,
+            'width' => 160, // Set the width of the image in the document
+            'height' => 80, // Set the height of the image in the document
+            'ratio' => false, // Set to true to maintain the aspect ratio of the image
+        ]);
+
         // Ambil tanda tangan dosen penguji 1
         $ttd3 = Signature::where('user_id', $penguji1Id)->first();
 
@@ -760,9 +767,11 @@ class SemproController extends Controller
     public function pen05Home()
     {
         $dosenId = auth()->user()->id;
-        $sempros = Sempro::where('dospem2', $dosenId)
-                        ->Where('status_nilai', 'belum dinilai')
-                        ->Where('seminar', 'seminar proposal')
+        $sempros = Sempro::where(function($query) use ($dosenId) {
+                            $query->where('dospem2', $dosenId)
+                                ->orWhere('dospem1', $dosenId);
+                        })->Where('status_nilai', 'belum dinilai')
+                        ->Where('seminar', 'Seminar Proposal')
                     ->get();
 
         return view('dosen.pen05Home', compact('sempros'));
@@ -944,7 +953,10 @@ class SemproController extends Controller
     {
         // Ambil data sempro berdasarkan ID dosen yang sedang login
         $dosenId = auth()->user()->id;
-        $semproList = Sempro::where('dospem2', $dosenId)
+        $semproList = Sempro::where(function($query) use ($dosenId) {
+            $query->where('dospem2', $dosenId)
+                ->orWhere('dospem1', $dosenId);
+        })
                             ->where('seminar', 'seminar proposal')
                             ->get();
 

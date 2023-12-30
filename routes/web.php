@@ -75,6 +75,11 @@ Admin Routes List
     Route::get('/sempro/{id}/edit', [SemproController::class, 'edit'])->name('sempro.edit');
     Route::put('/seminar/{id}', [SemproController::class, 'update'])->name('sempro.update');
     Route::delete('/seminar/{id}', [SemproController::class, 'destroy'])->name('sempro.destroy');
+    Route::get('/addDosen', [HomeController::class, 'addDosen'])->name('addDosen');
+    Route::post('/storeDosen', [HomeController::class, 'storeDosen'])->name('storeDosen');
+    Route::get('/daftarDosen', [HomeController::class, 'daftarDosen'])->name('daftarDosen');
+    Route::delete('/hapusDosen/{id}', [HomeController::class, 'destroy'])->name('dosen.destroy');
+    Route::post('updateRole', [HomeController::class, 'updateKoor'])->name('updateKoor');
 // });
   
 /*------------------------------------------

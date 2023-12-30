@@ -5,16 +5,39 @@
 <div class="font-lato w-full p-6 center bg-gray-200 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div class="flex flex-col ml-3 pb-10">
     <p class=" text-2xl md:text-4xl text-center mb-10">Detail Rekapitulasi Penilaian Sidang Akhir</p>
-    <div class="text-base md:text-xl mb-10">
-            <p class="">Nama : {{ $sempro->nama }}</p>
-            <p class="">NIM : {{ $sempro->nim }}</p>
-            <p class="">Judul : {{ $sempro->judul }}</p>
-            <p class="">Jurusan : {{ $sempro->jurusan}}</p>
-            <p class="">Ruangan : {{ $sempro->ruangan }}</p>
-    </div>
+    <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm mt-5">
+            <div class="grid grid-cols-1  md:grid-cols-3 text-lg">
+                <div class="block p-4 bg-white text-gray-600">
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Nama :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->nama }} </p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">NIM :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->nim }} </p>
+                    </div>
+                      
+                </div>
+                <div class="block p-4 bg-white text-gray-600">
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Jurusan :</p>
+                        <p class="font-bold  dark:text-gray-400">{{ $sempro->jurusan}} </p>
+                    </div> 
+                    <div class="mb-4">
+                        <p class="font-normal  dark:text-gray-400">Ruangan :</p>
+                        <p class="font-bold  dark:text-gray-400"> {{ $sempro->ruangan }}</p>
+                    </div>   
+                </div>
+                <div class="block p-4 bg-white   text-gray-600">
+                    <p class="font-normal  dark:text-gray-400">Judul :</p>
+                    <p class="font-bold  dark:text-gray-400">{{ $sempro->judul }} </p>
+                </div>
+                
+            </div>
+        </div> 
     
 
-        <div class="items-left  mx-auto relative   rounded-lg overflow-hidden">
+        <div class="items-left  mx-auto relative   rounded-lg overflow-hidden mt-10">
       <table class=" text-sm text-left text-gray-500 ">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -140,8 +163,9 @@
 
     </div>
 
-    @if (auth()->user()->id === $sempro->dospem2)
+    @if (auth()->user()->id === $sempro->dospem2 || auth()->user()->id === $sempro->dospem1)
     <div class="flex justify-end mt-6 mx-auto">
+    @if ($komp1dp1 > 0 && $komp2dp1 > 0 && $komp3dp1 > 0 && $komp1dp2 > 0 && $komp2dp2 > 0 && $komp3dp2 > 0 && $komp2pg1 > 0 && $komp3pg1 > 0 && $komp2pg2 > 0 && $komp3pg2 > 0 && $komp2pg3 > 0 && $komp3pg3 > 0)
         <!-- Tombol Kirim -->
         <form action="{{ route('sendDataSidang') }}" method="POST">
             @csrf
@@ -149,6 +173,15 @@
                 Kirim
             </button>
         </form>
+        @else 
+        <!-- Tombol Kirim -->
+        <form action="#" method="POST">
+            @csrf
+            <button type="submit" class="bg-gray-500 text-white font-bold py-2 px-4 rounded mt-4" disabled>
+                Kirim
+            </button>
+        </form>
+       @endif
     </div>
     @endif
 

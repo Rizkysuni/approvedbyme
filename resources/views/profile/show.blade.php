@@ -7,7 +7,7 @@
 
         <div class="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
 
-            @if(auth()->user()->role === 'mahasiswa')
+            @if(auth()->user()->role === 'mahasiswa' || auth()->user()->role === 'dosen' || auth()->user()->role === 'koordinator')
             <div class="flex justify-between">
                 <span class="text-xl font-semibold block">User Profile</span>
             </div>
@@ -34,6 +34,8 @@
                 </form>
             @endif
 
+            
+
             @if(auth()->user()->role === 'dosen' || auth()->user()->role === 'koordinator')
                         @if ($signature)
                         @if (session('success'))
@@ -42,8 +44,10 @@
                                 <span class="block sm:inline">{{session('success')}}</span>
                             </div>
                         @endif
-                        
-                            <img  class="object-cover w-full  mt-5 md:h-32 md:w-48 md:rounded-none border-black border-4 border-solid md:border-solid" src="{{ asset('images/' . $signature->signature_path) }}" alt="Tanda Tangan">
+
+                            <div class="w-full p-8 mx-2 flex justify-center ">
+                                <img  class="object-cover w-full  mt-20 md:h-32 md:w-48  border-gray-400 border-4 border-solid rounded-md" src="{{ asset('images/' . $signature->signature_path) }}" alt="Tanda Tangan">                        
+                            </div>
                             <p class="py-3"> Ubah Tanda Tangan <p>
                             <form action="{{ route('editTtd',$user->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -70,6 +74,8 @@
                         @endif
                     @endif
         </div>
+
+        
 
         <div class="w-full md:w-3/5 p-8 bg-white lg:ml-4 shadow-md">
             <div class="rounded  shadow p-6">

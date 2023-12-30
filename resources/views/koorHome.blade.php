@@ -38,7 +38,33 @@
         </thead>
         <tbody>
         @foreach ($sempros as $index => $sempro)
+        @if ($sempro->seminar === 'Seminar Proposal')
+            @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+            <tr  onclick="window.location.href='{{ route('beriNilai', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @else
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @endif
+
+        @elseif ($sempro->seminar === 'Seminar Hasil')
+            @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+            <tr  onclick="window.location.href='{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @else
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">       
+            @endif
+        
+        @elseif ($sempro->seminar === 'Sidang Akhir')
+            @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+            <tr  onclick="window.location.href='{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @else
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            @endif
+        @endif
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {{ $index + 1 }}
                 </th>
@@ -90,6 +116,7 @@
                         @endif
                     @endif
                 </td>
+                </a>
             </tr>
             @endforeach 
         </tbody>

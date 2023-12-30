@@ -26,7 +26,11 @@ class User extends Authenticatable
         'password',
         'gambar',
         'jurusan',
-        'role'
+        'role',
+        'Kelamin',
+        'Jabatan',
+        'Pendidikan',
+        'Golongan',
     ];
 
     /**
