@@ -11,10 +11,10 @@
             <div class="flex justify-between">
                 <span class="text-xl font-semibold block">User Profile</span>
             </div>
-            @if (session('success'))
+            @if (session('successfoto'))
                 <div class="bg-green-100 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">Berhasil!</strong>
-                    <span class="block sm:inline">{{session('success')}}</span>
+                    <span class="block sm:inline">{{session('successfoto')}}</span>
                 </div>
             @endif
 
@@ -38,10 +38,10 @@
 
             @if(auth()->user()->role === 'dosen' || auth()->user()->role === 'koordinator')
                         @if ($signature)
-                        @if (session('success'))
+                        @if (session('successttd'))
                             <div class="bg-green-100 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                                 <strong class="font-bold">Berhasil!</strong>
-                                <span class="block sm:inline">{{session('success')}}</span>
+                                <span class="block sm:inline">{{session('successttd')}}</span>
                             </div>
                         @endif
 

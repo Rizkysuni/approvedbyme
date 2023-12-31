@@ -944,7 +944,7 @@ class SemproController extends Controller
         }
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
         return view('/dosen/pen05', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
-         'totrat5', 'totrat4', 'totrat3','totrat2','totrat1','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3'));
+         'totrat5', 'totrat4', 'totrat3','totrat2','totrat1','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3','tot1','tot2','tot3','tot4','tot5'));
     }
 
     

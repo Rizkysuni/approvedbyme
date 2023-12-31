@@ -136,7 +136,7 @@ class HomeController extends Controller
             $user->signature()->save($signature);
         }
 
-        return redirect()->route('profile')->with('success', 'Tanda tangan berhasil ditambahkan.');
+        return redirect()->route('profile')->with('successttd', 'Tanda tangan berhasil ditambahkan.');
     }
 
     public function editFoto(Request $request)
@@ -154,7 +154,7 @@ class HomeController extends Controller
                 'gambar' => $imageName,
             ]);
 
-            return redirect()->route('profile')->with('success', 'Foto Profile berhasil diubah!');
+            return redirect()->route('profile')->with('successfoto', 'Foto Profile berhasil diubah!');
         }
 
         return redirect()->route('profile')->with('error', 'Gagal mengubah foto profil!');
