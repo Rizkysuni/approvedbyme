@@ -60,7 +60,8 @@
         <p class="text-2xl text-center mt-10">Nilai Standar Deviasi</p>
         <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
             {{ $akarRatakdrt }}
-
+            {{$kuadrat1}}
+            {{$totrat1}}
         </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10 mx-auto">

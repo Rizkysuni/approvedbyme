@@ -942,10 +942,23 @@ class SemproController extends Controller
         $totalNilaiKeseluruhan = $totrat5 + $totrat4 + $totrat3 + $totrat2 + $totrat1;
         $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
      
-        $totalStd = $totrat5 + $totrat4 + $totrat3 + $totrat2 ;
-        $rataStd = $totalStd / 4;
+        $totalStd = $totrat1 + $totrat5 + $totrat4 + $totrat3 + $totrat2 ;
+        $rataStd = $totalStd / 5;
 
-        $slsh1 = $totrat1 - $rataStd;
+        if($totrat1 = 0) {
+            $slsh1 = 0;
+        } else {
+            
+            $slsh1 = $totrat1 - $rataStd;
+        }
+
+        if($totrat2 = 0) {
+            $slsh2 = 0;
+            
+        } else {
+            $slsh2 = $totrat2 - $rataStd;
+        }
+        
         $slsh2 = $totrat2 - $rataStd;
         $slsh3 = $totrat3 - $rataStd;
         $slsh4 = $totrat4 - $rataStd;
@@ -958,7 +971,7 @@ class SemproController extends Controller
         $kuadrat5 = $slsh5 * $slsh5;
 
         $totkdrt = $kuadrat1 + $kuadrat2 + $kuadrat3 + $kuadrat4 + $kuadrat5;
-        $ratakdrt = $totkdrt / 4;
+        $ratakdrt = $totkdrt / 5;
 
         // Get the square root of $ratakdrt
         $akarRatakdrt = sqrt($ratakdrt);
@@ -970,7 +983,7 @@ class SemproController extends Controller
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
         return view('/dosen/pen05', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
          'totrat5', 'totrat4', 'totrat3','totrat2','totrat1','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2',
-         'namaPenguji3','tot1','tot2','tot3','tot4','tot5','akarRatakdrt','id1','id2','id3','id4','id5'));
+         'namaPenguji3','tot1','tot2','tot3','tot4','tot5','akarRatakdrt','id1','id2','id3','id4','id5','kuadrat1','totrat1'));
     }
 
     
