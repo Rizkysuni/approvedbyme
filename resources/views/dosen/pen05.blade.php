@@ -57,6 +57,12 @@
 
         </div>
 
+        <p class="text-2xl text-center mt-10">Nilai Standar Deviasi</p>
+        <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
+            {{ $akarRatakdrt }}
+
+        </div>
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10 mx-auto">
       <table class=" text-sm text-left text-gray-500 ">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -65,6 +71,7 @@
                 <th scope="col" class="px-6 py-3 w-1/3">Nama Dosen</th>
                 <th scope="col" class="px-6 py-3">Status Penguji</th>
                 <th scope="col" class="px-6 py-3">Nilai</th>
+                <th scope="col" class="px-6 py-3">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +86,20 @@
                     <td class="px-6 py-4">
                     {{ $totrat1 ?? 'Nilai belum diinput' }}
                     </td>
+                    <td class="px-6 py-4">
+                    @if($totrat1) <!-- Replace $dataExists with your actual condition -->
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('sempro.hapusNilai', ['id' => $id1]) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ml-2">
+                                <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    @else
+                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    @endif
+                    </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
                     <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">2</td>
@@ -90,6 +111,10 @@
                     </td>
                     <td class="px-6 py-4">
                     {{ $totrat2 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                     hapus
+                     {{$id2}}
                     </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -103,6 +128,9 @@
                     <td class="px-6 py-4">
                     {{ $totrat3 ?? 'Nilai belum diinput' }}
                     </td>
+                    <td class="px-6 py-4">
+                     hapus{{$id3}}
+                    </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
                     <td scope="row" class="px-6 py-4 font-medium text-black-900 whitespace-nowrap">4</td>
@@ -114,6 +142,9 @@
                     </td>
                     <td class="px-6 py-4">
                     {{ $totrat4 ?? 'Nilai belum diinput' }}
+                    </td>
+                    <td class="px-6 py-4">
+                     hapus{{$id4}}
                     </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -127,17 +158,22 @@
                     <td class="px-6 py-4">
                     {{ $totrat5 ?? 'Nilai belum diinput' }}
                     </td>
+                    <td class="px-6 py-4">
+                     hapus{{$id5}}
+                    </td>
                 </tr>
         </tbody>
         <tfoot>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
                 <td class="px-6 py-4"></td>
+                <td class="px-6 py-4"></td>
                 <td class="px-6 py-4">Jumlah:</td>
                 <td class="px-6 py-4">{{ $totalNilaiKeseluruhan }}</td>
             </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"></td>
+                <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4">Rata - rata:</td>
                 <td class="px-6 py-4">{{ $totalRerataNilaiKeseluruhan }}</td>

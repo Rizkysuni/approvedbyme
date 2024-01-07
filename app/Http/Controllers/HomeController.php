@@ -34,7 +34,7 @@ class HomeController extends Controller
     public function index(): View
     {
 
-        $sempros = Sempro::all();
+        $sempros = Sempro::orderBy('created_at', 'DESC')->get();
         return view('home', compact('sempros'));
     } 
   
@@ -53,6 +53,7 @@ class HomeController extends Controller
                     ->orWhere('penguji1', $dosenId)
                     ->orWhere('penguji2', $dosenId)
                     ->orWhere('penguji3', $dosenId)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
         // Loop melalui $sempros dan tambahkan properti DateTime
         foreach ($sempros as $sempro) {
@@ -76,6 +77,7 @@ class HomeController extends Controller
                     ->orWhere('penguji1', $dosenId)
                     ->orWhere('penguji2', $dosenId)
                     ->orWhere('penguji3', $dosenId)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
         foreach ($sempros as $sempro) {
             $semproDateTimeStr = $sempro->tglSempro . ' ' . $sempro->jam;

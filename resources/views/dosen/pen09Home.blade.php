@@ -56,7 +56,7 @@
                 {{ $semhas->seminar}}
                 </td>
                 <td>
-                      <a href="{{ route('dosen.pen09', ['id' => $semhas->id]) }}">Pen09</a>
+                      <a class="text-green-500" href="{{ route('dosen.pen09', ['id' => $semhas->id]) }}">Pen09</a>
                   </td>
             </tr>
             @endforeach 

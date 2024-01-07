@@ -56,15 +56,15 @@
                 </td>
                 <td class="px-6 py-4">
                     @if ($sempro->seminar === 'Seminar Proposal')
-                        <a href="{{ route('dosen.pen05', ['id' => $sempro->id]) }}">Berita Acara</a>
+                        <a class="text-green-500" href="{{ route('dosen.pen05', ['id' => $sempro->id]) }}">Berita Acara</a>
                     </td>
                     @endif
                     @if ($sempro->seminar === 'Seminar Hasil')
-                        <a href="{{ route('dosen.pen09', ['id' => $sempro->id]) }}">Berita Acara</a>
+                        <a class="text-green-500" href="{{ route('dosen.pen09', ['id' => $sempro->id]) }}">Berita Acara</a>
                     </td>
                     @endif
                     @if ($sempro->seminar === 'Sidang Akhir')
-                        <a href="{{ route('dosen.pen14', ['id' => $sempro->id]) }}">Berita Acara</a>
+                        <a class="text-green-500" href="{{ route('dosen.pen14', ['id' => $sempro->id]) }}">Berita Acara</a>
                     </td>
                     @endif
             </tr>

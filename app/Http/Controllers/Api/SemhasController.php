@@ -627,7 +627,7 @@ class SemhasController extends Controller
         ]);
 
         // Ambil tanda tangan dosen penguji 3
-        $ttd5 = Signature::where('user_id', $penguji2Id)->first();
+        $ttd5 = Signature::where('user_id', $penguji3Id)->first();
 
         // Jika tanda tangan ditemukan, dapatkan path tanda tangan
         $ttd5Path = $ttd5 ? public_path('images/' . $ttd5->signature_path) : null;

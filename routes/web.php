@@ -80,6 +80,7 @@ Admin Routes List
     Route::get('/daftarDosen', [HomeController::class, 'daftarDosen'])->name('daftarDosen');
     Route::delete('/hapusDosen/{id}', [HomeController::class, 'destroy'])->name('dosen.destroy');
     Route::post('updateRole', [HomeController::class, 'updateKoor'])->name('updateKoor');
+    Route::delete('/hapusNilai/{id}', [SemproController::class, 'hapusNilai'])->name('sempro.hapusNilai');
 // });
   
 /*------------------------------------------

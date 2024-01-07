@@ -130,15 +130,29 @@ const inputFields = document.querySelectorAll('input');
 inputFields.forEach(inputField => {
   inputField.addEventListener('change', () => {
     // Get the values of the input fields
-    const nilai_1 = parseInt(document.querySelector('#nilai_1').value) || 0;
-    const nilai_2 = parseInt(document.querySelector('#nilai_2').value) || 0;
-    const nilai_3 = parseInt(document.querySelector('#nilai_3').value) || 0;
-    const nilai_4 = parseInt(document.querySelector('#nilai_4').value) || 0;
-    const nilai_5 = parseInt(document.querySelector('#nilai_5').value) || 0;
-    const nilai_6 = parseInt(document.querySelector('#nilai_6').value) || 0;
-    const nilai_7 = parseInt(document.querySelector('#nilai_7').value) || 0;
-    const nilai_8 = parseInt(document.querySelector('#nilai_8').value) || 0;
-    const nilai_9 = parseInt(document.querySelector('#nilai_9').value) || 0;
+    const nilai_1 = parseInt(document.querySelector('#nilai_1').value);
+    const nilai_2 = parseInt(document.querySelector('#nilai_2').value);
+    const nilai_3 = parseInt(document.querySelector('#nilai_3').value);
+    const nilai_4 = parseInt(document.querySelector('#nilai_4').value);
+    const nilai_5 = parseInt(document.querySelector('#nilai_5').value);
+    const nilai_6 = parseInt(document.querySelector('#nilai_6').value);
+    const nilai_7 = parseInt(document.querySelector('#nilai_7').value);
+    const nilai_8 = parseInt(document.querySelector('#nilai_8').value);
+    const nilai_9 = parseInt(document.querySelector('#nilai_9').value);
+
+    // Validate input values to be between 0 and 100
+    const validateValue = (value) => Math.min(100, Math.max(0, value));
+
+    // Update input values with validated values
+    document.querySelector('#nilai_1').value = validateValue(nilai_1);
+    document.querySelector('#nilai_2').value = validateValue(nilai_2);
+    document.querySelector('#nilai_3').value = validateValue(nilai_3);
+    document.querySelector('#nilai_4').value = validateValue(nilai_4);
+    document.querySelector('#nilai_5').value = validateValue(nilai_5);
+    document.querySelector('#nilai_6').value = validateValue(nilai_6);
+    document.querySelector('#nilai_7').value = validateValue(nilai_7);
+    document.querySelector('#nilai_8').value = validateValue(nilai_8);
+    document.querySelector('#nilai_9').value = validateValue(nilai_9);
 
     const n1 = nilai_1 * 0.1;
     const n2 = nilai_2 * 0.05;

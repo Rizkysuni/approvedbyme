@@ -438,7 +438,7 @@ class SemproController extends Controller
         ]);
 
         // Ambil tanda tangan dosen penguji 3
-        $ttd5 = Signature::where('user_id', $penguji2Id)->first();
+        $ttd5 = Signature::where('user_id', $penguji3Id)->first();
 
         // Jika tanda tangan ditemukan, dapatkan path tanda tangan
         $ttd5Path = $ttd5 ? public_path('images/' . $ttd5->signature_path) : null;
@@ -811,8 +811,9 @@ class SemproController extends Controller
         $nilaiDospem1 = NilaiSempro::where('id_sempro', $id)
         ->where('id_dosen', $dospem1Id)
         ->first();
+        
         if ($nilaiDospem1) {
-
+        $id1 = $nilaiDospem1->id;
         $nilai1dospem1 = $nilaiDospem1->nilai_1;
         $nilai2dospem1 = $nilaiDospem1->nilai_2;
         $nilai3dospem1 = $nilaiDospem1->nilai_3;
@@ -822,22 +823,23 @@ class SemproController extends Controller
         $totrat1 = $tot1 / 5;
         } else {
             // Data tidak ditemukan
-            $nilai1dospem1 = null;
-            $nilai2dospem1 = null;
-            $nilai3dospem1 = null;
-            $nilai4dospem1 = null;
-            $nilai5dospem1 = null;
+            $nilai1dospem1 = 0;
+            $nilai2dospem1 = 0;
+            $nilai3dospem1 = 0;
+            $nilai4dospem1 = 0;
+            $nilai5dospem1 = 0;
 
-            $tot1 = null;
-            $totrat1 = null;
+            $tot1 = 0;
+            $totrat1 = 0;
+            $id1 = 0;
         }
 
         $nilaiDospem2 = NilaiSempro::where('id_sempro', $id)
         ->where('id_dosen', $dospem2Id)
         ->first(); // Mengambil item pertama dari hasil query
-
+        $id2 = $nilaiDospem2->id;
         if ($nilaiDospem2) {
-            // Data ditemukan
+            // Data ditemukans
             $nilai1dospem2 = $nilaiDospem2->nilai_1;
             $nilai2dospem2 = $nilaiDospem2->nilai_2;
             $nilai3dospem2 = $nilaiDospem2->nilai_3;
@@ -862,6 +864,7 @@ class SemproController extends Controller
         $nilaiPenguji1 = NilaiSempro::where('id_sempro', $id)
         ->where('id_dosen', $penguji1Id)
         ->first();
+        $id3 = $nilaiPenguji1->id;
         if ($nilaiPenguji1) {
 
         $nilai1Penguji1 = $nilaiPenguji1->nilai_1;
@@ -888,6 +891,7 @@ class SemproController extends Controller
         $nilaiPenguji2 = NilaiSempro::where('id_sempro', $id)
         ->where('id_dosen', $penguji2Id)
         ->first();
+        $id4 = $nilaiPenguji2->id;
         if ($nilaiPenguji2) {
             
         $nilai1Penguji2 = $nilaiPenguji2->nilai_1;
@@ -913,6 +917,7 @@ class SemproController extends Controller
         $nilaiPenguji3 = NilaiSempro::where('id_sempro', $id)
         ->where('id_dosen', $penguji3Id)
         ->first();
+        $id5 = $nilaiPenguji3->id;
         if ($nilaiPenguji3) {
         $nilai1Penguji3 = $nilaiPenguji3->nilai_1;
         $nilai2Penguji3 = $nilaiPenguji3->nilai_2;
@@ -937,6 +942,26 @@ class SemproController extends Controller
         $totalNilaiKeseluruhan = $totrat5 + $totrat4 + $totrat3 + $totrat2 + $totrat1;
         $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
      
+        $totalStd = $totrat5 + $totrat4 + $totrat3 + $totrat2 ;
+        $rataStd = $totalStd / 4;
+
+        $slsh1 = $totrat1 - $rataStd;
+        $slsh2 = $totrat2 - $rataStd;
+        $slsh3 = $totrat3 - $rataStd;
+        $slsh4 = $totrat4 - $rataStd;
+        $slsh5 = $totrat5 - $rataStd;
+
+        $kuadrat1 = $slsh1 * $slsh1;
+        $kuadrat2 = $slsh2 * $slsh2;
+        $kuadrat3 = $slsh3 * $slsh3;
+        $kuadrat4 = $slsh4 * $slsh4;
+        $kuadrat5 = $slsh5 * $slsh5;
+
+        $totkdrt = $kuadrat1 + $kuadrat2 + $kuadrat3 + $kuadrat4 + $kuadrat5;
+        $ratakdrt = $totkdrt / 4;
+
+        // Get the square root of $ratakdrt
+        $akarRatakdrt = sqrt($ratakdrt);
 
         // Cek apakah sempro ditemukan
         if (!$sempro) {
@@ -944,7 +969,8 @@ class SemproController extends Controller
         }
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
         return view('/dosen/pen05', compact('sempro', 'nilaiDosen', 'totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
-         'totrat5', 'totrat4', 'totrat3','totrat2','totrat1','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3','tot1','tot2','tot3','tot4','tot5'));
+         'totrat5', 'totrat4', 'totrat3','totrat2','totrat1','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2',
+         'namaPenguji3','tot1','tot2','tot3','tot4','tot5','akarRatakdrt','id1','id2','id3','id4','id5'));
     }
 
     
@@ -1095,6 +1121,14 @@ class SemproController extends Controller
         // Anda dapat menambahkan logika lain di sini, seperti pengecekan peran admin
 
         return redirect()->route('admin.home')->with('success', 'Data sempro berhasil diperbarui.');
+    }
+
+    public function hapusNilai($id) {
+        $sempro = NilaiSempro::findOrFail($id); // Mengambil data sempro berdasarkan ID
+
+        $sempro->delete();
+
+        return view('/dosen/pen05')->with('success', 'Seminar deleted successfully');
     }
     
 }

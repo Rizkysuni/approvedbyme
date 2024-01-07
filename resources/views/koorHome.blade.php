@@ -7,7 +7,7 @@
 
     <br>
     <div class="font-lato relative overflow-x-auto">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table id="tabel-data" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
@@ -42,7 +42,14 @@
             @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-            <tr  onclick="window.location.href='{{ route('beriNilai', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @php
+                    $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                @endphp
+                @if ($timeDifference < 4)
+                <tr  onclick="window.location.href='{{ route('beriNilai', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @else
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @endif
             @else
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             @endif
@@ -51,7 +58,14 @@
             @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-            <tr  onclick="window.location.href='{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @php
+                    $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                @endphp
+                @if ($timeDifference < 4)
+                <tr  onclick="window.location.href='{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @else
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @endif
             @else
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">       
             @endif
@@ -60,7 +74,14 @@
             @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-            <tr  onclick="window.location.href='{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @php
+                    $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                @endphp
+                @if ($timeDifference < 4)
+                <tr  onclick="window.location.href='{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}'" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @else
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @endif
             @else
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             @endif
@@ -90,8 +111,15 @@
                     @if ($sempro->seminar === 'Seminar Proposal')
                         @if (App\Models\NilaiSempro::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-                            <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+                            @php
+                                $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                            @endphp
+                            @if ($timeDifference < 4)
+                                <a href="{{ route('beriNilai', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                            @else
+                                <p class="text-red-500">Waktu telah berakhir</p>
+                            @endif
                             @else
                             <p class="text-red-500">Belum Waktunya</p>
                         @endif
@@ -100,17 +128,31 @@
                     @elseif ($sempro->seminar === 'Seminar Hasil')
                         @if (App\Models\NilaiSemhas::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-                            <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
-                        @else
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+                            @php
+                                $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                            @endphp
+                            @if ($timeDifference < 4)
+                                <a href="{{ route('beriNilaiSemhas', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                            @else
+                                <p class="text-red-500">Waktu telah berakhir</p>
+                            @endif
+                            @else
                             <p class="text-red-500">Belum Waktunya</p>
                         @endif
                         
                     @elseif ($sempro->seminar === 'Sidang Akhir')
                         @if (App\Models\NilaiSidang::where('id_dosen', Auth::user()->id)->where('id_sempro', $sempro->id)->exists())
                             <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
-                            <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                        @elseif ($currentTime->greaterThanOrEqualTo($sempro->semproDateTime))
+                            @php
+                                $timeDifference = now()->diffInHours($sempro->semproDateTime);
+                            @endphp
+                            @if ($timeDifference < 4)
+                                <a href="{{ route('beriNilaiSidang', ['id' => $sempro->id]) }}" class="text-blue-500 md:hover:text-blue-700">Beri Nilai</a>
+                            @else
+                                <p class="text-red-500">Waktu telah berakhir</p>
+                            @endif
                         @else
                             <p class="text-red-500">Belum Waktunya</p>
                         @endif
@@ -122,5 +164,14 @@
         </tbody>
     </table>
 </div>
+
+<script>
+        $(document).ready(function(){
+            $('#tabel-data').DataTable({
+            responsive: true
+        });
+            
+        });
+    </script>
 
 @endsection

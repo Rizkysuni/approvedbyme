@@ -114,6 +114,17 @@ inputFields.forEach(inputField => {
     const nilai_5 = parseInt(document.querySelector('#nilai_5').value) || 0;
     const nilai_6 = parseInt(document.querySelector('#nilai_6').value) || 0;
 
+    // Validate input values to be between 0 and 100
+    const validateValue = (value) => Math.min(100, Math.max(0, value));
+
+    // Update input values with validated values
+    document.querySelector('#nilai_1').value = validateValue(nilai_1);
+    document.querySelector('#nilai_2').value = validateValue(nilai_2);
+    document.querySelector('#nilai_3').value = validateValue(nilai_3);
+    document.querySelector('#nilai_4').value = validateValue(nilai_4);
+    document.querySelector('#nilai_5').value = validateValue(nilai_5);
+    document.querySelector('#nilai_6').value = validateValue(nilai_6);
+
     const n1 = nilai_1 * 0.25;
     const n2 = nilai_2 * 0.1;
     const n3 = nilai_3 * 0.2;
@@ -122,8 +133,9 @@ inputFields.forEach(inputField => {
     const n6 = nilai_6 * 0.25;
 
     const total = n1 + n2 + n3 + n4 + n5 + n6;
+    const total1 = total.toFixed(2)
 
-    document.querySelector('#total').textContent = total;
+    document.querySelector('#total').textContent = total1;
   });
 });
 </script>
