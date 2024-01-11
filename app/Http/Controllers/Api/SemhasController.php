@@ -226,7 +226,7 @@ class SemhasController extends Controller
         ->where('id_dosen', $dospem1Id)
         ->first();
         if ($nilaiDospem1) {
-
+            $id1 = $nilaiDospem1->id;
         $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.25;
         $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.1;
         $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.2;
@@ -244,6 +244,7 @@ class SemhasController extends Controller
             $nilai6dospem1 = null;
 
             $tot1 = null;
+            $id1 = null;
         }
 
         // nilai dospem 2
@@ -251,7 +252,7 @@ class SemhasController extends Controller
         ->where('id_dosen', $dospem2Id)
         ->first();
         if ($nilaiDospem2) {
-
+            $id2 = $nilaiDospem2->id;
         $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.25;
         $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.1;
         $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.2;
@@ -269,6 +270,7 @@ class SemhasController extends Controller
             $nilai6dospem2 = null;
 
             $tot2 = null;
+            $id2 = null;
         }
 
         // nilai penguji 1
@@ -276,7 +278,7 @@ class SemhasController extends Controller
         ->where('id_dosen', $penguji1Id)
         ->first();
         if ($nilaiPenguji1) {
-
+            $id3 = $nilaiPenguji1->id;
         $nilai1Penguji1 = $nilaiPenguji1->nilai_1 * 0.25;
         $nilai2Penguji1 = $nilaiPenguji1->nilai_2 * 0.1;
         $nilai3Penguji1 = $nilaiPenguji1->nilai_3 * 0.2;
@@ -294,6 +296,7 @@ class SemhasController extends Controller
             $nilai6Penguji1 = null;
 
             $tot3 = null;
+            $id3 = null;
         }
 
         // nilai penguji 2
@@ -301,7 +304,7 @@ class SemhasController extends Controller
         ->where('id_dosen', $penguji2Id)
         ->first();
         if ($nilaiPenguji2) {
-
+            $id4 = $nilaiPenguji2->id;
         $nilai1Penguji2 = $nilaiPenguji2->nilai_1 * 0.25;
         $nilai2Penguji2 = $nilaiPenguji2->nilai_2 * 0.1;
         $nilai3Penguji2 = $nilaiPenguji2->nilai_3 * 0.2;
@@ -319,6 +322,7 @@ class SemhasController extends Controller
             $nilai6Penguji2 = null;
 
             $tot4 = null;
+            $id4 = null;
         }
 
         // nilai penguji 3
@@ -326,7 +330,7 @@ class SemhasController extends Controller
         ->where('id_dosen', $penguji3Id)
         ->first();
         if ($nilaiPenguji3) {
-
+            $id5 = $nilaiPenguji3->id;
         $nilai1Penguji3 = $nilaiPenguji3->nilai_1 * 0.25;
         $nilai2Penguji3 = $nilaiPenguji3->nilai_2 * 0.1;
         $nilai3Penguji3 = $nilaiPenguji3->nilai_3 * 0.2;
@@ -344,10 +348,92 @@ class SemhasController extends Controller
             $nilai6Penguji3 = null;
 
             $tot5 = null;
+            $id5 = null;
         }
 
-        $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
-        $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5; 
+        // Inisialisasi nilai awal
+        $totalNilaiKeseluruhan = 0;
+        $jumlahPembagi = 0;
+
+        // Cek dan tambahkan nilai totrat1
+        if ($tot1 !== null) {
+            $totalNilaiKeseluruhan += $tot1;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat2
+        if ($tot2 !== null) {
+            $totalNilaiKeseluruhan += $tot2;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat3
+        if ($tot3 !== null) {
+            $totalNilaiKeseluruhan += $tot3;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat4
+        if ($tot4 !== null) {
+            $totalNilaiKeseluruhan += $tot4;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat5
+        if ($tot5 !== null) {
+            $totalNilaiKeseluruhan += $tot5;
+            $jumlahPembagi++;
+        }
+
+        // Hitung rata-rata
+        $totalRerataNilaiKeseluruhan = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+        $rataStd = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+
+        if ($tot1 !== null) {
+            $slsh1 = $tot1 - $rataStd;
+            $kuadrat1 = $slsh1 * $slsh1;
+        } else {
+            $slsh1 = 0;
+            $kuadrat1 = 0;
+        }
+
+        if ($tot2 !== null) {
+            $slsh2 = $tot2 - $rataStd;
+            $kuadrat2 = $slsh2 * $slsh2;
+        } else {
+            $slsh2 = 0;
+            $kuadrat2 = 0;
+        }
+
+        if ($tot3 !== null) {
+            $slsh3 = $tot3 - $rataStd;
+            $kuadrat3 = $slsh3 * $slsh3;
+        } else {
+            $slsh3 = 0;
+            $kuadrat3 = 0;
+        }
+
+        if ($tot4 !== null) {
+            $slsh4 = $tot4 - $rataStd;
+            $kuadrat4 = $slsh4 * $slsh4;
+        } else {
+            $slsh4 = 0;
+            $kuadrat4 = 0;
+        }
+
+        if ($tot5 !== null) {
+            $slsh5 = $tot5 - $rataStd;
+            $kuadrat5 = $slsh5 * $slsh5;
+        } else {
+            $slsh5 = 0;
+            $kuadrat5 = 0;
+        }
+
+        $totkdrt = $kuadrat1 + $kuadrat2 + $kuadrat3 + $kuadrat4 + $kuadrat5;
+        $ratakdrt = $jumlahPembagi > 0 ? $totkdrt / $jumlahPembagi : 0;
+
+        // Get the square root of $ratakdrt
+        $akarRatakdrt = sqrt($ratakdrt);
 
         // Cek apakah sempro ditemukan
         if (!$sempro) {
@@ -357,7 +443,8 @@ class SemhasController extends Controller
 
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro
         return view('/dosen/pen09', compact('sempro','nilaiDosen','totalNilaiKeseluruhan', 'totalRerataNilaiKeseluruhan',
-        'tot1','tot2','tot3','tot4','tot5','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3'));
+        'tot1','tot2','tot3','tot4','tot5','namaDospem1','namaDospem2','namaPenguji1','namaPenguji2','namaPenguji3','akarRatakdrt'
+        ,'id1','id2','id3','id4','id5'));
     }
 
     public function sendDataToCoordinator()
@@ -538,8 +625,42 @@ class SemhasController extends Controller
                 $tot5 = null;
             }
     
-            $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
-            $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5; 
+            // Inisialisasi nilai awal
+        $totalNilaiKeseluruhan = 0;
+        $jumlahPembagi = 0;
+
+        // Cek dan tambahkan nilai totrat1
+        if ($tot1 !== null) {
+            $totalNilaiKeseluruhan += $tot1;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat2
+        if ($tot2 !== null) {
+            $totalNilaiKeseluruhan += $tot2;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat3
+        if ($tot3 !== null) {
+            $totalNilaiKeseluruhan += $tot3;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat4
+        if ($tot4 !== null) {
+            $totalNilaiKeseluruhan += $tot4;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat5
+        if ($tot5 !== null) {
+            $totalNilaiKeseluruhan += $tot5;
+            $jumlahPembagi++;
+        }
+
+        // Hitung rata-rata
+        $totalRerataNilaiKeseluruhan = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
     
             // Cek apakah sempro ditemukan
             if (!$sempro) {
@@ -805,8 +926,42 @@ class SemhasController extends Controller
             $tot5 = null;
         }
 
-        $totalNilaiKeseluruhan = $tot5 + $tot4 + $tot3 + $tot2 + $tot1;
-        $totalRerataNilaiKeseluruhan = $totalNilaiKeseluruhan / 5;
+        // Inisialisasi nilai awal
+        $totalNilaiKeseluruhan = 0;
+        $jumlahPembagi = 0;
+
+        // Cek dan tambahkan nilai totrat1
+        if ($tot1 !== null) {
+            $totalNilaiKeseluruhan += $tot1;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat2
+        if ($tot2 !== null) {
+            $totalNilaiKeseluruhan += $tot2;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat3
+        if ($tot3 !== null) {
+            $totalNilaiKeseluruhan += $tot3;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat4
+        if ($tot4 !== null) {
+            $totalNilaiKeseluruhan += $tot4;
+            $jumlahPembagi++;
+        }
+
+        // Cek dan tambahkan nilai totrat5
+        if ($tot5 !== null) {
+            $totalNilaiKeseluruhan += $tot5;
+            $jumlahPembagi++;
+        }
+
+        // Hitung rata-rata
+        $totalRerataNilaiKeseluruhan = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
 
         // nilai dospem 1
         $templateProcessor->setValue("total", $totalNilaiKeseluruhan);
@@ -977,5 +1132,13 @@ class SemhasController extends Controller
 
         // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
         return $totalRerataNilaiKeseluruhan;
+    }
+
+    public function hapusNilai($id) {
+        $sempro = NilaiSemhas::findOrFail($id); // Mengambil data sempro berdasarkan ID
+
+        $sempro->delete();
+
+        return redirect()->back()->with('success', 'Seminar deleted successfully');
     }
 }

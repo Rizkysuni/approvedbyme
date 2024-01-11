@@ -59,9 +59,7 @@
 
         <p class="text-2xl text-center mt-10">Nilai Standar Deviasi</p>
         <div class=" p-4 rounded-lg mb-6 content-center mx-auto">
-            {{ $akarRatakdrt }}
-            {{$kuadrat1}}
-            {{$totrat1}}
+            {{$akarRatakdrt}}
         </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10 mx-auto">
@@ -114,8 +112,18 @@
                     {{ $totrat2 ?? 'Nilai belum diinput' }}
                     </td>
                     <td class="px-6 py-4">
-                     hapus
-                     {{$id2}}
+                    @if($totrat2) <!-- Replace $dataExists with your actual condition -->
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('sempro.hapusNilai', ['id' => $id2]) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ml-2">
+                                <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    @else
+                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    @endif
                     </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -130,7 +138,18 @@
                     {{ $totrat3 ?? 'Nilai belum diinput' }}
                     </td>
                     <td class="px-6 py-4">
-                     hapus{{$id3}}
+                    @if($totrat3) <!-- Replace $dataExists with your actual condition -->
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('sempro.hapusNilai', ['id' => $id3]) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ml-2">
+                                <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    @else
+                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    @endif
                     </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -145,7 +164,18 @@
                     {{ $totrat4 ?? 'Nilai belum diinput' }}
                     </td>
                     <td class="px-6 py-4">
-                     hapus{{$id4}}
+                    @if($totrat4) <!-- Replace $dataExists with your actual condition -->
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('sempro.hapusNilai', ['id' => $id4]) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ml-2">
+                                <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    @else
+                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    @endif
                     </td>
                 </tr>
             <tr class="bg-white border-b dark:bg-white-800 dark:border-black-700">
@@ -160,7 +190,18 @@
                     {{ $totrat5 ?? 'Nilai belum diinput' }}
                     </td>
                     <td class="px-6 py-4">
-                     hapus{{$id5}}
+                    @if($totrat5) <!-- Replace $dataExists with your actual condition -->
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('sempro.hapusNilai', ['id' => $id5]) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ml-2">
+                                <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    @else
+                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    @endif
                     </td>
                 </tr>
         </tbody>
@@ -197,7 +238,7 @@
 
     <div class="flex justify-end mt-6 mx-auto">
         <!-- Tombol Kirim -->
-        @if ($tot1 > 0 && $tot2 > 0 && $tot3 > 0 && $tot4 > 0 && $tot5 > 0)
+        @if (($tot1 > 0 ? 1 : 0) + ($tot2 > 0 ? 1 : 0) + ($tot3 > 0 ? 1 : 0) + ($tot4 > 0 ? 1 : 0) + ($tot5 > 0 ? 1 : 0) >= 4 && $akarRatakdrt < 5)
         <form action="{{ route('sendDataToCoordinator') }}" method="POST">
             @csrf
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">

@@ -81,6 +81,8 @@ Admin Routes List
     Route::delete('/hapusDosen/{id}', [HomeController::class, 'destroy'])->name('dosen.destroy');
     Route::post('updateRole', [HomeController::class, 'updateKoor'])->name('updateKoor');
     Route::delete('/hapusNilai/{id}', [SemproController::class, 'hapusNilai'])->name('sempro.hapusNilai');
+    Route::delete('/hapusNilaiSemhas/{id}', [SemhasController::class, 'hapusNilai'])->name('semhas.hapusNilai');
+    Route::delete('/hapusNilaiSidang/{id}', [SidangController::class, 'hapusNilai'])->name('sidang.hapusNilai');
 // });
   
 /*------------------------------------------

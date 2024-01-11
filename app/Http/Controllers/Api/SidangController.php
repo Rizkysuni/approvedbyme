@@ -1147,4 +1147,12 @@ class SidangController extends Controller
         return response()->download($pdfOutputFilePath, $pdfOutputFileName);
       
     }
+
+    public function hapusNilai($id) {
+        $sempro = NilaiSidang::findOrFail($id); // Mengambil data sempro berdasarkan ID
+
+        $sempro->delete();
+
+        return redirect()->back()->with('success', 'Seminar deleted successfully');
+    }
 }

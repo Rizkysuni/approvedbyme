@@ -26,21 +26,21 @@
                     <td class="px-6 py-4">{{ $mahasiswa->seminar }}</td>
                     <td class="px-6 py-4">
                         @if ($mahasiswa->seminar === 'Seminar Proposal')
-                            @if ($mahasiswa->jumlah_nilai_sempro == 5)
+                            @if ($mahasiswa->status_nilai == 'selesai dinilai')
                                 <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($mahasiswa->jumlah_nilai_sempro < 5)
+                            @else 
                                 <p class="text-red-500">Belum Dinilai</p>
                             @endif
                         @elseif ($mahasiswa->seminar === 'Seminar Hasil')
-                            @if ($mahasiswa->jumlah_nilai_semhas == 5)
+                            @if ($mahasiswa->status_nilai == 'selesai dinilai')
                                 <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($mahasiswa->jumlah_nilai_semhas < 5)
+                            @else
                                 <p class="text-red-500">Belum Dinilai</p>
                             @endif
                         @elseif ($mahasiswa->seminar === 'Sidang Akhir')
-                            @if ($mahasiswa->jumlah_nilai_sidang == 5)
+                            @if ($mahasiswa->status_nilai == 'selesai dinilai')
                                 <p class="text-green-500">Sudah Dinilai</p>
-                            @elseif ($mahasiswa->jumlah_nilai_sidang < 5)
+                            @else 
                                 <p class="text-red-500">Belum Dinilai</p>
                             @endif
                         @endif
