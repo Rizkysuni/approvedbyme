@@ -118,12 +118,12 @@
                     </div>
                 </div>
             </div>
-            <!-- <button type="submit" class="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approved</button> -->
-        </form>
+            </form>
     </div>
 </div>
 </div>
 
+@if (Auth::user()->id === $sempro->dospem1 || Auth::user()->id === $sempro->dospem2)
 <script>
 // Add a change event listener to each input field
 const inputFields = document.querySelectorAll('input');
@@ -149,11 +149,13 @@ inputFields.forEach(inputField => {
     document.querySelector('#nilai_3').value = validateValue(nilai_3);
     document.querySelector('#nilai_4').value = validateValue(nilai_4);
     document.querySelector('#nilai_5').value = validateValue(nilai_5);
-    document.querySelector('#nilai_6').value = validateValue(nilai_6);
+    document.querySelector('#nilai_6').value = validateValue(nilai_6); 
     document.querySelector('#nilai_7').value = validateValue(nilai_7);
     document.querySelector('#nilai_8').value = validateValue(nilai_8);
     document.querySelector('#nilai_9').value = validateValue(nilai_9);
 
+
+    // Hitung nilai komponen
     const n1 = nilai_1 * 0.1;
     const n2 = nilai_2 * 0.05;
     const n3 = nilai_3 * 0.05;
@@ -168,10 +170,57 @@ inputFields.forEach(inputField => {
     const komp2 = n5 + n6 + n7;
     const komp3 = n8 + n9;
 
+    // Tampilkan nilai komponen
     document.querySelector('#komp1').textContent = komp1;
     document.querySelector('#komp2').textContent = komp2;
     document.querySelector('#komp3').textContent = komp3;
   });
 });
 </script>
+
+@else
+
+<script>
+// Add a change event listener to each input field
+const inputFields = document.querySelectorAll('input');
+inputFields.forEach(inputField => {
+  inputField.addEventListener('change', () => {
+    // Get the values of the input fields
+    const nilai_5 = parseInt(document.querySelector('#nilai_5').value);
+    const nilai_6 = parseInt(document.querySelector('#nilai_6').value);
+    const nilai_7 = parseInt(document.querySelector('#nilai_7').value);
+    const nilai_8 = parseInt(document.querySelector('#nilai_8').value);
+    const nilai_9 = parseInt(document.querySelector('#nilai_9').value);
+
+    // Validate input values to be between 0 and 100
+    const validateValue = (value) => Math.min(100, Math.max(0, value));
+
+    // Update input values with validated values
+    document.querySelector('#nilai_5').value = validateValue(nilai_5);
+    document.querySelector('#nilai_6').value = validateValue(nilai_6); 
+    document.querySelector('#nilai_7').value = validateValue(nilai_7);
+    document.querySelector('#nilai_8').value = validateValue(nilai_8);
+    document.querySelector('#nilai_9').value = validateValue(nilai_9);
+
+
+    // Hitung nilai komponen
+    const n5 = nilai_5 * 0.2;
+    const n6 = nilai_6 * 0.05;
+    const n7 = nilai_7 * 0.05;
+    const n8 = nilai_8 * 0.3;
+    const n9 = nilai_9 * 0.1;
+
+    const komp2 = n5 + n6 + n7;
+    const komp3 = n8 + n9;
+
+    // Tampilkan nilai komponen
+    document.querySelector('#komp2').textContent = komp2;
+    document.querySelector('#komp3').textContent = komp3;
+  });
+});
+</script>
+
+@endif
+
+
 @endsection

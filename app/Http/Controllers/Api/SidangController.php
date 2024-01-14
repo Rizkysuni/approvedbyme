@@ -233,6 +233,7 @@ class SidangController extends Controller
             ->where('id_dosen', $dospem1Id)
             ->first();
             if ($nilaiDospem1) {
+            $id1 = $nilaiDospem1->id;
             $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.1;
             $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.05;
             $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.05;
@@ -245,6 +246,7 @@ class SidangController extends Controller
             $komp1dp1 = $nilai1dospem1 + $nilai2dospem1 + $nilai3dospem1 + $nilai4dospem1;
             $komp2dp1 = $nilai5dospem1 + $nilai6dospem1 + $nilai7dospem1;
             $komp3dp1 = $nilai8dospem1 + $nilai9dospem1;
+            $tot1 = $komp2dp1 + $komp3dp1;
             } else {
                     // Data tidak ditemukan
                     $nilai1dospem1 = null;
@@ -260,6 +262,8 @@ class SidangController extends Controller
                     $komp1dp1 = null;
                     $komp2dp1 = null;
                     $komp3dp1 =  null;
+                    $tot1 = null;
+                    $id1 = null;
                 }
 
             // nilai dospem 2
@@ -267,6 +271,7 @@ class SidangController extends Controller
             ->where('id_dosen', $dospem2Id)
             ->first();
             if ($nilaiDospem2) {
+            $id2 = $nilaiDospem2->id;
             $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.1;
             $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.05;
             $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.05;
@@ -279,6 +284,7 @@ class SidangController extends Controller
             $komp1dp2 = $nilai1dospem2 + $nilai2dospem2 + $nilai3dospem2 + $nilai4dospem2;
             $komp2dp2 = $nilai5dospem2 + $nilai6dospem2 + $nilai7dospem2;
             $komp3dp2 = $nilai8dospem2 + $nilai9dospem2;
+            $tot2=$komp2dp2+$komp3dp2;
             } else {
                     // Data tidak ditemukan
                     $nilai1dospem2 = null;
@@ -294,6 +300,8 @@ class SidangController extends Controller
                     $komp1dp2 = null;
                     $komp2dp2 = null;
                     $komp3dp2 =  null;
+                    $tot2 = null;
+                    $id2 = null;
                 }
 
             // nilai penguji 1
@@ -301,6 +309,7 @@ class SidangController extends Controller
             ->where('id_dosen', $penguji1Id)
             ->first();
             if ($nilaiPenguji1) {
+            $id3 = $nilaiPenguji1->id;
             $nilai5Penguji1 = $nilaiPenguji1->nilai_5 * 0.2;
             $nilai6Penguji1 = $nilaiPenguji1->nilai_6 * 0.05;
             $nilai7Penguji1 = $nilaiPenguji1->nilai_7 * 0.05;
@@ -308,6 +317,7 @@ class SidangController extends Controller
             $nilai9Penguji1 = $nilaiPenguji1->nilai_9 * 0.1;
             $komp2pg1 = $nilai5Penguji1 + $nilai6Penguji1 + $nilai7Penguji1;
             $komp3pg1 = $nilai8Penguji1 + $nilai9Penguji1;
+            $tot3=$komp2pg1+$komp3pg1;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji1 = null;
@@ -317,13 +327,16 @@ class SidangController extends Controller
                     $nilai9Penguji1 = null;
                     $komp2pg1 = null;
                     $komp3pg1 =  null;
+                    $tot3 = null;
+                    $id3 = null;
                 }
 
             // nilai penguji 2
             $nilaiPenguji2 = NilaiSidang::where('id_sempro', $id)
             ->where('id_dosen', $penguji2Id)
             ->first();
-            if ($nilaiDospem2) {
+            if ($nilaiPenguji2) {
+            $id4 = $nilaiPenguji2->id;
             $nilai5Penguji2 = $nilaiPenguji2->nilai_5 * 0.2;
             $nilai6Penguji2 = $nilaiPenguji2->nilai_6 * 0.05;
             $nilai7Penguji2 = $nilaiPenguji2->nilai_7 * 0.05;
@@ -331,6 +344,7 @@ class SidangController extends Controller
             $nilai9Penguji2 = $nilaiPenguji2->nilai_9 * 0.1;
             $komp2pg2= $nilai5Penguji2 + $nilai6Penguji2 + $nilai7Penguji2;
             $komp3pg2 = $nilai8Penguji2 + $nilai9Penguji2;
+            $tot4 = $komp2pg2 + $komp3pg2;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji2 = null;
@@ -340,6 +354,8 @@ class SidangController extends Controller
                     $nilai9Penguji2 = null;
                     $komp2pg2 = null;
                     $komp3pg2 =  null;
+                    $tot4 = null;
+                    $id4 = null;
                 }
 
             // nilai penguji 3
@@ -347,6 +363,7 @@ class SidangController extends Controller
             ->where('id_dosen', $penguji3Id)
             ->first();
             if ($nilaiPenguji3) {
+            $id5 = $nilaiPenguji3->id;
             $nilai5Penguji3 = $nilaiPenguji3->nilai_5 * 0.2;
             $nilai6Penguji3 = $nilaiPenguji3->nilai_6 * 0.05;
             $nilai7Penguji3 = $nilaiPenguji3->nilai_7 * 0.05;
@@ -354,6 +371,7 @@ class SidangController extends Controller
             $nilai9Penguji3 = $nilaiPenguji3->nilai_9 * 0.1;
             $komp2pg3= $nilai5Penguji3 + $nilai6Penguji3 + $nilai7Penguji3;
             $komp3pg3 = $nilai8Penguji3 + $nilai9Penguji3;
+            $tot5 = $komp2pg3 + $komp3pg3;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji3 = null;
@@ -363,14 +381,96 @@ class SidangController extends Controller
                     $nilai9Penguji3 = null;
                     $komp2pg3 = null;
                     $komp3pg3 =  null;
+                    $tot5 = null;
+                    $id5 = null;
                 }
     
-            $totalNilaiKeseluruhan = 0;
-            $totalRerataNilaiKeseluruhan = 0;
             $jumlahKomponen1 = $komp1dp2 + $komp1dp1;
             $jumlahKomponen2 = $komp2pg3+ $komp2pg2 + $komp2pg1 + $komp2dp1 + $komp2dp2;
             $jumlahKomponen3 = $komp3pg3+ $komp3pg2 + $komp3pg1 + $komp3dp1 + $komp3dp2;
+
+            $totalNilaiKeseluruhan = 0;
+            $jumlahPembagi = 0;
     
+            // Cek dan tambahkan nilai totrat1
+            if ($tot1 !== null) {
+                $totalNilaiKeseluruhan += $tot1;
+                $jumlahPembagi++;
+            }
+    
+            // Cek dan tambahkan nilai totrat2
+            if ($tot2 !== null) {
+                $totalNilaiKeseluruhan += $tot2;
+                $jumlahPembagi++;
+            }
+    
+            // Cek dan tambahkan nilai totrat3
+            if ($tot3 !== null) {
+                $totalNilaiKeseluruhan += $tot3;
+                $jumlahPembagi++;
+            }
+    
+            // Cek dan tambahkan nilai totrat4
+            if ($tot4 !== null) {
+                $totalNilaiKeseluruhan += $tot4;
+                $jumlahPembagi++;
+            }
+    
+            // Cek dan tambahkan nilai totrat5
+            if ($tot5 !== null) {
+                $totalNilaiKeseluruhan += $tot5;
+                $jumlahPembagi++;
+            }
+            
+            // Hitung rata-rata
+            $totalRerataNilaiKeseluruhan = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+            $rataStd = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+
+            if ($tot1 !== null) {
+                $slsh1 = $tot1 - $rataStd;
+                $kuadrat1 = $slsh1 * $slsh1;
+            } else {
+                $slsh1 = 0;
+                $kuadrat1 = 0;
+            }
+    
+            if ($tot2 !== null) {
+                $slsh2 = $tot2 - $rataStd;
+                $kuadrat2 = $slsh2 * $slsh2;
+            } else {
+                $slsh2 = 0;
+                $kuadrat2 = 0;
+            }
+    
+            if ($tot3 !== null) {
+                $slsh3 = $tot3 - $rataStd;
+                $kuadrat3 = $slsh3 * $slsh3;
+            } else {
+                $slsh3 = 0;
+                $kuadrat3 = 0;
+            }
+    
+            if ($tot4 !== null) {
+                $slsh4 = $tot4 - $rataStd;
+                $kuadrat4 = $slsh4 * $slsh4;
+            } else {
+                $slsh4 = 0;
+                $kuadrat4 = 0;
+            }
+    
+            if ($tot5 !== null) {
+                $slsh5 = $tot5 - $rataStd;
+                $kuadrat5 = $slsh5 * $slsh5;
+            } else {
+                $slsh5 = 0;
+                $kuadrat5 = 0;
+            }
+
+            $totkdrt = $kuadrat1 + $kuadrat2 + $kuadrat3 + $kuadrat4 + $kuadrat5;
+            $ratakdrt = $jumlahPembagi > 0 ? $totkdrt / $jumlahPembagi : 0;
+
+            // Get the square root of $ratakdrt
+            $akarRatakdrt = sqrt($ratakdrt);
     
             // Cek apakah sempro ditemukan
             if (!$sempro) {
@@ -379,7 +479,8 @@ class SidangController extends Controller
             // Tampilkan halaman "Beri Nilai" dan kirimkan data sempro dan status dosen
             return view('/dosen/pen14', compact('sempro', 'nilaiDosen', 'namaDospem2','namaDospem1','namaPenguji1','namaPenguji2',
             'namaPenguji3','jumlahKomponen1','jumlahKomponen2','jumlahKomponen3','komp1dp2','komp2dp2','komp3dp2','komp1dp1','komp2dp1','komp3dp1',
-            'komp2pg1','komp3pg1','komp2pg2','komp3pg2','komp2pg3','komp3pg3',));
+            'komp2pg1','komp3pg1','komp2pg2','komp3pg2','komp2pg3','komp3pg3','akarRatakdrt','id1','id2','id3','id4','id5',
+            'tot1','tot2','tot3','tot4','tot5'));
         }
 
     public function sendDataToCoordinator()
@@ -446,6 +547,7 @@ class SidangController extends Controller
             ->where('id_dosen', $dospem1Id)
             ->first();
             if ($nilaiDospem1) {
+                $id = $nilaiDospem1->id;
             $nilai1dospem1 = $nilaiDospem1->nilai_1 * 0.1;
             $nilai2dospem1 = $nilaiDospem1->nilai_2 * 0.05;
             $nilai3dospem1 = $nilaiDospem1->nilai_3 * 0.05;
@@ -458,6 +560,8 @@ class SidangController extends Controller
             $komp1dp1 = $nilai1dospem1 + $nilai2dospem1 + $nilai3dospem1 + $nilai4dospem1;
             $komp2dp1 = $nilai5dospem1 + $nilai6dospem1 + $nilai7dospem1;
             $komp3dp1 = $nilai8dospem1 + $nilai9dospem1;
+            $tot1 = $komp2dp1 + $komp3dp1;
+
             } else {
                     // Data tidak ditemukan
                     $nilai1dospem1 = null;
@@ -473,6 +577,9 @@ class SidangController extends Controller
                     $komp1dp1 = null;
                     $komp2dp1 = null;
                     $komp3dp1 =  null;
+
+                    $id = null;
+                    $tot1 = null;
                 }
 
             // nilai dospem 2
@@ -480,6 +587,7 @@ class SidangController extends Controller
             ->where('id_dosen', $dospem2Id)
             ->first();
             if ($nilaiDospem2) {
+                $id = $nilaiDospem2->id;
             $nilai1dospem2 = $nilaiDospem2->nilai_1 * 0.1;
             $nilai2dospem2 = $nilaiDospem2->nilai_2 * 0.05;
             $nilai3dospem2 = $nilaiDospem2->nilai_3 * 0.05;
@@ -492,6 +600,7 @@ class SidangController extends Controller
             $komp1dp2 = $nilai1dospem2 + $nilai2dospem2 + $nilai3dospem2 + $nilai4dospem2;
             $komp2dp2 = $nilai5dospem2 + $nilai6dospem2 + $nilai7dospem2;
             $komp3dp2 = $nilai8dospem2 + $nilai9dospem2;
+            $tot2 = $komp2dp2 + $komp3dp2;
             } else {
                     // Data tidak ditemukan
                     $nilai1dospem2 = null;
@@ -507,6 +616,9 @@ class SidangController extends Controller
                     $komp1dp2 = null;
                     $komp2dp2 = null;
                     $komp3dp2 =  null;
+
+                    $id = null;
+                    $tot2 = null;
                 }
 
             // nilai penguji 1
@@ -514,6 +626,7 @@ class SidangController extends Controller
             ->where('id_dosen', $penguji1Id)
             ->first();
             if ($nilaiPenguji1) {
+                $id3 = $nilaiPenguji1->id;
             $nilai5Penguji1 = $nilaiPenguji1->nilai_5 * 0.2;
             $nilai6Penguji1 = $nilaiPenguji1->nilai_6 * 0.05;
             $nilai7Penguji1 = $nilaiPenguji1->nilai_7 * 0.05;
@@ -521,6 +634,7 @@ class SidangController extends Controller
             $nilai9Penguji1 = $nilaiPenguji1->nilai_9 * 0.1;
             $komp2pg1 = $nilai5Penguji1 + $nilai6Penguji1 + $nilai7Penguji1;
             $komp3pg1 = $nilai8Penguji1 + $nilai9Penguji1;
+            $tot3 = $komp2pg1 + $komp3pg1;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji1 = null;
@@ -530,6 +644,9 @@ class SidangController extends Controller
                     $nilai9Penguji1 = null;
                     $komp2pg1 = null;
                     $komp3pg1 =  null;
+
+                    $id3 = null;
+                    $tot3 = null;
                 }
 
             // nilai penguji 2
@@ -537,6 +654,7 @@ class SidangController extends Controller
             ->where('id_dosen', $penguji2Id)
             ->first();
             if ($nilaiDospem2) {
+                $id4 = $nilaiPenguji2->id;
             $nilai5Penguji2 = $nilaiPenguji2->nilai_5 * 0.2;
             $nilai6Penguji2 = $nilaiPenguji2->nilai_6 * 0.05;
             $nilai7Penguji2 = $nilaiPenguji2->nilai_7 * 0.05;
@@ -544,6 +662,7 @@ class SidangController extends Controller
             $nilai9Penguji2 = $nilaiPenguji2->nilai_9 * 0.1;
             $komp2pg2= $nilai5Penguji2 + $nilai6Penguji2 + $nilai7Penguji2;
             $komp3pg2 = $nilai8Penguji2 + $nilai9Penguji2;
+            $tot4 = $komp2pg2 + $komp3pg2;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji2 = null;
@@ -553,6 +672,9 @@ class SidangController extends Controller
                     $nilai9Penguji2 = null;
                     $komp2pg2 = null;
                     $komp3pg2 =  null;
+
+                    $id4 = null;
+                    $tot4 = null;
                 }
 
             // nilai penguji 3
@@ -560,6 +682,7 @@ class SidangController extends Controller
             ->where('id_dosen', $penguji3Id)
             ->first();
             if ($nilaiPenguji3) {
+                $id5 = $nilaiPenguji3->id;
             $nilai5Penguji3 = $nilaiPenguji3->nilai_5 * 0.2;
             $nilai6Penguji3 = $nilaiPenguji3->nilai_6 * 0.05;
             $nilai7Penguji3 = $nilaiPenguji3->nilai_7 * 0.05;
@@ -567,6 +690,7 @@ class SidangController extends Controller
             $nilai9Penguji3 = $nilaiPenguji3->nilai_9 * 0.1;
             $komp2pg3= $nilai5Penguji3 + $nilai6Penguji3 + $nilai7Penguji3;
             $komp3pg3 = $nilai8Penguji3 + $nilai9Penguji3;
+            $tot5 = $komp2pg3 + $komp3pg3;
             } else {
                     // Data tidak ditemukan
                     $nilai5Penguji3 = null;
@@ -576,11 +700,93 @@ class SidangController extends Controller
                     $nilai9Penguji3 = null;
                     $komp2pg3 = null;
                     $komp3pg3 =  null;
+                    $id5 = null;
+                    $tot5 = null;
                 }
     
-
-            $totalNilaiKeseluruhan = 0;
-            $totalRerataNilaiKeseluruhan = 0;
+                $totalNilaiKeseluruhan = 0;
+                $jumlahPembagi = 0;
+        
+                // Cek dan tambahkan nilai totrat1
+                if ($tot1 !== null) {
+                    $totalNilaiKeseluruhan += $tot1;
+                    $jumlahPembagi++;
+                }
+        
+                // Cek dan tambahkan nilai totrat2
+                if ($tot2 !== null) {
+                    $totalNilaiKeseluruhan += $tot2;
+                    $jumlahPembagi++;
+                }
+        
+                // Cek dan tambahkan nilai totrat3
+                if ($tot3 !== null) {
+                    $totalNilaiKeseluruhan += $tot3;
+                    $jumlahPembagi++;
+                }
+        
+                // Cek dan tambahkan nilai totrat4
+                if ($tot4 !== null) {
+                    $totalNilaiKeseluruhan += $tot4;
+                    $jumlahPembagi++;
+                }
+        
+                // Cek dan tambahkan nilai totrat5
+                if ($tot5 !== null) {
+                    $totalNilaiKeseluruhan += $tot5;
+                    $jumlahPembagi++;
+                }
+                
+                // Hitung rata-rata
+                $totalRerataNilaiKeseluruhan = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+                $rataStd = $jumlahPembagi > 0 ? $totalNilaiKeseluruhan / $jumlahPembagi : 0;
+    
+                if ($tot1 !== null) {
+                    $slsh1 = $tot1 - $rataStd;
+                    $kuadrat1 = $slsh1 * $slsh1;
+                } else {
+                    $slsh1 = 0;
+                    $kuadrat1 = 0;
+                }
+        
+                if ($tot2 !== null) {
+                    $slsh2 = $tot2 - $rataStd;
+                    $kuadrat2 = $slsh2 * $slsh2;
+                } else {
+                    $slsh2 = 0;
+                    $kuadrat2 = 0;
+                }
+        
+                if ($tot3 !== null) {
+                    $slsh3 = $tot3 - $rataStd;
+                    $kuadrat3 = $slsh3 * $slsh3;
+                } else {
+                    $slsh3 = 0;
+                    $kuadrat3 = 0;
+                }
+        
+                if ($tot4 !== null) {
+                    $slsh4 = $tot4 - $rataStd;
+                    $kuadrat4 = $slsh4 * $slsh4;
+                } else {
+                    $slsh4 = 0;
+                    $kuadrat4 = 0;
+                }
+        
+                if ($tot5 !== null) {
+                    $slsh5 = $tot5 - $rataStd;
+                    $kuadrat5 = $slsh5 * $slsh5;
+                } else {
+                    $slsh5 = 0;
+                    $kuadrat5 = 0;
+                }
+    
+                $totkdrt = $kuadrat1 + $kuadrat2 + $kuadrat3 + $kuadrat4 + $kuadrat5;
+                $ratakdrt = $jumlahPembagi > 0 ? $totkdrt / $jumlahPembagi : 0;
+    
+                // Get the square root of $ratakdrt
+                $akarRatakdrt = sqrt($ratakdrt);
+            
             $jumlahKomponen1 = $komp1dp2 + $komp1dp1;
             $jumlahKomponen2 = $komp2pg3+ $komp2pg2 + $komp2pg1 + $komp2dp1 + $komp2dp2;
             $jumlahKomponen3 = $komp3pg3+ $komp3pg2 + $komp3pg1 + $komp3dp1 + $komp3dp2;
