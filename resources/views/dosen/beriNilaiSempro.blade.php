@@ -83,11 +83,11 @@
                         <div class="p-6 space-y-6">
                             
                     <!-- Tampilkan total nilai di sini dengan JavaScript -->
-                    Total Nilai: <span id="modal-total-nilai"></span>
+                    <span id="modal-total-nilai"></span>
                         </div>
                         <!-- Modal footer -->
                         <div class="items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <p class="mb-3">Apakah anda yakin dengan nilai ini?</p>
+                        <p class="mb-3"><span id="yakin"></span></p>
                             <button id="kirimData" data-modal-hide="small-modal" type="submit" class="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approved</button>
                             <button data-modal-hide="small-modal" type="button" class="text-black-500 bg-red-500 hover:bg-red-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Batal</button>
                         </div>
@@ -129,6 +129,16 @@ inputFields.forEach(inputField => {
     const totalNilai = nilai_1 + nilai_2 + nilai_3 + nilai_4 + nilai_5;
     const rata = totalNilai / 5;
     const rata1 = rata.toFixed(2);
+
+    if (isNaN(rata)) {
+    rata1 = "Silahkan lengkapi penilaian !";
+    yakin = ""
+    } else {
+        rata1 = "Total Nilai: " + rata.toFixed(2);
+        yakin = "Apakah anda yakin dengan nilai ini?"
+    }
+
+    document.querySelector('#yakin').textContent = yakin;
 
     // Display the total value in the modal
     document.querySelector('#modal-total-nilai').textContent = rata1;

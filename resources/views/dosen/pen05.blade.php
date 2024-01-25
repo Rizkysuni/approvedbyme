@@ -96,7 +96,7 @@
                             </button>
                         </form>
                     @else
-                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    
                     @endif
                     </td>
                 </tr>
@@ -122,7 +122,7 @@
                             </button>
                         </form>
                     @else
-                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    
                     @endif
                     </td>
                 </tr>
@@ -148,7 +148,7 @@
                             </button>
                         </form>
                     @else
-                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    
                     @endif
                     </td>
                 </tr>
@@ -174,7 +174,7 @@
                             </button>
                         </form>
                     @else
-                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    
                     @endif
                     </td>
                 </tr>
@@ -200,7 +200,7 @@
                             </button>
                         </form>
                     @else
-                    <ion-icon style="font-size: 24px;" name="trash-outline"></ion-icon>
+                    
                     @endif
                     </td>
                 </tr>

@@ -105,6 +105,7 @@ class HomeController extends Controller
             COUNT(nilai_sidang.id) as jumlah_nilai_sidang
         ')
         ->groupBy('sempros.id', 'sempros.nama', 'sempros.jurusan', 'sempros.seminar', 'sempros.dospem2', 'sempros.status_nilai')
+        ->orderBy('sempros.created_at', 'DESC')
         ->get();
 
 

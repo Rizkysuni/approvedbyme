@@ -80,7 +80,7 @@
             <div class="block space-y-4 md:flex md:space-y-0 md:space-x-4">
                 <!-- Modal toggle -->
                 <button data-modal-target="small-modal" data-modal-toggle="small-modal" class="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                Approved
+                Lanjutkan
                 </button>
             </div>
             <!-- Small Modal -->
@@ -102,9 +102,10 @@
                         </div>
                         <!-- Modal body -->
                         <div class="p-6 space-y-6">
-                            <div> Komponen 1: <span id="komp1"></span></div>
-                            <div> Komponen 2: <span id="komp2"></span></div>
-                            <div> Komponen 3: <span id="komp3"></span></div>
+                            <div><span id="komp1"></span></div>
+                            <div><span id="komp2"></span></div>
+                            <div><span id="komp3"></span></div>
+                            <div><span id="warning"></span></div>
                     <!-- Tampilkan total nilai di sini dengan JavaScript -->
                     
                     
@@ -112,6 +113,7 @@
                         </div>
                         <!-- Modal footer -->
                         <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <p class="mb-3"><span id="yakin"></span></p>
                             <button id="kirimData" data-modal-hide="small-modal" type="submit" class="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approved</button>
                             <button data-modal-hide="small-modal" type="button" class="text-black-500 bg-red-500 hover:bg-red-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Batal</button>
                         </div>
@@ -170,10 +172,29 @@ inputFields.forEach(inputField => {
     const komp2 = n5 + n6 + n7;
     const komp3 = n8 + n9;
 
+    if (isNaN(komp1) || isNaN(komp2) || isNaN(komp3)) {
+    rill1 = "";
+    rill2 = "";
+    rill3 = "";
+    yakin = "";
+    warning = "Silahkan lengkapi penilaian!";
+    } else {
+        rill1 = "Komponen 1: " + komp1.toFixed(2);
+        rill2 = "Komponen 2: " + komp2.toFixed(2);
+        rill3 = "Komponen 3: " + komp3.toFixed(2);
+        yakin = "Apakah anda yakin dengan nilai ini?";
+        warning = ""
+    }
+
+
+
+    document.querySelector('#yakin').textContent = yakin;
+    document.querySelector('#warning').textContent = warning;
+
     // Tampilkan nilai komponen
-    document.querySelector('#komp1').textContent = komp1;
-    document.querySelector('#komp2').textContent = komp2;
-    document.querySelector('#komp3').textContent = komp3;
+    document.querySelector('#komp1').textContent = rill1;
+    document.querySelector('#komp2').textContent = rill2;
+    document.querySelector('#komp3').textContent = rill3;
   });
 });
 </script>
@@ -213,9 +234,24 @@ inputFields.forEach(inputField => {
     const komp2 = n5 + n6 + n7;
     const komp3 = n8 + n9;
 
+    if (isNaN(komp2) || isNaN(komp3)) {
+    rill2 = "";
+    rill3 = "";
+    yakin = "";
+    warning = "Silahkan lengkapi penilaian!";
+    } else {
+        rill2 = "Komponen 2: " + komp2.toFixed(2);
+        rill3 = "Komponen 3: " + komp3.toFixed(2);
+        yakin = "Apakah anda yakin dengan nilai ini?";
+        warning = ""
+    }
+
+    document.querySelector('#yakin').textContent = yakin;
+    document.querySelector('#warning').textContent = warning;
+
     // Tampilkan nilai komponen
-    document.querySelector('#komp2').textContent = komp2;
-    document.querySelector('#komp3').textContent = komp3;
+    document.querySelector('#komp2').textContent = rill2;
+    document.querySelector('#komp3').textContent = rill3;
   });
 });
 </script>
